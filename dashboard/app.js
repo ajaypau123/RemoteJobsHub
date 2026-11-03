@@ -128,11 +128,17 @@ function escapeHtml(str) {
 }
 
 // ── Application Initialization ────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  loadJobsData();
+function init() {
   bindEventHandlers();
   updateSavedCounters();
-});
+  loadJobsData();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
 
 function loadJobsData() {
   const headerCount = document.getElementById('header-count-badge');
@@ -141,23 +147,36 @@ function loadJobsData() {
   if (window.JOBS_DATA && Array.isArray(window.JOBS_DATA) && window.JOBS_DATA.length > 0) {
     state.allJobs = window.JOBS_DATA;
     onJobsLoaded();
-  } else {
-    // Fallback: fetch JSON if jobs_latest.js was empty or pending
-    fetch('jobs_latest.json')
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-          state.allJobs = data;
-          onJobsLoaded();
-        } else {
-          showEmptyState('No remote jobs found in the feed.');
-        }
-      })
-      .catch(err => {
-        console.error('Failed loading jobs feed:', err);
-        showEmptyState('Could not load jobs feed. Please refresh or trigger an update.');
-      });
+    return;
   }
+
+  // Poll for window.JOBS_DATA if it is still loading, otherwise fetch JSON
+  let attempts = 0;
+  const pollTimer = setInterval(() => {
+    attempts++;
+    if (window.JOBS_DATA && Array.isArray(window.JOBS_DATA) && window.JOBS_DATA.length > 0) {
+      clearInterval(pollTimer);
+      state.allJobs = window.JOBS_DATA;
+      onJobsLoaded();
+    } else if (attempts >= 10) {
+      clearInterval(pollTimer);
+      // Fallback: fetch JSON if jobs_latest.js was empty or pending
+      fetch('jobs_latest.json')
+        .then(res => res.json())
+        .then(data => {
+          if (Array.isArray(data) && data.length > 0) {
+            state.allJobs = data;
+            onJobsLoaded();
+          } else {
+            showEmptyState('No remote jobs found in the feed.');
+          }
+        })
+        .catch(err => {
+          console.error('Failed loading jobs feed:', err);
+          showEmptyState('Could not load jobs feed. Please refresh.');
+        });
+    }
+  }, 150);
 }
 
 function onJobsLoaded() {

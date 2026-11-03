@@ -358,8 +358,8 @@ def run(
                 desc = _clean_str(c.get("description"))
                 text = re.sub(r"<[^>]+>", " ", desc)
                 text = re.sub(r"\s+", " ", text).strip()
-                if len(text) > 600:
-                    c["description"] = text[:600] + "... [Click 'Apply on Official Site' for full requirements]"
+                if len(text) > 300:
+                    c["description"] = text[:300] + "... [Click 'Apply' for full details]"
                 else:
                     c["description"] = text
                 return c
@@ -373,13 +373,16 @@ def run(
                 json.dump(cumulative_dataset, f, indent=2, ensure_ascii=False)
             dashboard_dir = os.path.join(os.path.dirname(output_dir), "dashboard")
             if os.path.isdir(dashboard_dir):
+                from aggregator.processing.filter import is_remote_job as check_remote, get_remote_scope as check_scope
                 # Prepare high-performance lightweight dataset for the browser
                 if remote_only:
-                    dash_jobs = [
-                        _to_lightweight(j)
-                        for j in cumulative_dataset
-                        if j.get("is_remote") is not False
-                    ]
+                    dash_jobs = []
+                    for j in cumulative_dataset:
+                        if check_remote(j):
+                            item = _to_lightweight(j)
+                            item["remote_scope"] = check_scope(j)
+                            item["is_remote"] = True
+                            dash_jobs.append(item)
                 elif india_eligible:
                     dash_jobs = [
                         _to_lightweight(j)
