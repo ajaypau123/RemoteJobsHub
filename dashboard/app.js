@@ -72,22 +72,38 @@ const TECH_TAGS = [
   'Figma', 'UI/UX', 'Product Design', 'DevOps', 'SRE'
 ];
 
+function escapeRegex(str) {
+  if (!str) return '';
+  const specials = '-[]/{}()*+?.\\^$|';
+  let out = '';
+  for (let i = 0; i < str.length; i++) {
+    const c = str[i];
+    out += specials.includes(c) ? '\\' + c : c;
+  }
+  return out;
+}
+
 function extractTags(text) {
   if (!text) return [];
   const found = [];
   const lower = text.toLowerCase();
   for (const tag of TECH_TAGS) {
-    const tagLower = tag.toLowerCase();
-    const regex = new RegExp(`\\b${tagLower.replace('.', '\\.')}\\b`, 'i');
-    if (regex.test(lower)) {
-      found.push(tag);
-      if (found.length >= 4) break;
+    const escaped = escapeRegex(tag.toLowerCase());
+    try {
+      const regex = /[+#]/.test(escaped)
+        ? new RegExp("(?:^|[\\s,/])" + escaped + "(?:$|[\\s,/])", "i")
+        : new RegExp("\\b" + escaped + "\\b", "i");
+      if (regex.test(lower)) {
+        found.push(tag);
+        if (found.length >= 4) break;
+      }
+    } catch (e) {
+      // ignore
     }
   }
   return found;
 }
 
-// ── Deterministic Gradient Generator for Avatars ──────────────────────────────
 const GRADIENTS = [
   'from-emerald-500 to-teal-600',
   'from-cyan-500 to-blue-600',
@@ -129,9 +145,9 @@ function escapeHtml(str) {
 
 // ── Application Initialization ────────────────────────────────────────────────
 function init() {
+  loadJobsData();
   bindEventHandlers();
   updateSavedCounters();
-  loadJobsData();
 }
 
 if (document.readyState === 'loading') {
@@ -655,7 +671,7 @@ function bindEventHandlers() {
 }
 
 // ── Quick Helpers ─────────────────────────────────────────────────────────────
-window.setQuickSearch = function(keyword) {
+function setQuickSearch(keyword) {
   const searchInput = document.getElementById('search-input');
   if (searchInput) {
     searchInput.value = keyword;
@@ -667,7 +683,7 @@ window.setQuickSearch = function(keyword) {
   }
 };
 
-window.resetAllFilters = function() {
+function resetAllFilters() {
   state.category = 'all';
   state.scope = 'all';
   state.seniority = 'all';
@@ -730,3 +746,10 @@ function showEmptyState(msg) {
     `;
   }
 }
+
+
+window.resetAllFilters = resetAllFilters;
+window.setQuickSearch = setQuickSearch;
+window.toggleSaveJob = toggleSaveJob;
+window.openJobModal = openJobModal;
+window.closeJobModal = closeJobModal;
