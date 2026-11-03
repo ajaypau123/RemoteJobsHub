@@ -1,4 +1,4 @@
-# Job Aggregator V1
+# RemoteJobsHub — Global Remote Tech Job Aggregator
 
 A Python CLI tool that collects job listings from approved free APIs, normalizes them to a common schema, validates and deduplicates records, and exports a timestamped CSV file.
 
@@ -6,10 +6,10 @@ A Python CLI tool that collects job listings from approved free APIs, normalizes
 
 ## Purpose
 
-This project provides a clean, maintainable platform for **Indian job seekers** to discover and apply to tech jobs directly on hiring companies' official ATS portals (Greenhouse, Lever, Workday, etc.):
+This project provides a clean, maintainable platform for **global remote job seekers** to discover and apply to tech jobs directly on hiring companies' official ATS portals (Greenhouse, Lever, Workday, etc.):
 
 ```
-APPROVED SOURCES → INGEST → NORMALIZE → VALIDATE → DEDUPLICATE → INDIA ELIGIBILITY → DIRECT ATS RESOLVER → DASHBOARD
+APPROVED SOURCES → INGEST → NORMALIZE → VALIDATE → DEDUPLICATE → REMOTE GEOFENCING & SCOPING → DIRECT ATS RESOLVER → DASHBOARD
 ```
 
 ---
@@ -17,7 +17,7 @@ APPROVED SOURCES → INGEST → NORMALIZE → VALIDATE → DEDUPLICATE → INDIA
 ## Architecture
 
 ```
-JobAggregater/
+RemoteJobAggregator/
 ├── .github/
 │   └── workflows/
 │       └── scrape_and_deploy.yml # Automated GitHub Actions cron & deploy ($0/month)

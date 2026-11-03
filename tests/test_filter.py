@@ -171,3 +171,21 @@ class TestIsIndiaEligible:
         assert is_india_eligible({**_job(), "remote_type": "On-site", "location": "Berlin, Germany", "country": "Germany"}) is False
         assert is_india_eligible({**_job(), "remote_type": "Hybrid", "location": "London, UK", "country": "UK"}) is False
 
+
+class TestRemoteJobFiltering:
+    def test_is_remote_job(self):
+        from aggregator.processing.filter import is_remote_job
+        assert is_remote_job({"remote_type": "Remote", "location": "Anywhere"}) is True
+        assert is_remote_job({"remote_type": "On-site", "location": "Remote - Worldwide"}) is True
+        assert is_remote_job({"remote_type": "On-site", "location": "Berlin, Germany", "title": "Software Engineer"}) is False
+        assert is_remote_job({"remote_type": "On-site", "location": "Austin, TX", "title": "Remote Senior Backend Engineer"}) is True
+
+    def test_get_remote_scope(self):
+        from aggregator.processing.filter import get_remote_scope
+        assert get_remote_scope({"location": "Worldwide"}) == "Worldwide"
+        assert get_remote_scope({"location": "Anywhere"}) == "Worldwide"
+        assert get_remote_scope({"location": "United States", "country": "US"}) == "Americas"
+        assert get_remote_scope({"location": "Remote - UK & Europe"}) == "Europe/EMEA"
+        assert get_remote_scope({"location": "APAC / Asia"}) == "APAC"
+
+

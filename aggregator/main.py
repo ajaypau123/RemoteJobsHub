@@ -87,7 +87,7 @@ _SOURCE_CLASSES: dict[str, type[BaseJobSource]] = {
 def _print_header() -> None:
     print()
     print("+--------------------------------------+")
-    print("|          Job Aggregator V1           |")
+    print("|          Remote Jobs Hub V1          |")
     print("+--------------------------------------+")
     print()
 
@@ -152,6 +152,8 @@ def _print_summary(
 def run(
     role: str | None = None,
     exp: int | None = None,
+    remote_only: bool = True,
+    remote_scope: str | None = None,
     india_eligible: bool = False,
     export_json: bool = True,
 ) -> str | None:
@@ -250,20 +252,28 @@ def run(
     unique_jobs, duplicates_removed = deduplicate(valid_jobs)
     unfiltered_count = len(unique_jobs)
 
-    # ── 4a. Resolve Direct ATS Apply URLs & Tag India Eligibility ─────────────
-    from aggregator.processing.filter import is_india_eligible as check_india
+    # ── 4a. Resolve Direct ATS Apply URLs & Tag Remote Scope ──────────────────
+    from aggregator.processing.filter import is_india_eligible as check_india, get_remote_scope, is_remote_job
     for j in unique_jobs:
         j["is_india_eligible"] = check_india(j)
+        j["is_remote"] = is_remote_job(j)
+        j["remote_scope"] = get_remote_scope(j)
 
     unique_jobs = [resolve_job_urls(j) for j in unique_jobs]
     full_dataset = list(unique_jobs)
 
-    # ── 4b. Optional Filter (Role / Experience / India Eligibility) ───────────
+    # ── 4b. Optional Filter (Role / Experience / Remote Scope) ───────────────
     filter_label = None
     filter_slug = ""
     export_jobs = list(unique_jobs)
-    if role or exp is not None or india_eligible:
+    if role or exp is not None or remote_only or remote_scope or india_eligible:
         parts = []
+        if remote_only:
+            parts.append("remote_only=True")
+            filter_slug += "_remote"
+        if remote_scope:
+            parts.append(f"scope={remote_scope}")
+            filter_slug += f"_{remote_scope.lower()}"
         if role:
             parts.append(f"role={role.upper()}")
             filter_slug += f"_{role.lower()}"
@@ -278,6 +288,8 @@ def run(
             export_jobs,
             role=role,
             exp_years=exp,
+            remote_only=remote_only,
+            remote_scope=remote_scope,
             india_eligible=india_eligible,
         )
 
@@ -362,7 +374,13 @@ def run(
             dashboard_dir = os.path.join(os.path.dirname(output_dir), "dashboard")
             if os.path.isdir(dashboard_dir):
                 # Prepare high-performance lightweight dataset for the browser
-                if india_eligible:
+                if remote_only:
+                    dash_jobs = [
+                        _to_lightweight(j)
+                        for j in cumulative_dataset
+                        if j.get("is_remote") is not False
+                    ]
+                elif india_eligible:
                     dash_jobs = [
                         _to_lightweight(j)
                         for j in cumulative_dataset
@@ -417,19 +435,30 @@ def _sanitize_error(msg: str) -> str:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Job Aggregator V1 — aggregate, clean, filter, and export job postings."
+        description="Remote Jobs Hub V1 — aggregate, clean, filter, and export remote job postings."
     )
     parser.add_argument(
         "--role",
         type=str,
         default=None,
-        help="Filter jobs by role/title (e.g. qa, python, frontend)",
+        help="Filter jobs by role/title (e.g. qa, python, frontend, fullstack)",
     )
     parser.add_argument(
         "--exp",
         type=int,
         default=None,
         help="Filter jobs requiring ~N years of experience (e.g. 2)",
+    )
+    parser.add_argument(
+        "--scope",
+        type=str,
+        default=None,
+        help="Filter by geographic remote scope (e.g. Worldwide, Americas, Europe, APAC)",
+    )
+    parser.add_argument(
+        "--all-locations",
+        action="store_true",
+        help="Include non-remote/on-site jobs (default is remote-only)",
     )
     parser.add_argument(
         "--india",
@@ -454,6 +483,8 @@ if __name__ == "__main__":
     run(
         role=target_role,
         exp=target_exp,
+        remote_only=not args.all_locations,
+        remote_scope=args.scope,
         india_eligible=args.india,
         export_json=not args.no_json,
     )

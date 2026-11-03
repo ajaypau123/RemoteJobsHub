@@ -33,13 +33,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Job Aggregator (India Eligible & Direct ATS)
+      - name: Run Remote Jobs Aggregator (Worldwide & Direct ATS)
         env:
           ADZUNA_APP_ID: ${{ secrets.ADZUNA_APP_ID }}
           ADZUNA_APP_KEY: ${{ secrets.ADZUNA_APP_KEY }}
-          ADZUNA_COUNTRIES: "in"
         run: |
-          python -m aggregator.main --india
+          python -m aggregator.main
 
       - name: Dispatch Subscriber Job Alerts
         env:

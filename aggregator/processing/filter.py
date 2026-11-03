@@ -79,7 +79,85 @@ def matches_experience(text: str | None, target_years: int = 2) -> bool:
     return False
 
 
-# ── India Eligibility Patterns ───────────────────────────────────────────────
+# ── Remote Eligibility & Scope Patterns ─────────────────────────────────────
+GLOBAL_REMOTE_TERMS = {
+    "worldwide", "global", "anywhere", "apac", "work from anywhere",
+    "wfh worldwide", "remote - worldwide", "everywhere", "all locations",
+    "fully remote", "remote (worldwide)", "remote worldwide", "any location",
+}
+
+REMOTE_LOCATION_KEYWORDS = {
+    "remote", "telecommute", "wfh", "anywhere", "worldwide", "distributed",
+    "virtual", "work from home", "home based",
+}
+
+US_AMERICAS_PATTERNS = [
+    re.compile(r"\b(us|usa|united states|canada|latam|americas?|north america)\b", re.IGNORECASE),
+]
+
+EUROPE_PATTERNS = [
+    re.compile(r"\b(uk|united kingdom|europe|eu|emea|germany|france|spain|ireland|netherlands|poland)\b", re.IGNORECASE),
+]
+
+APAC_PATTERNS = [
+    re.compile(r"\b(apac|asia|india|singapore|australia|japan|philippines|indonesia)\b", re.IGNORECASE),
+]
+
+
+def is_remote_job(job: dict) -> bool:
+    """Return True if the job is a verified remote opportunity."""
+    remote_type = (job.get("remote_type") or "").strip().lower()
+    location = (job.get("location") or "").strip().lower()
+    title = (job.get("title") or "").strip().lower()
+
+    # Explicitly labeled On-site without remote mentions
+    if remote_type in ("on-site", "in-office") and "remote" not in location and "remote" not in title:
+        return False
+
+    # Standard remote marker
+    if remote_type == "remote":
+        return True
+
+    # Location or title has remote keywords
+    for kw in REMOTE_LOCATION_KEYWORDS:
+        if kw in location or kw in title:
+            return True
+
+    return False
+
+
+def get_remote_scope(job: dict) -> str:
+    """Categorize the geographic scope of a remote job.
+
+    Returns: 'Worldwide', 'Americas', 'Europe/EMEA', 'APAC', or 'Regional Remote'.
+    """
+    location = (job.get("location") or "").strip().lower()
+    country = (job.get("country") or "").strip().lower()
+
+    if not location or location in ("remote", "telecommute", "anywhere"):
+        return "Worldwide"
+
+    # Check regional constraints first
+    for pat in US_AMERICAS_PATTERNS:
+        if pat.search(location) or pat.search(country):
+            return "Americas"
+
+    for pat in EUROPE_PATTERNS:
+        if pat.search(location) or pat.search(country):
+            return "Europe/EMEA"
+
+    for pat in APAC_PATTERNS:
+        if pat.search(location) or pat.search(country):
+            return "APAC"
+
+    for term in GLOBAL_REMOTE_TERMS:
+        if term in location:
+            return "Worldwide"
+
+    return "Regional Remote"
+
+
+# ── India Eligibility Patterns (Preserved for cross-compatibility) ────────────
 INDIAN_LOCATIONS = {
     "india", "kerala", "kochi", "cochin", "trivandrum", "thiruvananthapuram",
     "bengaluru", "bangalore", "hyderabad", "pune", "mumbai", "delhi", "new delhi",
@@ -88,11 +166,6 @@ INDIAN_LOCATIONS = {
     "mysuru", "coimbatore", "bhubaneswar", "nagpur", "surat", "vadodara", "lucknow",
     "karnataka", "telangana", "maharashtra", "tamil nadu", "haryana", "uttar pradesh",
     "gujarat", "visakhapatnam", "vizag", "bhopal", "patna", "goa", "mangalore",
-}
-
-GLOBAL_REMOTE_TERMS = {
-    "worldwide", "global", "anywhere", "apac", "work from anywhere",
-    "wfh worldwide", "remote - worldwide", "everywhere", "all locations",
 }
 
 EXCLUSION_PATTERNS = [
@@ -106,23 +179,12 @@ EXCLUSION_PATTERNS = [
 
 
 def is_india_eligible(job: dict) -> bool:
-    """Return True if an Indian candidate is eligible to apply for this job.
-
-    Eligible jobs include:
-      1. Jobs located in India (e.g. country is India, or city in Kerala, Bengaluru, etc.)
-      2. Remote roles open Worldwide, Globally, Anywhere, or APAC with no exclusionary geo-fencing.
-
-    Ineligible jobs include:
-      1. On-site or Hybrid jobs located in other countries.
-      2. Remote jobs restricted to specific foreign regions (e.g. US Only, EU Only).
-      3. Jobs requiring foreign citizenship or authorization (e.g. US Citizenship, Green Card).
-    """
+    """Return True if an Indian candidate is eligible to apply for this job."""
     country = (job.get("country") or "").strip().lower()
     location = (job.get("location") or "").strip().lower()
     desc = (job.get("description") or "").lower()
     remote_type = (job.get("remote_type") or "").strip()
 
-    # 1. Direct India match in country or location
     if country in ("india", "in", "ind"):
         return True
     if re.search(r",\s*in(?:\b|$)", location) or re.search(r"\bindia\b", location):
@@ -131,21 +193,17 @@ def is_india_eligible(job: dict) -> bool:
         if re.search(rf"\b{re.escape(term)}\b", location):
             return True
 
-    # 2. On-site or Hybrid jobs located outside India are not eligible
     if remote_type in ("On-site", "Hybrid"):
         return False
 
-    # 3. Check for explicit regional exclusions
     for pat in EXCLUSION_PATTERNS:
         if pat.search(location) or pat.search(desc[:600]):
             return False
 
-    # 4. Check for Global Remote / Anywhere terms
     for term in GLOBAL_REMOTE_TERMS:
         if term in location:
             return True
 
-    # 5. Remote jobs with no explicit geographical restriction
     if remote_type == "Remote" and (not location or location in ("remote", "telecommute")):
         return True
 
@@ -156,46 +214,57 @@ def filter_jobs(
     jobs: list[dict],
     role: str | None = None,
     exp_years: int | None = None,
+    remote_only: bool = True,
+    remote_scope: str | None = None,
     india_eligible: bool = False,
 ) -> list[dict]:
-    """Filter a list of normalized job dicts by role, experience, and/or India eligibility.
+    """Filter a list of normalized job dicts by role, experience, and remote criteria.
 
     Args:
         jobs: List of normalized job dicts.
         role: Target role string (e.g., "qa"). Case-insensitive.
         exp_years: Target years of experience (e.g., 2).
-        india_eligible: If True, only keep jobs eligible for candidates in India.
+        remote_only: If True, only keep strictly remote opportunities.
+        remote_scope: If provided, filter by scope ('Worldwide', 'Americas', 'Europe/EMEA', 'APAC').
+        india_eligible: If True, keep jobs eligible for candidates in India.
 
     Returns:
         Filtered list of job dicts matching all criteria.
     """
-    if not role and exp_years is None and not india_eligible:
-        return jobs
-
     filtered = []
     for job in jobs:
         title = job.get("title") or ""
         description = job.get("description") or ""
         combined_text = f"{title}\n{description}"
 
-        # 1. Role match
+        # 1. Remote filtering (Default for RemoteJobAggregator)
+        if remote_only and not is_remote_job(job):
+            continue
+
+        # Enrich remote_scope on the job object
+        scope = get_remote_scope(job)
+        job["remote_scope"] = scope
+
+        if remote_scope and scope.lower() != remote_scope.strip().lower():
+            continue
+
+        # 2. Role match
         if role:
             role_norm = role.strip().lower()
             if role_norm == "qa":
                 if not is_qa_job(title, description):
                     continue
             else:
-                # Generic role keyword match on title or description
                 role_pat = re.compile(rf"\b{re.escape(role_norm)}\b", re.IGNORECASE)
                 if not role_pat.search(title) and not role_pat.search(description):
                     continue
 
-        # 2. Experience match
+        # 3. Experience match
         if exp_years is not None:
             if not matches_experience(combined_text, target_years=exp_years):
                 continue
 
-        # 3. India candidate eligibility match
+        # 4. India candidate eligibility match (optional flag)
         if india_eligible:
             if not is_india_eligible(job):
                 continue
