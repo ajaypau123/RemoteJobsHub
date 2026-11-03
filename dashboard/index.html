@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-slate-50">
+<html lang="en" class="h-full bg-slate-950">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,195 +7,139 @@
   <!-- Primary Meta Tags (SEO) -->
   <title>RemoteJobsHub | Curated Global Work-From-Anywhere & Remote Tech Jobs</title>
   <meta name="title" content="RemoteJobsHub | Curated Global Work-From-Anywhere & Remote Tech Jobs">
-  <meta name="description" content="Discover verified 100% remote software, QA, DevOps, AI, and tech jobs with direct apply links to official company ATS portals. Direct application links to hiring company ATS portals.">
-  <meta name="keywords" content="remote jobs, work from anywhere, global remote tech jobs, remote software engineer, worldwide tech jobs, direct company apply, greenhouse jobs india, lever jobs india, tech jobs india">
+  <meta name="description" content="Discover verified 100% remote software, QA, DevOps, AI, and tech jobs with direct apply links to official company ATS portals. Zero middlemen, worldwide opportunities.">
+  <meta name="keywords" content="remote jobs, work from anywhere, global remote tech jobs, remote software engineer, worldwide tech jobs, direct company apply, greenhouse remote jobs, lever remote jobs">
   <meta name="author" content="RemoteJobsHub">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://remotejobshub.local/">
+  <link rel="canonical" href="https://ajaypau123.github.io/RemoteJobsHub/">
 
-  <!-- Open Graph / Facebook (SEO) -->
+  <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://remotejobshub.local/">
+  <meta property="og:url" content="https://ajaypau123.github.io/RemoteJobsHub/">
   <meta property="og:title" content="RemoteJobsHub | Curated Global Work-From-Anywhere & Remote Tech Jobs">
-  <meta property="og:description" content="Aggregated tech jobs eligible for Indian candidates with direct apply links to hiring company career sites.">
+  <meta property="og:description" content="Discover 15,000+ verified 100% remote tech jobs with direct apply links to hiring company ATS portals.">
   <meta property="og:image" content="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80">
 
-  <!-- Twitter Card (SEO) -->
+  <!-- Twitter Card -->
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://remotejobshub.local/">
+  <meta property="twitter:url" content="https://ajaypau123.github.io/RemoteJobsHub/">
   <meta property="twitter:title" content="RemoteJobsHub | Curated Global Work-From-Anywhere & Remote Tech Jobs">
-  <meta property="twitter:description" content="Aggregated tech jobs eligible for Indian candidates with direct apply links to hiring company career sites.">
-  <meta property="twitter:image" content="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80">
+  <meta property="twitter:description" content="Discover 15,000+ verified 100% remote tech jobs with direct apply links to hiring company ATS portals.">
 
   <!-- Favicon -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎯</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>">
 
-  <!-- Google Font: Plus Jakarta Sans -->
+  <!-- Google Fonts: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 
-  <!-- Precompiled Production Tailwind CSS -->
-  <link rel="stylesheet" href="style.css?v=2.3">
+  <!-- Tailwind CSS CDN for instant, pristine rendering -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              200: '#a7f3d0',
+              300: '#6ee7b7',
+              400: '#34d399',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+            }
+          }
+        }
+      }
+    }
+  </script>
 
-  <style>
-    * {
-      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    }
-    /* Clean typography & list styling for rich job descriptions inside the modal */
-    #modal-content {
-      color: #334155;
-      line-height: 1.65;
-    }
-    #modal-content h1, #modal-content h2, #modal-content h3, #modal-content h4 {
-      font-weight: 700;
-      color: #0f172a;
-      margin-top: 1.25rem;
-      margin-bottom: 0.5rem;
-      line-height: 1.35;
-    }
-    #modal-content h1 { font-size: 1.25rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 0.35rem; }
-    #modal-content h2 { font-size: 1.125rem; }
-    #modal-content h3 { font-size: 1.025rem; }
-    #modal-content p {
-      margin-bottom: 0.75rem;
-    }
-    #modal-content ul {
-      list-style-type: disc !important;
-      padding-left: 1.5rem !important;
-      margin-top: 0.5rem;
-      margin-bottom: 0.85rem;
-    }
-    #modal-content ol {
-      list-style-type: decimal !important;
-      padding-left: 1.5rem !important;
-      margin-top: 0.5rem;
-      margin-bottom: 0.85rem;
-    }
-    #modal-content li {
-      margin-bottom: 0.35rem;
-      padding-left: 0.25rem;
-    }
-    #modal-content strong, #modal-content b {
-      font-weight: 600;
-      color: #1e293b;
-    }
-    #modal-content a {
-      color: #4f46e5;
-      text-decoration: underline;
-    }
-    #modal-content br {
-      content: "";
-      display: block;
-      margin-bottom: 0.35rem;
-    }
-  </style>
-
-  <!-- Schema.org Dynamic JSON-LD Hook for Google Jobs Organic SEO -->
+  <!-- Schema.org Dynamic JSON-LD Hook -->
   <script id="job-posting-schema" type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "RemoteJobsHub",
-    "url": "https://remotejobshub.local/",
-    "description": "Aggregated job postings open to Indian candidates with direct ATS apply links"
+    "url": "https://ajaypau123.github.io/RemoteJobsHub/",
+    "description": "Global 100% remote tech job aggregator with direct company ATS links"
   }
   </script>
 
   <style>
-    /* Accessibility focus styling */
-    :focus-visible {
-      outline: 2px solid #4f46e5;
-      outline-offset: 2px;
+    * {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     }
-    .line-clamp-3 {
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    /* Subtle custom card transition */
+    .job-card-hover {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    /* Mobile scrollbar hiding for smooth horizontal swipe rows */
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-    /* Smooth mobile touch scrolling */
-    .touch-scroll {
-      -webkit-overflow-scrolling: touch;
+    .job-card-hover:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px -10px rgba(16, 185, 129, 0.08);
     }
   </style>
 </head>
 
-<body class="h-full flex flex-col font-sans text-slate-800 antialiased selection:bg-brand-100 selection:text-brand-900">
-  
-  <!-- Accessibility: Skip to Content Link -->
-  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-brand-600 focus:text-white focus:rounded-md focus:shadow-lg">
-    Skip to main content
-  </a>
+<body class="h-full flex flex-col bg-slate-950 text-slate-100 antialiased selection:bg-emerald-500 selection:text-slate-950">
 
-  <!-- Header & Navigation (Glassmorphic) -->
-  <header class="bg-white/85 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-30 shadow-xs transition-all" role="banner">
-    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+  <!-- Header / Navigation Bar -->
+  <header class="bg-slate-950/80 backdrop-blur-xl border-b border-slate-800/80 sticky top-0 z-40 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16 sm:h-20">
         
         <!-- Logo & Branding -->
-        <div class="flex items-center space-x-2 sm:space-x-3">
-          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-brand-600 via-indigo-600 to-violet-500 flex items-center justify-center text-white font-bold text-lg sm:text-xl shadow-md shadow-brand-500/20 shrink-0">
-            🎯
+        <a href="#" class="flex items-center space-x-3 group">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 via-teal-500 to-cyan-500 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform shrink-0">
+            🌐
           </div>
           <div>
-            <div class="flex items-center gap-1.5 sm:gap-2">
-              <span class="text-lg sm:text-2xl font-extrabold tracking-tight text-slate-900">Remote<span class="text-brand-600">JobsHub</span></span>
-              <span class="hidden sm:inline-block px-2.5 py-0.5 text-[11px] font-bold bg-emerald-100 text-emerald-800 rounded-full border border-emerald-200">
-                Direct Apply
+            <div class="flex items-center gap-2">
+              <span class="text-xl sm:text-2xl font-extrabold tracking-tight text-white">Remote<span class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">JobsHub</span></span>
+              <span class="px-2 py-0.5 text-[10px] font-black uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full">
+                100% Remote
               </span>
             </div>
-            <span class="text-[11px] text-slate-400 font-medium hidden sm:block">100% Remote • Direct ATS Portals • Zero Middlemen</span>
+            <span class="text-[11px] text-slate-400 font-medium hidden sm:block">Direct ATS Portals • Zero Middlemen</span>
           </div>
-        </div>
+        </a>
 
-        <!-- Header Actions / Info -->
-        <div class="flex items-center space-x-1.5 sm:space-x-3">
-          <!-- Live Pulse Count Badge -->
-          <div class="hidden lg:inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/80">
+        <!-- Live Pulse & Header CTAs -->
+        <div class="flex items-center space-x-2 sm:space-x-3">
+          <!-- Live Count Badge -->
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-950/60 text-emerald-300 border border-emerald-500/30">
             <span class="relative flex h-2 w-2">
               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
-            <span id="header-count-badge">3,335 verified jobs</span>
+            <span id="header-count-badge">Loading remote jobs...</span>
           </div>
 
-          <!-- Founder Transparency Link -->
-          <a href="#why-we-built-this" class="hidden xl:inline-flex items-center gap-1 text-xs font-bold text-slate-600 hover:text-brand-600 transition px-2.5 py-1 rounded-lg hover:bg-slate-100" title="Read our zero-scam mission & creator pledge">
-            <span>🛡️</span> <span>Why We Built This</span>
+          <!-- Saved Jobs Tracker -->
+          <button id="tracker-saved-nav-btn" type="button" class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition cursor-pointer">
+            <span>⭐ Saved</span>
+            <span id="nav-saved-count" class="px-1.5 py-0.2 rounded-full text-[10px] bg-amber-500/20 text-amber-300 font-bold">0</span>
+          </button>
+
+          <!-- Telegram Channel Link -->
+          <a href="https://t.me/RemoteJobsHub" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-sky-500/10 text-sky-400 border border-sky-500/20 hover:bg-sky-500/20 transition">
+            <span>✈️ Alerts</span>
           </a>
 
-          <!-- Telegram Community Pill -->
-          <a id="header-telegram-btn" href="https://t.me/RemoteJobsHub" target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-sky-50 text-sky-700 border border-sky-200 hover:bg-sky-100 transition shadow-2xs" title="Join Telegram channel for instant daily job drops">
-            <span>✈️</span> <span>Telegram Alerts</span>
-          </a>
-
-          <!-- Instant Job Alerts CTA Button -->
-          <button id="header-job-alerts-btn" type="button" class="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-gradient-to-r from-amber-50 to-orange-50 text-amber-900 border border-amber-300 hover:from-amber-100 hover:to-orange-100 transition shadow-2xs hover:shadow cursor-pointer" title="Get personalized job alerts in your inbox or Telegram">
-            <span>🔔</span> <span class="hidden xs:inline sm:inline">Job </span><span>Alerts</span>
-            <span class="px-1.5 py-0.2 rounded-md bg-amber-500 text-white text-[10px] font-black uppercase">FREE</span>
-          </button>
-
-          <!-- Employer Post Job CTA (Desktop) -->
-          <button id="employer-post-btn" type="button" class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 hover:from-slate-800 hover:to-indigo-900 text-white shadow-sm hover:shadow transition transform active:scale-95 cursor-pointer" title="Post or feature your job to 10,000+ Indian engineers">
-            <span>🏢</span> <span>Post a Remote Job</span>
-          </button>
-
-          <!-- Employer Post Job CTA (Mobile Compact Icon) -->
-          <button id="employer-post-btn-mobile" type="button" class="sm:hidden p-2 text-xs font-bold text-slate-800 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-xl transition cursor-pointer flex items-center gap-1" title="Post a Remote Job">
-            <span>🏢</span>
-          </button>
-
-          <button id="refresh-btn" type="button" aria-label="Refresh job listings" class="p-2 text-slate-500 hover:text-brand-600 hover:bg-slate-100 rounded-xl transition-colors focus:ring-2 focus:ring-brand-500" title="Refresh Listings">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <!-- Refresh Button -->
+          <button id="refresh-btn" type="button" aria-label="Refresh job listings" class="p-2 text-slate-400 hover:text-white hover:bg-slate-900 rounded-xl transition border border-slate-800/80" title="Refresh Listings">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
             </svg>
           </button>
@@ -205,39 +149,43 @@
     </div>
   </header>
 
-  <!-- Hero Section (Ambient Modern Design) -->
-  <section class="relative overflow-hidden bg-gradient-to-b from-brand-50/40 via-white to-slate-50 border-b border-slate-200/80 py-12 sm:py-16 px-4 sm:px-6 lg:px-8 text-center" aria-labelledby="hero-title">
-    <!-- Ambient mesh glow background -->
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-64 bg-gradient-to-r from-brand-400/10 via-purple-400/10 to-indigo-400/10 blur-3xl pointer-events-none -z-10"></div>
+  <!-- Hero Section -->
+  <section class="relative overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800/80 py-12 sm:py-16 px-4 sm:px-6 lg:px-8 text-center">
+    <!-- Ambient glow center blur -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-gradient-to-tr from-emerald-500/15 via-teal-500/10 to-cyan-500/10 blur-[120px] pointer-events-none -z-10"></div>
 
     <div class="max-w-4xl mx-auto">
-      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-brand-50 text-brand-700 border border-brand-200 mb-5 shadow-2xs">
-        <span>⚡</span> <span>Direct Company Portals • No Consultancies • No Ghost Jobs</span>
+      <!-- Top Pill -->
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-6">
+        <span>⚡ Direct ATS Career Portals • No Consultancies • Verified Remote</span>
       </div>
 
-      <h1 id="hero-title" class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight sm:leading-snug">
-        Work From Anywhere. <br class="hidden sm:inline" />
-        <span class="bg-gradient-to-r from-brand-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">Direct Company Portals.</span>
+      <!-- Main Headline -->
+      <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight sm:leading-snug">
+        Find Your Next Remote Job.<br />
+        <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
+          Work From Anywhere.
+        </span>
       </h1>
-      <p class="mt-4 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed font-normal">
-        Curated 100% remote engineering, QA, DevOps, AI, and tech roles from remote-first companies worldwide. Direct links to Greenhouse, Lever, Ashby, and Workday portals.
+
+      <p class="mt-4 text-sm sm:text-base text-slate-400 max-w-2xl mx-auto leading-relaxed">
+        Curated software engineering, QA, DevOps, AI, and tech positions worldwide. Direct application links to official company Greenhouse, Lever, Ashby, and Workday portals.
       </p>
 
-      <!-- High-Impact Omni-Search Bar -->
+      <!-- Omni-Search Bar -->
       <div class="mt-8 max-w-3xl mx-auto">
-        <form id="search-form" class="flex flex-col sm:flex-row gap-2 bg-white p-2 sm:p-2.5 rounded-2xl shadow-xl shadow-brand-500/10 border-2 border-slate-200/90 focus-within:border-brand-600 focus-within:ring-4 focus-within:ring-brand-100 transition-all" role="search" onsubmit="event.preventDefault();">
-          <label for="search-input" class="sr-only">Search jobs by title, company, skills or keyword</label>
+        <form id="search-form" class="flex flex-col sm:flex-row gap-2 bg-slate-900/90 p-2 sm:p-2.5 rounded-2xl shadow-2xl border-2 border-slate-800 focus-within:border-emerald-500 focus-within:ring-4 focus-within:ring-emerald-500/20 transition-all" onsubmit="event.preventDefault();">
           <div class="relative flex-grow flex items-center">
-            <div class="pl-3.5 pr-2 pointer-events-none text-brand-600">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <div class="pl-3.5 pr-2 pointer-events-none text-emerald-400">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
               </svg>
             </div>
             <input 
               type="search" 
               id="search-input" 
-              placeholder="Search by role, skills, keywords (e.g. Fullstack, React, Python, Worldwide, Senior, DevOps)..." 
-              class="w-full py-2.5 bg-transparent text-slate-900 placeholder-slate-400 text-sm sm:text-base outline-none font-medium"
+              placeholder="Search by role, skills, keywords (e.g. React, Python, QA, SDET, Senior, Worldwide)..." 
+              class="w-full py-2.5 bg-transparent text-white placeholder-slate-500 text-sm sm:text-base outline-none font-medium"
               autocomplete="off"
             >
           </div>
@@ -245,14 +193,13 @@
             <button 
               type="button" 
               id="clear-search-btn" 
-              class="hidden px-3 py-2 text-xs font-semibold text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition"
-              aria-label="Clear search input"
+              class="hidden px-3 py-2 text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition"
             >
               Clear
             </button>
             <button 
               type="submit" 
-              class="inline-flex items-center justify-center gap-1.5 px-6 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 rounded-xl shadow-md shadow-brand-500/20 active:scale-95 transition-all cursor-pointer"
+              class="inline-flex items-center justify-center gap-1.5 px-6 py-2.5 text-sm font-bold text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 rounded-xl shadow-lg shadow-emerald-500/20 active:scale-95 transition-all cursor-pointer"
             >
               <span>Search</span>
               <span>➔</span>
@@ -260,43 +207,44 @@
           </div>
         </form>
 
-        <!-- Popular Trending Tags (Swipeable on Mobile) -->
-        <div class="flex overflow-x-auto no-scrollbar sm:flex-wrap items-center justify-start sm:justify-center gap-1.5 sm:gap-2 mt-3.5 text-xs text-slate-500 font-medium px-1 py-1">
-          <span class="text-slate-400 font-semibold mr-1 shrink-0">Trending:</span>
-          <button type="button" class="tag-chip shrink-0 whitespace-nowrap px-2.5 py-1 rounded-lg bg-white/90 hover:bg-brand-50 hover:text-brand-700 text-slate-700 border border-slate-200 shadow-2xs transition cursor-pointer" onclick="setQuickSearch('QA Automation')">🧪 QA Automation</button>
-          <button type="button" class="tag-chip shrink-0 whitespace-nowrap px-2.5 py-1 rounded-lg bg-white/90 hover:bg-brand-50 hover:text-brand-700 text-slate-700 border border-slate-200 shadow-2xs transition cursor-pointer" onclick="setQuickSearch('SDET')">⚡ SDET</button>
-          <button type="button" class="tag-chip shrink-0 whitespace-nowrap px-2.5 py-1 rounded-lg bg-white/90 hover:bg-brand-50 hover:text-brand-700 text-slate-700 border border-slate-200 shadow-2xs transition cursor-pointer" onclick="setQuickSearch('React')">⚛️ React</button>
-          <button type="button" class="tag-chip shrink-0 whitespace-nowrap px-2.5 py-1 rounded-lg bg-white/90 hover:bg-brand-50 hover:text-brand-700 text-slate-700 border border-slate-200 shadow-2xs transition cursor-pointer" onclick="setQuickSearch('Python')">🐍 Python</button>
-          <button type="button" class="tag-chip shrink-0 whitespace-nowrap px-2.5 py-1 rounded-lg bg-white/90 hover:bg-brand-50 hover:text-brand-700 text-slate-700 border border-slate-200 shadow-2xs transition cursor-pointer" onclick="setQuickSearch('DevOps')">☁️ DevOps</button>
-          <button type="button" class="tag-chip shrink-0 whitespace-nowrap px-2.5 py-1 rounded-lg bg-white/90 hover:bg-brand-50 hover:text-brand-700 text-slate-700 border border-slate-200 shadow-2xs transition cursor-pointer" onclick="setQuickSearch('Remote')">🌐 Remote</button>
+        <!-- Trending Quick Searches -->
+        <div class="flex overflow-x-auto no-scrollbar sm:flex-wrap items-center justify-start sm:justify-center gap-1.5 sm:gap-2 mt-4 text-xs text-slate-400 font-medium px-1">
+          <span class="text-slate-500 font-semibold mr-1 shrink-0">Popular:</span>
+          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition" onclick="setQuickSearch('Worldwide')">🌐 Worldwide</button>
+          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition" onclick="setQuickSearch('React')">⚛️ React</button>
+          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition" onclick="setQuickSearch('Python')">🐍 Python</button>
+          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition" onclick="setQuickSearch('QA Automation')">🧪 QA Automation</button>
+          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition" onclick="setQuickSearch('SDET')">⚡ SDET</button>
+          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition" onclick="setQuickSearch('DevOps')">☁️ DevOps</button>
+          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition" onclick="setQuickSearch('Senior')">🎯 Senior</button>
         </div>
       </div>
 
-      <!-- Quick Filter Pills (Swipeable on Mobile) -->
-      <nav class="mt-6 flex items-center overflow-x-auto no-scrollbar pb-2 sm:pb-0 sm:flex-wrap justify-start sm:justify-center gap-2 px-1" aria-label="Role quick filters">
-        <button class="filter-pill active shrink-0 whitespace-nowrap px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-brand-600 text-white shadow-xs hover:shadow hover:-translate-y-0.5 cursor-pointer" data-filter="all">
-          All Roles
+      <!-- Category Filter Pills -->
+      <nav class="mt-8 flex items-center overflow-x-auto no-scrollbar pb-2 sm:pb-0 sm:flex-wrap justify-start sm:justify-center gap-2 px-1" aria-label="Role categories">
+        <button class="role-pill active shrink-0 whitespace-nowrap px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20 cursor-pointer" data-category="all">
+          🌐 All Roles
         </button>
-        <button class="filter-pill shrink-0 whitespace-nowrap px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-white text-slate-600 hover:text-brand-600 hover:bg-brand-50/60 border border-slate-200/90 shadow-2xs hover:-translate-y-0.5 cursor-pointer" data-filter="qa">
-          🧪 QA & Testing
-        </button>
-        <button class="filter-pill shrink-0 whitespace-nowrap px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-white text-slate-600 hover:text-brand-600 hover:bg-brand-50/60 border border-slate-200/90 shadow-2xs hover:-translate-y-0.5 cursor-pointer" data-filter="engineer">
+        <button class="role-pill shrink-0 whitespace-nowrap px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer" data-category="engineer">
           💻 Software Engineers
         </button>
-        <button class="filter-pill shrink-0 whitespace-nowrap px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-white text-slate-600 hover:text-brand-600 hover:bg-brand-50/60 border border-slate-200/90 shadow-2xs hover:-translate-y-0.5 cursor-pointer" data-filter="devops">
+        <button class="role-pill shrink-0 whitespace-nowrap px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer" data-category="qa">
+          🧪 QA & Testing
+        </button>
+        <button class="role-pill shrink-0 whitespace-nowrap px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer" data-category="ai">
+          🤖 AI & Machine Learning
+        </button>
+        <button class="role-pill shrink-0 whitespace-nowrap px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer" data-category="devops">
           ☁️ DevOps & Cloud
         </button>
-        <button class="filter-pill shrink-0 whitespace-nowrap px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-white text-slate-600 hover:text-brand-600 hover:bg-brand-50/60 border border-slate-200/90 shadow-2xs hover:-translate-y-0.5 cursor-pointer" data-filter="data">
-          📊 Data & AI
+        <button class="role-pill shrink-0 whitespace-nowrap px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer" data-category="data">
+          📊 Data & Analytics
         </button>
-        <button class="filter-pill shrink-0 whitespace-nowrap px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-white text-slate-600 hover:text-brand-600 hover:bg-brand-50/60 border border-slate-200/90 shadow-2xs hover:-translate-y-0.5 cursor-pointer" data-filter="mobile">
+        <button class="role-pill shrink-0 whitespace-nowrap px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer" data-category="mobile">
           📱 Mobile Apps
         </button>
-        <button class="filter-pill shrink-0 whitespace-nowrap px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-white text-slate-600 hover:text-brand-600 hover:bg-brand-50/60 border border-slate-200/90 shadow-2xs hover:-translate-y-0.5 cursor-pointer" data-filter="design">
-          🎨 UI/UX & Design
-        </button>
-        <button class="filter-pill shrink-0 whitespace-nowrap px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-white text-slate-600 hover:text-brand-600 hover:bg-brand-50/60 border border-slate-200/90 shadow-2xs hover:-translate-y-0.5 cursor-pointer" data-filter="support">
-          🎧 Support & Ops
+        <button class="role-pill shrink-0 whitespace-nowrap px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer" data-category="design">
+          🎨 Product & Design
         </button>
       </nav>
 
@@ -304,962 +252,198 @@
   </section>
 
   <!-- Main Content Layout -->
-  <main id="main-content" class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full" role="main">
+  <main id="main-content" class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
     
-    <!-- Instant Job Alerts Strip / Banner -->
-    <div id="job-alerts-banner" class="mb-6 p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 via-brand-500/10 to-indigo-500/10 border border-amber-200/80 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xs">
-      <div class="flex items-center gap-3.5 text-center sm:text-left">
-        <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center text-lg shadow-sm shrink-0">
-          🔔
-        </div>
-        <div>
-          <div class="flex items-center gap-2 justify-center sm:justify-start">
-            <span class="text-xs sm:text-sm font-extrabold text-slate-900">Never miss a direct ATS job drop</span>
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">Starter: ₹49/mo • 3-Mo Sprint: ₹99</span>
-          </div>
-          <p class="text-xs text-slate-600 mt-0.5">
-            Get personalized daily alerts direct to your inbox or Telegram before postings are flooded on LinkedIn.
-          </p>
-        </div>
-      </div>
-      <button id="banner-job-alerts-btn" type="button" class="w-full sm:w-auto shrink-0 px-4 py-2.5 sm:py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-slate-900 to-indigo-950 text-white hover:from-slate-800 hover:to-indigo-900 shadow-sm hover:shadow transition transform active:scale-95 cursor-pointer">
-        ⚡ Setup Instant Alerts
-      </button>
-    </div>
-
-    <!-- Controls Bar: Multi-Dropdown Filters Panel -->
-    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs mb-8" role="search" aria-label="Job filters">
+    <!-- Faceted Filter Toolbar -->
+    <div class="bg-slate-900/90 border border-slate-800 p-4 sm:p-5 rounded-2xl shadow-xl mb-6">
       
-      <!-- Top line: Heading, Scope Switch, Result Counter, and Reset -->
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 sm:pb-4 border-b border-slate-100 gap-3">
-        <div class="flex flex-col sm:flex-row sm:items-center gap-3">
-          <div role="status" aria-live="polite" class="flex items-center justify-between sm:justify-start space-x-2">
-            <h2 id="results-heading" class="text-base sm:text-lg font-bold text-slate-900">
-              Available Positions
-            </h2>
-            <span id="results-count-badge" class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-brand-100 text-brand-800">
-              0 jobs
-            </span>
-          </div>
-
-          <!-- Controls strip (Swipeable on mobile) -->
-          <div class="flex items-center overflow-x-auto no-scrollbar gap-2 pb-1 sm:pb-0 w-full sm:w-auto">
-            <!-- Scope Switcher: Global Remote Options -->
-            <div class="inline-flex items-center bg-slate-100 p-0.5 rounded-xl text-xs font-medium border border-slate-200 shrink-0">
-              <button id="scope-all-btn" type="button" class="px-2.5 py-1 rounded-lg bg-white text-brand-700 font-bold shadow-2xs transition whitespace-nowrap cursor-pointer">
-                🌐 All Remote
-              </button>
-              <button id="scope-worldwide-btn" type="button" class="px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition whitespace-nowrap cursor-pointer">
-                🌍 Worldwide
-              </button>
-              <button id="scope-americas-btn" type="button" class="px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition whitespace-nowrap cursor-pointer">
-                🇺🇸 Americas
-              </button>
-              <button id="scope-europe-btn" type="button" class="px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition whitespace-nowrap cursor-pointer">
-                🇪🇺 Europe
-              </button>
-              <button id="scope-apac-btn" type="button" class="px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition whitespace-nowrap cursor-pointer">
-                🌏 APAC
-              </button>
-            </div>
-
-            <!-- Personal Tracker Tabs: All, Saved, Applied -->
-            <div class="inline-flex items-center bg-slate-100 p-0.5 rounded-xl text-xs font-medium border border-slate-200 shrink-0">
-              <button id="tracker-all-btn" type="button" class="px-2.5 py-1 rounded-lg bg-white text-slate-900 font-bold shadow-2xs transition whitespace-nowrap cursor-pointer">
-                All Jobs
-              </button>
-              <button id="tracker-saved-btn" type="button" class="px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
-                <span>⭐ Saved</span>
-                <span id="saved-count-badge" class="px-1.5 py-0.2 rounded-full text-[10px] bg-amber-100 text-amber-800 font-bold">0</span>
-              </button>
-              <button id="tracker-applied-btn" type="button" class="px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
-                <span>✓ Applied</span>
-                <span id="applied-count-badge" class="px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-100 text-emerald-800 font-bold">0</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <button id="reset-filters-btn" type="button" class="hidden sm:inline-flex items-center text-xs font-medium text-slate-500 hover:text-brand-600 transition focus:ring-2 focus:ring-brand-500 rounded p-1 cursor-pointer">
-          <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-          Reset All Filters
-        </button>
-      </div>
-
-      <!-- Mobile Filter Toggle Strip (Saves 500px vertical scroll on phones) -->
-      <div class="sm:hidden pt-3 flex items-center justify-between gap-2 border-b border-slate-100 pb-3">
-        <button id="mobile-filter-toggle-btn" type="button" class="flex-1 py-2.5 px-3.5 bg-brand-50 hover:bg-brand-100 text-brand-900 border border-brand-200 text-xs font-bold rounded-xl flex items-center justify-between transition cursor-pointer">
-          <span class="flex items-center gap-1.5">
-            <span>⚡ Role, City & Exp Filters</span>
-            <span id="mobile-filter-active-count" class="hidden px-1.5 py-0.2 rounded-full bg-brand-600 text-white text-[10px] font-bold">1</span>
+      <!-- Top Row: Results Counter & Quick Scope Tabs -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-slate-800 gap-4">
+        
+        <!-- Results Counter & Status -->
+        <div class="flex items-center space-x-3">
+          <h2 class="text-base sm:text-lg font-bold text-white">
+            Remote Openings
+          </h2>
+          <span id="results-count-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            0 jobs
           </span>
-          <span id="mobile-filter-chevron" class="text-xs transition-transform font-bold text-brand-700">▼ Show</span>
-        </button>
-        <button id="reset-filters-btn-mobile" type="button" class="py-2.5 px-3 text-slate-600 hover:text-brand-600 bg-slate-100 rounded-xl text-xs font-semibold transition cursor-pointer" title="Reset All Filters">
-          Reset
-        </button>
-      </div>
-
-      <!-- Primary 5-Filter High-Value Grid (Features Essential Job Role Selector) -->
-      <div id="filters-grid-wrapper" class="hidden sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 pt-4">
-        
-        <!-- 0. Essential Job Role Dropdown -->
-        <div>
-          <label for="role-select" class="block text-xs font-bold text-slate-700 mb-1.5 flex items-center justify-between">
-            <span>🎯 Job Role</span>
-            <span class="text-[10px] text-brand-600 font-semibold">Essential</span>
-          </label>
-          <div class="relative">
-            <select id="role-select" class="w-full text-xs sm:text-sm bg-brand-50/40 hover:bg-brand-50/80 border border-brand-200 text-brand-900 py-2.5 px-3 rounded-xl shadow-xs focus:ring-4 focus:ring-brand-100 focus:border-brand-500 outline-none transition font-bold appearance-none cursor-pointer">
-              <option value="all">All Roles & Domains</option>
-              <option value="qa">🧪 QA, SDET & Software Testing</option>
-              <option value="engineer">💻 Software Engineers & Developers</option>
-              <option value="devops">☁️ DevOps, Cloud & SRE</option>
-              <option value="data">📊 Data Science, AI & ML</option>
-              <option value="mobile">📱 Mobile Developers (iOS / Android)</option>
-              <option value="design">🎨 UI/UX Design & Product</option>
-              <option value="support">🎧 Tech Support & IT Ops</option>
-            </select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-brand-600">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
-            </div>
-          </div>
         </div>
 
-        <!-- 1. Experience Dropdown -->
-        <div>
-          <label for="exp-select" class="block text-xs font-bold text-slate-700 mb-1.5">
-            🎓 Experience Level
-          </label>
-          <div class="relative">
-            <select id="exp-select" class="w-full text-xs sm:text-sm bg-white hover:border-slate-300 border border-slate-200 text-slate-800 py-2.5 px-3 rounded-xl shadow-xs focus:ring-4 focus:ring-brand-100 focus:border-brand-500 outline-none transition font-medium appearance-none cursor-pointer">
-              <option value="all">All Experience Levels</option>
-              <option value="entry">Fresher / Entry (0-1 yrs)</option>
-              <option value="junior">Junior (1-3 yrs)</option>
-              <option value="mid">Mid-Level (3-5 yrs)</option>
-              <option value="senior">Senior (5+ yrs)</option>
-            </select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-            </div>
-          </div>
-        </div>
-
-        <!-- 2. City / Location Dropdown -->
-        <div>
-          <label for="city-select" class="block text-xs font-bold text-slate-700 mb-1.5">
-            🏙️ City / Location
-          </label>
-          <div class="relative">
-            <select id="city-select" class="w-full text-xs sm:text-sm bg-white hover:border-slate-300 border border-slate-200 text-slate-800 py-2.5 px-3 rounded-xl shadow-xs focus:ring-4 focus:ring-brand-100 focus:border-brand-500 outline-none transition font-medium appearance-none cursor-pointer">
-              <option value="all">All Locations</option>
-              <option value="bengaluru">📍 Bengaluru / Bangalore</option>
-              <option value="hyderabad">📍 Hyderabad</option>
-              <option value="pune">📍 Pune</option>
-              <option value="mumbai">📍 Mumbai / MMR</option>
-              <option value="delhi">📍 Delhi-NCR (Gurgaon, Noida)</option>
-              <option value="chennai">📍 Chennai</option>
-              <option value="kerala">📍 Kochi / Trivandrum</option>
-              <option value="ahmedabad">📍 Ahmedabad / GJ</option>
-              <option value="coimbatore">📍 Coimbatore</option>
-              <option value="worldwide">🌐 Worldwide Remote</option>
-              <option value="us">🇺🇸 United States</option>
-              <option value="europe">🇪🇺 Europe / UK</option>
-            </select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-            </div>
-          </div>
-        </div>
-
-        <!-- 3. Workplace / Remote Type Dropdown -->
-        <div>
-          <label for="workplace-select" class="block text-xs font-bold text-slate-700 mb-1.5">
-            🌐 Workplace Type
-          </label>
-          <div class="relative">
-            <select id="workplace-select" class="w-full text-xs sm:text-sm bg-white hover:border-slate-300 border border-slate-200 text-slate-800 py-2.5 px-3 rounded-xl shadow-xs focus:ring-4 focus:ring-brand-100 focus:border-brand-500 outline-none transition font-medium appearance-none cursor-pointer">
-              <option value="all">All Workplaces</option>
-              <option value="remote">Remote (Work From Anywhere)</option>
-              <option value="hybrid">Hybrid</option>
-              <option value="onsite">On-site / In Office</option>
-            </select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-            </div>
-          </div>
-        </div>
-
-        <!-- 4. Company Searchable Dropdown (Modern Combobox) -->
-        <div id="company-filter-col" class="relative">
-          <label class="block text-xs font-bold text-slate-700 mb-1.5 flex items-center justify-between">
-            <span>🏢 Company</span>
-            <span id="company-count-label" class="text-[10px] text-slate-400 font-normal">465+ available</span>
-          </label>
-          
-          <!-- Combobox Trigger Button -->
-          <button 
-            type="button" 
-            id="company-combobox-btn" 
-            class="w-full text-left text-xs sm:text-sm bg-white hover:border-slate-300 border border-slate-200 text-slate-800 py-2.5 px-3 rounded-xl shadow-xs focus:ring-4 focus:ring-brand-100 focus:border-brand-500 outline-none transition font-medium flex items-center justify-between cursor-pointer"
-            aria-haspopup="listbox" 
-            aria-expanded="false"
-          >
-            <span id="company-combobox-selected" class="truncate font-semibold text-slate-700">All Companies</span>
-            <svg class="w-4 h-4 text-slate-400 shrink-0 ml-1.5 transition-transform" id="company-combobox-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        <!-- Scope Tabs: All vs Worldwide vs Americas vs Europe vs APAC -->
+        <div class="flex items-center overflow-x-auto no-scrollbar gap-1.5 p-1 bg-slate-950 rounded-xl border border-slate-800">
+          <button id="scope-all-btn" type="button" class="scope-tab active px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition whitespace-nowrap cursor-pointer">
+            🌐 All Regions
           </button>
-
-          <!-- Floating Dropdown Menu -->
-          <div 
-            id="company-combobox-menu" 
-            class="hidden absolute z-50 mt-1.5 w-full sm:w-80 right-0 sm:left-0 bg-white border border-slate-200 rounded-2xl shadow-2xl overflow-hidden transition-all"
-          >
-            <!-- Search input inside dropdown -->
-            <div class="p-2 border-b border-slate-100 bg-slate-50/70">
-              <div class="relative flex items-center">
-                <svg class="w-4 h-4 text-slate-400 absolute left-2.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                <input 
-                  type="text" 
-                  id="company-combobox-search" 
-                  placeholder="Type to filter employers..." 
-                  class="w-full text-xs bg-white border border-slate-200 py-2 pl-8 pr-7 rounded-lg outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
-                  autocomplete="off"
-                >
-                <button type="button" id="company-combobox-clear" class="hidden absolute right-2 text-slate-400 hover:text-slate-600 text-xs font-bold p-0.5 cursor-pointer">✕</button>
-              </div>
-            </div>
-
-            <!-- Scrollable list of companies with counts -->
-            <ul 
-              id="company-combobox-list" 
-              class="max-h-60 overflow-y-auto p-1 text-xs divide-y divide-slate-50 focus:outline-none" 
-              role="listbox"
-            >
-              <!-- Dynamically populated -->
-            </ul>
-          </div>
-
-          <!-- Hidden fallback select for backwards JS compatibility -->
-          <select id="company-select" class="hidden">
-            <option value="all">All Companies</option>
-          </select>
+          <button id="scope-worldwide-btn" type="button" class="scope-tab px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition whitespace-nowrap cursor-pointer">
+            🌍 Worldwide Only
+          </button>
+          <button id="scope-americas-btn" type="button" class="scope-tab px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition whitespace-nowrap cursor-pointer">
+            🇺🇸 Americas
+          </button>
+          <button id="scope-europe-btn" type="button" class="scope-tab px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition whitespace-nowrap cursor-pointer">
+            🇪🇺 Europe/EMEA
+          </button>
+          <button id="scope-apac-btn" type="button" class="scope-tab px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition whitespace-nowrap cursor-pointer">
+            🌏 APAC
+          </button>
         </div>
 
       </div>
 
-      <!-- Advanced Filters Panel (Collapsible) -->
-      <div id="more-filters-panel" class="hidden grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 mt-4 border-t border-slate-100">
+      <!-- Bottom Row: Filter Dropdowns & Direct ATS Toggle -->
+      <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 pt-4">
         
-        <!-- Job Level -->
+        <!-- Seniority / Experience Dropdown -->
         <div>
-          <label for="level-select" class="block text-xs font-bold text-slate-600 mb-1.5">💼 Seniority Level</label>
-          <select id="level-select" class="w-full text-xs bg-white border border-slate-200 text-slate-800 py-2 px-3 rounded-xl shadow-xs focus:ring-2 focus:ring-brand-500 outline-none">
-            <option value="all">All Seniority Levels</option>
-            <option value="entry">Entry / Junior</option>
-            <option value="mid">Mid-Level</option>
-            <option value="senior">Senior / Lead</option>
-            <option value="manager">Manager / Director</option>
+          <label for="exp-select" class="block text-[11px] font-bold text-slate-400 mb-1">
+            ⚡ Seniority Level
+          </label>
+          <select id="exp-select" class="w-full text-xs sm:text-sm bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-200 outline-none focus:border-emerald-500">
+            <option value="all">All Seniority</option>
+            <option value="junior">Junior / Entry (~0-2 yrs)</option>
+            <option value="mid">Mid-Level (~2-5 yrs)</option>
+            <option value="senior">Senior (5+ yrs)</option>
+            <option value="lead">Lead / Staff / Principal</option>
           </select>
         </div>
 
-        <!-- Job Type -->
+        <!-- Source Dropdown -->
         <div>
-          <label for="type-select" class="block text-xs font-bold text-slate-600 mb-1.5">⏰ Employment Type</label>
-          <select id="type-select" class="w-full text-xs bg-white border border-slate-200 text-slate-800 py-2 px-3 rounded-xl shadow-xs focus:ring-2 focus:ring-brand-500 outline-none">
-            <option value="all">All Employment Types</option>
-            <option value="full-time">Full-time</option>
-            <option value="part-time">Part-time</option>
-            <option value="contract">Contract / Freelance</option>
-            <option value="internship">Internship</option>
-          </select>
-        </div>
-
-        <!-- Source -->
-        <div>
-          <label for="source-select" class="block text-xs font-bold text-slate-600 mb-1.5">📡 ATS / Source Platform</label>
-          <select id="source-select" class="w-full text-xs bg-white border border-slate-200 text-slate-800 py-2 px-3 rounded-xl shadow-xs focus:ring-2 focus:ring-brand-500 outline-none">
+          <label for="source-select" class="block text-[11px] font-bold text-slate-400 mb-1">
+            🎯 Job Source
+          </label>
+          <select id="source-select" class="w-full text-xs sm:text-sm bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-200 outline-none focus:border-emerald-500">
             <option value="all">All Sources</option>
             <option value="CompanyATS">Direct Company ATS 🎯</option>
-            <option value="WeWorkRemotely">We Work Remotely 🌍</option>
-            <option value="Jobspresso">Jobspresso ☕</option>
-            <option value="RemoteOK">RemoteOK</option>
             <option value="Himalayas">Himalayas</option>
             <option value="Remotive">Remotive</option>
+            <option value="RemoteOK">RemoteOK</option>
             <option value="Jobicy">Jobicy</option>
-            <option value="Adzuna">Adzuna</option>
+            <option value="WeWorkRemotely">WeWorkRemotely</option>
           </select>
         </div>
 
-        <!-- Date Posted & Freshness Filter -->
+        <!-- Sort By Dropdown -->
         <div>
-          <label for="date-select" class="block text-xs font-bold text-slate-600 mb-1.5">⚡ Date Posted</label>
-          <select id="date-select" class="w-full text-xs bg-white border border-slate-200 text-slate-800 py-2 px-3 rounded-xl shadow-xs focus:ring-2 focus:ring-brand-500 outline-none">
-            <option value="any" selected>🌐 All Active Openings</option>
-            <option value="1">⚡ Last 24 Hours</option>
-            <option value="3">🔥 Last 3 Days</option>
-            <option value="7">📅 Last 7 Days</option>
-            <option value="14">🗓️ Last 14 Days</option>
-            <option value="21">✨ Fresh (< 21 Days)</option>
-            <option value="30">📆 Last 30 Days</option>
+          <label for="sort-select" class="block text-[11px] font-bold text-slate-400 mb-1">
+            ↕️ Sort By
+          </label>
+          <select id="sort-select" class="w-full text-xs sm:text-sm bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-200 outline-none focus:border-emerald-500">
+            <option value="newest">⚡ Newest First</option>
+            <option value="company">🏢 Company (A-Z)</option>
+            <option value="title">💼 Title (A-Z)</option>
           </select>
         </div>
 
-      </div>
-
-      <!-- Quick Toggles Row -->
-      <div class="flex flex-wrap items-center justify-between gap-3 pt-4 mt-4 border-t border-slate-100">
-        <div class="flex flex-wrap items-center gap-2.5">
-          <!-- Direct ATS Checkbox -->
-          <label class="inline-flex items-center text-xs font-semibold text-slate-700 cursor-pointer select-none bg-slate-50 hover:bg-slate-100 px-3 py-2 rounded-xl border border-slate-200 shadow-2xs transition">
-            <input type="checkbox" id="direct-ats-only" class="rounded text-brand-600 focus:ring-brand-500 mr-2 h-4 w-4 border-slate-300 cursor-pointer">
-            <span>🎯 Direct ATS Apply Only</span>
+        <!-- Direct ATS Checkbox Filter -->
+        <div class="flex flex-col justify-end">
+          <label class="flex items-center gap-2 p-2 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer hover:border-emerald-500/50 transition">
+            <input type="checkbox" id="direct-ats-checkbox" class="w-4 h-4 text-emerald-500 rounded bg-slate-900 border-slate-700 focus:ring-emerald-500">
+            <span class="text-xs font-bold text-emerald-400">⚡ Direct ATS Only</span>
           </label>
+        </div>
 
-          <!-- India Local Checkbox -->
-          <label class="inline-flex items-center text-xs font-semibold text-slate-700 cursor-pointer select-none bg-slate-50 hover:bg-slate-100 px-3 py-2 rounded-xl border border-slate-200 shadow-2xs transition">
-            <input type="checkbox" id="india-local-only" class="rounded text-brand-600 focus:ring-brand-500 mr-2 h-4 w-4 border-slate-300 cursor-pointer">
-            <span>🇮🇳 India City Locations</span>
-          </label>
-
-          <!-- Worldwide Remote Checkbox -->
-          <label class="inline-flex items-center text-xs font-semibold text-slate-700 cursor-pointer select-none bg-slate-50 hover:bg-slate-100 px-3 py-2 rounded-xl border border-slate-200 shadow-2xs transition">
-            <input type="checkbox" id="remote-only" class="rounded text-brand-600 focus:ring-brand-500 mr-2 h-4 w-4 border-slate-300 cursor-pointer">
-            <span>🌍 Worldwide Remote</span>
-          </label>
-
-          <!-- More Filters Button -->
-          <button 
-            type="button" 
-            id="toggle-more-filters-btn" 
-            class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-brand-600 hover:bg-brand-50 px-3.5 py-2 rounded-xl border border-dashed border-slate-300 transition cursor-pointer"
-          >
-            <span>⚙️ More Filters</span>
-            <span id="more-filters-chevron">▾</span>
+        <!-- Reset Button -->
+        <div class="flex items-end">
+          <button id="reset-filters-btn" type="button" class="w-full py-2 px-3 text-xs font-semibold text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-xl transition border border-slate-700">
+            Reset Filters
           </button>
         </div>
 
-        <!-- Sort Select -->
-        <div class="inline-flex items-center gap-2">
-          <label for="sort-select" class="text-xs font-bold text-slate-500">Sort by:</label>
-          <div class="relative">
-            <select id="sort-select" class="text-xs font-semibold bg-white border border-slate-200 text-slate-700 py-1.5 pl-3 pr-7 rounded-xl shadow-2xs focus:ring-2 focus:ring-brand-500 outline-none appearance-none cursor-pointer">
-              <option value="newest">Newest First</option>
-              <option value="title">Job Title (A-Z)</option>
-              <option value="company">Company (A-Z)</option>
-            </select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-            </div>
-          </div>
-        </div>
       </div>
 
     </div>
 
-    <!-- Job Cards Grid -->
-    <div id="job-grid" class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" aria-labelledby="results-heading">
-      <!-- Dynamic Job Cards injected by JavaScript -->
+    <!-- Job Cards Grid Container -->
+    <div id="job-grid" class="flex flex-col space-y-3 min-h-[400px]">
+      <!-- Job cards populated via app.js -->
     </div>
 
-    <!-- Pagination Controls -->
-    <nav id="pagination-container" aria-label="Job listings pagination" class="hidden mt-8 bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">
-      <!-- Info: Showing 1-18 of 568 jobs -->
-      <div id="pagination-info" class="text-xs sm:text-sm text-slate-500 font-medium text-center sm:text-left">
-        Showing <span id="page-start" class="font-bold text-slate-800">1</span>–<span id="page-end" class="font-bold text-slate-800">18</span> of <span id="page-total" class="font-bold text-slate-800">568</span> jobs
+    <!-- Pagination / Load More Bar -->
+    <div id="pagination-bar" class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-slate-900 border border-slate-800 rounded-2xl">
+      <div class="text-xs text-slate-400">
+        Showing <span id="showing-count" class="font-bold text-white">0</span> of <span id="total-count" class="font-bold text-white">0</span> remote jobs
       </div>
-
-      <!-- Pagination Buttons -->
-      <div id="pagination-buttons" class="flex flex-wrap items-center justify-center gap-1.5" role="navigation">
-        <!-- Prev, Pages, Next buttons rendered by JS -->
-      </div>
-
-      <!-- Items per page selector -->
-      <div class="flex items-center space-x-2 text-xs sm:text-sm text-slate-600">
-        <label for="items-per-page" class="font-medium">Per page:</label>
-        <select id="items-per-page" class="bg-slate-50 border border-slate-200 text-slate-800 py-1.5 px-2.5 rounded-lg font-medium outline-none focus:ring-2 focus:ring-brand-500 cursor-pointer">
-          <option value="18" selected>18</option>
-          <option value="36">36</option>
-          <option value="72">72</option>
-          <option value="all">All</option>
-        </select>
-      </div>
-    </nav>
-
-    <!-- Empty State -->
-    <div id="empty-state" class="hidden text-center py-16 px-4 bg-white rounded-2xl border border-slate-200 shadow-xs mt-6" role="region" aria-label="No jobs found">
-      <div class="w-16 h-16 mx-auto rounded-full bg-slate-100 flex items-center justify-center text-3xl mb-4">
-        🔍
-      </div>
-      <h3 class="text-lg font-bold text-slate-900">No matching jobs found</h3>
-      <p class="mt-2 text-sm text-slate-500 max-w-md mx-auto">
-        Try clearing search keywords, removing location filters, or resetting role pills to see all available opportunities.
-      </p>
-      <button id="reset-filters-btn" type="button" class="mt-6 px-4 py-2 bg-brand-600 text-white rounded-xl text-sm font-semibold hover:bg-brand-700 transition shadow-xs focus:ring-2 focus:ring-brand-500">
-        Reset All Filters
+      <button id="load-more-btn" type="button" class="w-full sm:w-auto px-6 py-2.5 rounded-xl text-xs font-bold bg-slate-800 hover:bg-emerald-500 hover:text-slate-950 text-white border border-slate-700 transition cursor-pointer">
+        Load More Remote Jobs ➔
       </button>
     </div>
-
-    <!-- Loading Skeleton State -->
-    <div id="loading-state" class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" aria-hidden="true">
-      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs animate-pulse">
-        <div class="h-6 bg-slate-200 rounded-md w-3/4 mb-4"></div>
-        <div class="h-4 bg-slate-200 rounded-md w-1/2 mb-6"></div>
-        <div class="h-3 bg-slate-200 rounded-md w-full mb-2"></div>
-        <div class="h-3 bg-slate-200 rounded-md w-4/5 mb-6"></div>
-        <div class="h-10 bg-slate-200 rounded-xl w-full"></div>
-      </div>
-      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs animate-pulse">
-        <div class="h-6 bg-slate-200 rounded-md w-3/4 mb-4"></div>
-        <div class="h-4 bg-slate-200 rounded-md w-1/2 mb-6"></div>
-        <div class="h-3 bg-slate-200 rounded-md w-full mb-2"></div>
-        <div class="h-3 bg-slate-200 rounded-md w-4/5 mb-6"></div>
-        <div class="h-10 bg-slate-200 rounded-xl w-full"></div>
-      </div>
-      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs animate-pulse">
-        <div class="h-6 bg-slate-200 rounded-md w-3/4 mb-4"></div>
-        <div class="h-4 bg-slate-200 rounded-md w-1/2 mb-6"></div>
-        <div class="h-3 bg-slate-200 rounded-md w-full mb-2"></div>
-        <div class="h-3 bg-slate-200 rounded-md w-4/5 mb-6"></div>
-        <div class="h-10 bg-slate-200 rounded-xl w-full"></div>
-      </div>
-    </div>
-
-    <!-- Why We Built This & Creator Transparency Section -->
-    <section id="why-we-built-this" class="mt-14 mb-6 rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 text-white p-6 sm:p-10 shadow-xl border border-slate-700/60 relative overflow-hidden">
-      <!-- Ambient background glow -->
-      <div class="absolute -top-24 -right-24 w-80 h-80 bg-brand-500/20 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl pointer-events-none"></div>
-
-      <div class="relative z-10">
-        <!-- Trust badge -->
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-white/10 text-brand-300 border border-white/15 mb-4 backdrop-blur-xs">
-          <span>🛡️</span> <span>Creator Transparency & Zero-Scam Pledge</span>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          <!-- Founder Note Text (Cols 1-7) -->
-          <div class="lg:col-span-7 space-y-4">
-            <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white leading-snug">
-              Why We Built <span class="bg-gradient-to-r from-brand-400 via-sky-300 to-indigo-300 bg-clip-text text-transparent">RemoteJobsHub</span>
-            </h2>
-            <div class="space-y-3 text-slate-300 text-sm sm:text-base leading-relaxed">
-              <p class="font-medium text-slate-200">
-                “Like thousands of tech job seekers across India, we got tired of seeing fake consultancy jobs, ghost listings, and scam calls on traditional job portals asking candidates for registration fees.”
-              </p>
-              <p>
-                RemoteJobsHub was built by tech engineers as an automated, scam-free engine that indexes <strong class="text-emerald-400 font-semibold">ONLY direct company career sites</strong> (Greenhouse, Lever, Ashby, Workday, and verified company portals). 
-              </p>
-              <p class="text-xs sm:text-sm text-slate-400">
-                We will <span class="text-white font-bold underline decoration-brand-400">never charge you to apply</span>, and we will <span class="text-white font-bold underline decoration-brand-400">never sell your resume</span> or phone number to consultancies. Every link takes you straight to the employer's official ATS application page.
-              </p>
-            </div>
-
-            <!-- Initiative signoff -->
-            <div class="flex items-center gap-3 pt-2">
-              <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center text-white text-lg shadow-md border border-brand-400/40">
-                🎯
-              </div>
-              <div>
-                <p class="text-xs font-bold text-white">The RemoteJobsHub Initiative</p>
-                <p class="text-[11px] text-slate-400">Built by Tech Job Seekers, for Tech Job Seekers • 100% Free & Independent</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 4 Pillars Grid (Cols 8-12) -->
-          <div class="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
-            <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs flex items-start gap-3">
-              <span class="text-xl shrink-0">🚫</span>
-              <div>
-                <h3 class="text-xs font-bold text-white">Zero Consultancies</h3>
-                <p class="text-[11px] text-slate-400 mt-0.5">No 3rd-party middlemen, no fake consultancies, zero unwanted promotional calls.</p>
-              </div>
-            </div>
-            <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs flex items-start gap-3">
-              <span class="text-xl shrink-0">🎯</span>
-              <div>
-                <h3 class="text-xs font-bold text-white">100% Direct ATS Portals</h3>
-                <p class="text-[11px] text-slate-400 mt-0.5">Apply directly on Greenhouse, Lever, Ashby, and Workday. Resume goes straight to the hiring manager.</p>
-              </div>
-            </div>
-            <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs flex items-start gap-3">
-              <span class="text-xl shrink-0">💸</span>
-              <div>
-                <h3 class="text-xs font-bold text-white">Never Pay to Apply</h3>
-                <p class="text-[11px] text-slate-400 mt-0.5">Searching and applying will always remain 100% free forever for all remote job seekers worldwide.</p>
-              </div>
-            </div>
-            <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs flex items-start gap-3">
-              <span class="text-xl shrink-0">⚡</span>
-              <div>
-                <h3 class="text-xs font-bold text-white">Auto-Pruned Fresh Data</h3>
-                <p class="text-[11px] text-slate-400 mt-0.5">Postings older than 21 days are pruned so you never waste time applying to expired ghost listings.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
   </main>
 
-  <!-- Job Detail Modal / Drawer (Accessible Dialog) -->
-  <div id="job-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-    <div class="bg-white rounded-t-3xl sm:rounded-2xl max-w-3xl w-full max-h-[95vh] sm:max-h-[90vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden" role="document">
-      
-      <!-- Modal Header -->
-      <div class="p-4 sm:p-6 border-b border-slate-100 flex items-start justify-between bg-slate-50/50">
-        <div class="pr-3">
-          <span id="modal-badge-ats" class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 mb-2">
-            🎯 Direct ATS Portal
-          </span>
-          <h2 id="modal-title" class="text-lg sm:text-2xl font-bold text-slate-900 leading-snug">Job Title</h2>
-          <div class="flex flex-wrap items-center gap-x-3 sm:gap-x-4 gap-y-1 mt-1 text-xs sm:text-sm text-slate-600">
-            <span id="modal-company" class="font-medium text-slate-800">Company Name</span>
-            <span>•</span>
-            <span id="modal-location">Location</span>
-            <span>•</span>
-            <span id="modal-posted">Posted Date</span>
-          </div>
-        </div>
-        <button id="modal-close-btn" type="button" class="text-slate-400 hover:text-slate-600 p-2 rounded-xl hover:bg-slate-100 transition focus:ring-2 focus:ring-brand-500 shrink-0 cursor-pointer" aria-label="Close job details modal">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </button>
-      </div>
+  <!-- Job Detail Slide-Over Modal -->
+  <div id="job-modal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
+      <div id="modal-backdrop" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md transition-opacity" aria-hidden="true"></div>
 
-      <!-- Modal Body (Job Description) -->
-      <div id="modal-content-container" class="p-4 sm:p-6 overflow-y-auto flex-grow text-slate-700 text-sm sm:text-base leading-relaxed space-y-4">
-        
-        <!-- Essential Role Highlights Card -->
-        <div id="modal-snapshot-card" class="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-br from-slate-50 to-indigo-50/30 border border-slate-200/90 shadow-2xs">
-          <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-200/60">
-            <span class="text-xs font-black uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
-              <span>⚡</span> Essential Role Snapshot
-            </span>
-            <span id="modal-snapshot-domain" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-brand-50 text-brand-700 border border-brand-200">
-              Technology
-            </span>
-          </div>
-
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-            <!-- Experience -->
-            <div class="p-2 sm:p-2.5 rounded-xl bg-white border border-slate-200/70 shadow-2xs">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Experience</span>
-              <span id="modal-snapshot-exp" class="font-bold text-slate-800 truncate block mt-0.5">3+ Years</span>
+      <div class="relative inline-block w-full max-w-3xl my-8 overflow-hidden text-left align-middle transition-all transform bg-slate-900 border border-slate-800 shadow-2xl rounded-3xl">
+        <!-- Modal Header -->
+        <div class="p-6 sm:p-8 border-b border-slate-800">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <div id="modal-company-avatar" class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-slate-950 font-black text-xl shrink-0">
+                🏢
+              </div>
+              <div>
+                <h3 id="modal-title" class="text-xl sm:text-2xl font-extrabold text-white"></h3>
+                <p id="modal-company" class="text-sm font-semibold text-emerald-400 mt-0.5"></p>
+              </div>
             </div>
-            <!-- Workplace -->
-            <div class="p-2 sm:p-2.5 rounded-xl bg-white border border-slate-200/70 shadow-2xs">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Workplace</span>
-              <span id="modal-snapshot-workplace" class="font-bold text-slate-800 truncate block mt-0.5">Hybrid</span>
-            </div>
-            <!-- Job Type -->
-            <div class="p-2 sm:p-2.5 rounded-xl bg-white border border-slate-200/70 shadow-2xs">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Job Type</span>
-              <span id="modal-snapshot-type" class="font-bold text-slate-800 truncate block mt-0.5">Full-time</span>
-            </div>
-            <!-- Verification -->
-            <div class="p-2 sm:p-2.5 rounded-xl bg-white border border-slate-200/70 shadow-2xs">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Apply Path</span>
-              <span id="modal-snapshot-apply" class="font-bold text-emerald-700 truncate block mt-0.5">Direct ATS ✓</span>
-            </div>
-          </div>
-
-          <!-- Tech Stack Container -->
-          <div id="modal-snapshot-tech-container" class="mt-3 pt-2.5 border-t border-slate-200/60">
-            <span class="text-[11px] font-bold text-slate-600 block mb-1.5">🛠️ Tech Stack & Core Skills:</span>
-            <div id="modal-snapshot-tech-stack" class="flex flex-wrap gap-1.5">
-              <!-- Dynamically populated -->
-            </div>
-          </div>
-        </div>
-
-        <!-- Rendered Description -->
-        <div id="modal-content" class="space-y-4 pt-1">
-          <!-- Rendered Description -->
-        </div>
-      </div>
-
-      <!-- Affiliate Prep Widget (Resume & Mock Interview) -->
-      <div class="mx-3.5 sm:mx-6 mb-2 p-3 sm:p-3.5 rounded-xl bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100/90 flex flex-col sm:flex-row items-center justify-between gap-2.5 sm:gap-3">
-        <div class="text-center sm:text-left">
-          <span class="text-xs font-bold text-indigo-950 flex items-center justify-center sm:justify-start gap-1.5">
-            🚀 Boost Your Shortlisting Rate at <span id="modal-prep-company" class="font-extrabold text-brand-700">this company</span>
-          </span>
-          <p class="text-[11px] text-slate-600 mt-0.5">
-            Format your resume for this ATS or practice 1-on-1 with an interview mentor before applying.
-          </p>
-        </div>
-        <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end shrink-0">
-          <a id="modal-resume-affiliate" href="https://resume.io/" target="_blank" rel="sponsored nofollow" class="flex-1 sm:flex-initial px-2.5 py-1.5 bg-white text-indigo-700 text-[11px] sm:text-xs font-semibold rounded-lg border border-indigo-200 hover:bg-indigo-50 transition shadow-2xs flex items-center justify-center gap-1">
-            📄 ATS Resume Scan
-          </a>
-          <a id="modal-topmate-affiliate" href="https://topmate.io/" target="_blank" rel="sponsored nofollow" class="flex-1 sm:flex-initial px-2.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] sm:text-xs font-semibold rounded-lg transition shadow-2xs flex items-center justify-center gap-1">
-            🎯 Mock Interview
-          </a>
-        </div>
-      </div>
-
-      <!-- Modal Footer (CTAs) -->
-      <div class="p-3 sm:p-5 border-t border-slate-100 bg-slate-50/90 flex flex-col gap-2.5 shrink-0">
-        <!-- Sub-bar: Source & Alert Similar -->
-        <div class="flex items-center justify-between text-xs text-slate-500">
-          <div class="flex items-center gap-2">
-            <span>Source: <span id="modal-source" class="font-medium text-slate-700">Remotive</span></span>
-            <span>•</span>
-            <button id="modal-report-btn" type="button" class="text-rose-600 hover:text-rose-700 hover:underline flex items-center gap-1 cursor-pointer" title="Report this job posting as closed or broken">
-              🚩 Report Closed
+            <button id="modal-close-btn" class="p-2 text-slate-400 hover:text-white bg-slate-800 rounded-xl">
+              ✕
             </button>
           </div>
-          <button id="modal-alert-role-btn" type="button" class="text-amber-800 hover:text-amber-900 hover:underline text-xs font-bold flex items-center gap-1 cursor-pointer" title="Get notified when new jobs matching this role are posted">
-            🔔 <span>Alert Similar</span>
-          </button>
+
+          <!-- Badges Strip -->
+          <div class="flex flex-wrap items-center gap-2 mt-4 text-xs">
+            <span id="modal-scope-badge" class="px-2.5 py-1 rounded-lg font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"></span>
+            <span id="modal-location-badge" class="px-2.5 py-1 rounded-lg font-medium bg-slate-800 text-slate-300"></span>
+            <span id="modal-source-badge" class="px-2.5 py-1 rounded-lg font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20"></span>
+          </div>
         </div>
 
-        <!-- Primary Action Bar (Compact Toolbar on Mobile, Full on Desktop) -->
-        <div class="flex items-center gap-1.5 sm:gap-2 w-full">
-          <!-- WhatsApp Share -->
-          <button id="modal-whatsapp-btn" type="button" class="p-2 sm:px-3 sm:py-2 bg-emerald-50 border border-emerald-300 rounded-xl text-xs sm:text-sm font-semibold text-emerald-800 hover:bg-emerald-100 transition shadow-2xs flex items-center justify-center gap-1 cursor-pointer shrink-0" title="Share this job on WhatsApp">
-            <span>💬</span> <span class="hidden md:inline">Share</span>
+        <!-- Modal Body Content -->
+        <div id="modal-body" class="p-6 sm:p-8 text-sm text-slate-300 leading-relaxed max-h-[60vh] overflow-y-auto space-y-4">
+          <!-- Populated dynamically -->
+        </div>
+
+        <!-- Modal Footer with Direct Apply Link -->
+        <div class="p-6 bg-slate-950 border-t border-slate-800 flex items-center justify-between gap-4">
+          <button id="modal-save-btn" class="px-4 py-2.5 text-xs font-bold text-slate-300 hover:text-white bg-slate-900 border border-slate-800 rounded-xl transition">
+            ⭐ Save Job
           </button>
-          <!-- Save / Bookmark -->
-          <button id="modal-save-btn" type="button" class="p-2 sm:px-3.5 sm:py-2 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 transition shadow-2xs focus:ring-2 focus:ring-brand-500 flex items-center justify-center gap-1 cursor-pointer shrink-0" title="Bookmark job">
-            <span id="modal-save-icon">⭐</span> <span id="modal-save-text" class="hidden md:inline">Save</span>
-          </button>
-          <!-- Mark Applied -->
-          <button id="modal-applied-btn" type="button" class="p-2 sm:px-3.5 sm:py-2 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 transition shadow-2xs focus:ring-2 focus:ring-brand-500 flex items-center justify-center gap-1 cursor-pointer shrink-0" title="Mark as applied">
-            <span id="modal-applied-icon">✓</span> <span id="modal-applied-text" class="hidden md:inline">Applied</span>
-          </button>
-          <!-- Copy Link -->
-          <button id="modal-copy-btn" type="button" class="p-2 sm:px-3 sm:py-2 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 transition shadow-2xs focus:ring-2 focus:ring-brand-500 cursor-pointer shrink-0" title="Copy Job Link">
-            📋 <span class="hidden md:inline">Copy</span>
-          </button>
-          <!-- Apply Button (Full width expansion on mobile) -->
-          <a id="modal-apply-btn" href="#" target="_blank" rel="noopener noreferrer" class="flex-1 px-4 py-2.5 sm:py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs sm:text-sm font-bold text-center transition shadow-md hover:shadow-lg focus:ring-2 focus:ring-brand-500 whitespace-nowrap">
-            Apply on Official Site ↗
+          <a id="modal-apply-btn" href="#" target="_blank" rel="noopener noreferrer" class="px-6 py-2.5 text-xs sm:text-sm font-extrabold text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 rounded-xl shadow-lg shadow-emerald-500/20 transition flex items-center gap-1.5">
+            <span>Apply on Official Site</span>
+            <span>↗</span>
           </a>
         </div>
       </div>
-
     </div>
   </div>
 
-  <!-- Employer "Post a Featured Job" Modal -->
-  <div id="employer-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="employer-modal-title">
-    <div class="bg-white rounded-t-3xl sm:rounded-3xl max-w-lg w-full max-h-[92vh] sm:max-h-[90vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden relative">
-      <!-- Close Button -->
-      <button id="employer-modal-close-btn" type="button" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-2 rounded-xl hover:bg-slate-100 transition cursor-pointer z-10" aria-label="Close modal">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-      </button>
-
-      <!-- Modal Header -->
-      <div class="p-5 sm:p-8 bg-gradient-to-b from-slate-900 to-slate-800 text-white text-center shrink-0">
-        <div class="w-12 h-12 mx-auto rounded-2xl bg-brand-600 text-white flex items-center justify-center text-xl shadow-md mb-2 sm:mb-3">
-          🏢
+  <!-- Footer -->
+  <footer class="bg-slate-950 border-t border-slate-800/80 mt-16 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center text-slate-950 font-bold text-lg">
+          🌐
         </div>
-        <h2 id="employer-modal-title" class="text-xl sm:text-2xl font-black tracking-tight text-white">
-          Feature Your Job on RemoteJobsHub
-        </h2>
-        <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-sm mx-auto">
-          Reach 20,000+ verified remote tech engineers & applicants worldwide. Pinned at the top for 30 days.
-        </p>
+        <span class="text-lg font-bold text-white">Remote<span class="text-emerald-400">JobsHub</span></span>
       </div>
-
-      <!-- Form Body -->
-      <form id="employer-job-form" class="p-4 sm:p-6 space-y-3.5 overflow-y-auto" onsubmit="event.preventDefault(); submitEmployerJob();">
-        <div>
-          <label for="emp-company-name" class="block text-xs font-bold text-slate-700 mb-1">Company Name *</label>
-          <input type="text" id="emp-company-name" required placeholder="e.g. Acme Technologies" class="w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-brand-500 outline-none">
-        </div>
-        <div>
-          <label for="emp-job-title" class="block text-xs font-bold text-slate-700 mb-1">Job Title / Role *</label>
-          <input type="text" id="emp-job-title" required placeholder="e.g. Senior Backend Engineer (Go / Python)" class="w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-brand-500 outline-none">
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label for="emp-location" class="block text-xs font-bold text-slate-700 mb-1">Location *</label>
-            <input type="text" id="emp-location" required placeholder="e.g. Bengaluru / Remote" class="w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-brand-500 outline-none">
-          </div>
-          <div>
-            <label for="emp-salary" class="block text-xs font-bold text-slate-700 mb-1">Salary Range</label>
-            <input type="text" id="emp-salary" placeholder="e.g. ₹25 - 40 LPA" class="w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-brand-500 outline-none">
-          </div>
-        </div>
-        <div>
-          <label for="emp-apply-url" class="block text-xs font-bold text-slate-700 mb-1">Official ATS / Career Apply URL *</label>
-          <input type="url" id="emp-apply-url" required placeholder="https://jobs.lever.co/acme/... or greenhouse.io/..." class="w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-brand-500 outline-none">
-        </div>
-        <div>
-          <label for="emp-email" class="block text-xs font-bold text-slate-700 mb-1">Work Email (Invoice & Confirmation) *</label>
-          <input type="email" id="emp-email" required placeholder="recruiter@acme.com" class="w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-brand-500 outline-none">
-        </div>
-
-        <!-- Plan & Guarantee -->
-        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-1">
-          <div class="flex items-center justify-between font-bold text-slate-800">
-            <span>⭐ 30-Day Featured Top Placement</span>
-            <span class="text-emerald-700 font-extrabold text-sm">₹1,999</span>
-          </div>
-          <p class="text-[11px] text-slate-500">Includes verified badge, Telegram channel blast, and priority direct ATS apply button.</p>
-        </div>
-
-        <button type="submit" id="emp-submit-btn" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm rounded-xl transition shadow-md hover:shadow-lg focus:ring-2 focus:ring-brand-500 cursor-pointer">
-          Pay ₹1,999 via UPI & Publish Job ⚡
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Candidate VIP Job Alerts Modal -->
-  <div id="job-alerts-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="job-alerts-modal-title">
-    <div class="bg-white rounded-t-3xl sm:rounded-3xl max-w-lg w-full flex flex-col shadow-2xl border border-slate-200 overflow-hidden relative max-h-[95vh] sm:max-h-[90vh]">
-      <!-- Close Button -->
-      <button id="job-alerts-close-btn" type="button" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-2 rounded-xl hover:bg-slate-100 transition cursor-pointer z-10" aria-label="Close modal">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-      </button>
-
-      <!-- Modal Header -->
-      <div class="p-5 sm:p-6 bg-gradient-to-br from-amber-500 via-orange-600 to-amber-700 text-white text-center shrink-0">
-        <div class="w-12 h-12 mx-auto rounded-2xl bg-white/20 backdrop-blur-xs text-white flex items-center justify-center text-2xl shadow-md mb-2">
-          🔔
-        </div>
-        <h2 id="job-alerts-modal-title" class="text-xl sm:text-2xl font-black tracking-tight text-white">
-          Instant Tech Job Alerts
-        </h2>
-        <p class="text-xs sm:text-sm text-amber-100 mt-1 max-w-sm mx-auto">
-          Direct ATS postings delivered straight to your inbox before they are flooded with 1,000+ applicants on LinkedIn.
-        </p>
+      <p class="text-xs text-slate-400 text-center md:text-left">
+        100% free open-source remote job directory indexing direct Greenhouse, Lever, Ashby, and Workday portals. Zero consultancies.
+      </p>
+      <div class="flex items-center space-x-4 text-xs font-semibold text-slate-400">
+        <a href="https://github.com/ajaypau123/RemoteJobsHub" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-400 transition">GitHub</a>
+        <a href="https://t.me/RemoteJobsHub" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-400 transition">Telegram</a>
+        <a href="#main-content" class="hover:text-emerald-400 transition">Back to Top ↑</a>
       </div>
-
-      <!-- Form Body (Scrollable) -->
-      <form id="job-alerts-form" class="p-4 sm:p-6 space-y-3.5 overflow-y-auto" onsubmit="event.preventDefault(); submitJobAlerts();">
-        
-        <!-- Target Role Selection -->
-        <div>
-          <label for="alert-role-category" class="block text-xs font-bold text-slate-700 mb-1">Target Role Category *</label>
-          <select id="alert-role-category" class="w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-amber-500 outline-none bg-white font-medium">
-            <option value="all">🌐 All Tech & Engineering Roles</option>
-            <option value="qa">🧪 QA Engineer / SDET / Automation Tester</option>
-            <option value="frontend">⚛️ Frontend Engineer (React / Next.js / Vue / UI)</option>
-            <option value="backend">💻 Backend Developer (Node / Python / Java / Go)</option>
-            <option value="fullstack">⚡ Full Stack Software Engineer</option>
-            <option value="devops">☁️ DevOps / SRE / Cloud Engineer (AWS / K8s)</option>
-            <option value="data">📊 Data Engineer / AI / ML / Data Analyst</option>
-            <option value="mobile">📱 Mobile App Developer (Android / iOS / Flutter)</option>
-            <option value="product">🎨 Product Manager / UI-UX Designer</option>
-          </select>
-        </div>
-
-        <!-- Custom Keywords / Skills -->
-        <div>
-          <label for="alert-keywords" class="block text-xs font-bold text-slate-700 mb-1">Specific Keywords or Skills (Optional)</label>
-          <input type="text" id="alert-keywords" placeholder="e.g. Cypress, Selenium, Golang, Bengaluru, Kochi" class="w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-amber-500 outline-none">
-          <p class="text-[11px] text-slate-500 mt-0.5">Filter for specific frameworks, tools, or locations.</p>
-        </div>
-
-        <!-- Location & Experience -->
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label for="alert-location" class="block text-xs font-bold text-slate-700 mb-1">Location *</label>
-            <select id="alert-location" class="w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-amber-500 outline-none bg-white">
-              <option value="any">🇮🇳 Anywhere in India & Remote</option>
-              <option value="remote">🌐 100% Remote Only</option>
-              <option value="bengaluru">Bengaluru</option>
-              <option value="hyderabad">Hyderabad</option>
-              <option value="pune">Pune</option>
-              <option value="delhi">Delhi-NCR / Gurgaon</option>
-              <option value="mumbai">Mumbai</option>
-              <option value="chennai">Chennai</option>
-              <option value="kochi">Kochi / Kerala</option>
-            </select>
-          </div>
-          <div>
-            <label for="alert-exp" class="block text-xs font-bold text-slate-700 mb-1">Experience *</label>
-            <select id="alert-exp" class="w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-amber-500 outline-none bg-white">
-              <option value="all">All Experience Levels</option>
-              <option value="fresher">Freshers / Entry (0-2 Yrs)</option>
-              <option value="mid">Mid-Level (2-5 Yrs)</option>
-              <option value="senior">Senior (5+ Yrs)</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Notification Channel -->
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1.5">Where do you want alerts? *</label>
-          <div class="grid grid-cols-3 gap-2">
-            <label class="flex items-center justify-center gap-1.5 p-2 rounded-xl border border-slate-200 text-xs font-semibold cursor-pointer hover:bg-amber-50 has-checked:border-amber-500 has-checked:bg-amber-50 has-checked:text-amber-900">
-              <input type="radio" name="alert_channel" value="email" checked class="accent-amber-600">
-              <span>✉️ Email</span>
-            </label>
-            <label class="flex items-center justify-center gap-1.5 p-2 rounded-xl border border-slate-200 text-xs font-semibold cursor-pointer hover:bg-amber-50 has-checked:border-amber-500 has-checked:bg-amber-50 has-checked:text-amber-900">
-              <input type="radio" name="alert_channel" value="telegram" class="accent-amber-600">
-              <span>✈️ Telegram</span>
-            </label>
-            <label class="flex items-center justify-center gap-1.5 p-2 rounded-xl border border-slate-200 text-xs font-semibold cursor-pointer hover:bg-amber-50 has-checked:border-amber-500 has-checked:bg-amber-50 has-checked:text-amber-900">
-              <input type="radio" name="alert_channel" value="whatsapp" class="accent-amber-600">
-              <span>💬 WhatsApp</span>
-            </label>
-          </div>
-        </div>
-
-        <!-- Contact Information -->
-        <div class="space-y-2">
-          <div>
-            <label for="alert-email" class="block text-xs font-bold text-slate-700 mb-1">Your Email Address *</label>
-            <input type="email" id="alert-email" required placeholder="you@gmail.com" class="w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-amber-500 outline-none">
-          </div>
-          <div id="alert-phone-wrapper" class="hidden">
-            <label for="alert-phone" class="block text-xs font-bold text-slate-700 mb-1">WhatsApp / Telegram Number (Optional)</label>
-            <input type="tel" id="alert-phone" placeholder="+91 98765 43210" class="w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-amber-500 outline-none">
-          </div>
-        </div>
-
-        <!-- Tier Selection (Pricing Engine) -->
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1.5">Choose Alert Frequency & Plan</label>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-            <!-- 1-Month Starter Plan -->
-            <label class="relative flex flex-col p-3 rounded-2xl border border-slate-200 bg-white cursor-pointer hover:border-amber-400 hover:bg-amber-50/30 transition">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-slate-800 flex items-center gap-1">
-                  <input type="radio" name="alert_plan" value="vip1mo" class="accent-amber-600">
-                  <span>⚡ 1-Month Starter</span>
-                </span>
-                <span class="px-2 py-0.5 rounded-full text-[11px] font-extrabold bg-slate-800 text-white shadow-2xs">₹49</span>
-              </div>
-              <p class="text-[11px] text-slate-500 mt-1 pl-4">30-day interview sprint • Direct ATS links (₹49/mo)</p>
-            </label>
-
-            <!-- 3-Month Complete Sprint (Decoy Hero Plan) -->
-            <label class="relative flex flex-col p-3 rounded-2xl border-2 border-amber-500 bg-amber-50/70 cursor-pointer shadow-xs hover:border-amber-600 transition">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-black text-amber-950 flex items-center gap-1">
-                  <input type="radio" name="alert_plan" value="vip3mo" checked class="accent-amber-600">
-                  <span>⭐ 3-Month Sprint</span>
-                </span>
-                <div class="flex items-center gap-1">
-                  <span class="px-1.5 py-0.2 rounded-md bg-emerald-100 text-emerald-800 text-[9px] font-black uppercase">Save 33%</span>
-                  <span class="px-2 py-0.5 rounded-full text-[11px] font-extrabold bg-amber-500 text-white shadow-2xs">₹99</span>
-                </div>
-              </div>
-              <p class="text-[11px] text-amber-900/90 font-medium mt-1 pl-4">Full hiring cycle • Just ₹33/month (Most Popular 🔥)</p>
-            </label>
-          </div>
-          
-          <div class="mt-2 text-center">
-            <button type="button" id="alert-free-digest-btn" class="text-[11px] text-slate-500 hover:text-slate-800 hover:underline cursor-pointer">
-              Or subscribe to Free Weekly Digest (No payment required)
-            </button>
-          </div>
-        </div>
-
-        <!-- Perks List -->
-        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-1">
-          <div class="font-bold text-slate-800 flex items-center gap-1">
-            <span>🛡️ Why RemoteJobsHub Alerts?</span>
-          </div>
-          <ul class="text-[11px] text-slate-500 space-y-0.5 list-disc list-inside">
-            <li>100% direct company ATS links (Greenhouse, Lever, Ashby)</li>
-            <li>Zero 3rd-party recruiter calls or consultancy spam</li>
-            <li>Apply early before listings get closed due to applicant limits</li>
-          </ul>
-        </div>
-
-        <!-- Submit Button -->
-        <button type="submit" id="alert-submit-btn" class="w-full py-3 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 text-white font-extrabold text-sm rounded-xl transition shadow-md hover:shadow-lg focus:ring-2 focus:ring-amber-500 cursor-pointer">
-          Activate 3-Month VIP Sprint • ₹99 ⚡
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Paywall removed: All features are free -->
-
-  <!-- Toast Notification (Accessible Notification) -->
-  <div id="toast" class="fixed bottom-5 right-5 z-50 hidden bg-slate-900 text-white text-xs sm:text-sm font-medium px-4 py-3 rounded-xl shadow-xl flex items-center space-x-2 transition" role="alert">
-    <span>✅</span>
-    <span id="toast-message">Application link copied to clipboard!</span>
-  </div>
-
-  <!-- Footer (Transparent & High-Trust) -->
-  <footer class="bg-white border-t border-slate-200 mt-12 py-10 px-4 sm:px-6 lg:px-8 text-xs text-slate-500" role="contentinfo">
-    <div class="max-w-7xl mx-auto space-y-8">
-      
-      <!-- Top Grid: Brand & Purpose, Quick Links, Real Contact -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-        
-        <!-- Col 1 & 2: Brand & Mission -->
-        <div class="md:col-span-2 space-y-3">
-          <div class="flex items-center space-x-2">
-            <div class="w-8 h-8 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold text-base shadow-sm">
-              🎯
-            </div>
-            <span class="text-lg font-extrabold text-slate-900 tracking-tight">Remote<span class="text-brand-600">JobsHub</span></span>
-            <span class="px-2 py-0.5 text-[10px] font-bold bg-emerald-100 text-emerald-800 rounded-full border border-emerald-200">
-              Verified Direct ATS
-            </span>
-          </div>
-          <p class="text-xs text-slate-600 leading-relaxed max-w-md">
-            Direct-to-company job aggregator curated specifically for global tech engineers and remote job seekers. We index directly from Greenhouse, Lever, Ashby, and Workday careers portals with zero consultancies.
-          </p>
-          <div class="text-[11px] text-slate-400">
-            Founded with ❤️ as an <a href="#why-we-built-this" class="font-semibold text-slate-700 hover:text-brand-600 underline">independent initiative</a> for scam-free tech hiring in India.
-          </div>
-        </div>
-
-        <!-- Col 3: Quick Navigation & Transparency -->
-        <div>
-          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-800 mb-3">Transparency</h4>
-          <ul class="space-y-2 text-xs">
-            <li><a href="#why-we-built-this" class="text-slate-600 hover:text-brand-600 transition">🛡️ Why We Built This</a></li>
-            <li><a href="#search-form" class="text-slate-600 hover:text-brand-600 transition">🔍 Direct ATS Jobs</a></li>
-            <li><a href="javascript:void(0)" onclick="openJobAlertsModal()" class="text-slate-600 hover:text-brand-600 transition">🔔 Instant Job Alerts</a></li>
-            <li><a href="javascript:void(0)" onclick="openEmployerModal()" class="text-slate-600 hover:text-brand-600 transition">🏢 Post a Featured Job</a></li>
-          </ul>
-        </div>
-
-        <!-- Col 4: Real Contact & Support -->
-        <div>
-          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-800 mb-3">Contact & Support</h4>
-          <p class="text-xs text-slate-600 leading-relaxed mb-2">
-            Found an expired link, have feedback, or employer inquiry? Reach out directly:
-          </p>
-          <a id="footer-contact-email" href="mailto:contact.remotejobshub@gmail.com" class="inline-flex items-center gap-1.5 text-xs font-bold text-brand-600 hover:text-brand-700 hover:underline">
-            <span>✉️</span> <span>contact.remotejobshub@gmail.com</span>
-          </a>
-          <div class="flex items-center gap-2 mt-3">
-            <a id="footer-tg-link" href="https://t.me/RemoteJobsHub" target="_blank" rel="noopener noreferrer" class="p-1.5 rounded-lg bg-sky-50 text-sky-700 border border-sky-200 hover:bg-sky-100 transition shadow-2xs text-xs font-semibold" title="Join Telegram channel">
-              ✈️ Telegram
-            </a>
-            <a id="footer-wa-link" href="https://chat.whatsapp.com/invite_placeholder" target="_blank" rel="noopener noreferrer" class="p-1.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition shadow-2xs text-xs font-semibold" title="WhatsApp Community">
-              💬 WhatsApp
-            </a>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Legal Disclaimer Bar -->
-      <div class="pt-6 border-t border-slate-100 space-y-2 text-[11px] text-slate-400 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p class="max-w-3xl leading-relaxed">
-          <strong>Disclaimer:</strong> RemoteJobsHub is an independent aggregator. All job listings, brand names, and company logos belong to their respective owners. RemoteJobsHub is not affiliated with these employers and never charges candidates for job applications.
-        </p>
-        <p class="shrink-0 font-medium text-slate-500">
-          © 2026 RemoteJobsHub. Open Web Initiative.
-        </p>
-      </div>
-
     </div>
   </footer>
 
-  <!-- Preloaded Data for local file:// opening -->
-  <script src="jobs_latest.js?v=2.3"></script>
-  <!-- Monetization & Affiliates Config -->
-  <script src="affiliates-config.js?v=2.3"></script>
-  <!-- Application Logic -->
-  <script src="app.js?v=2.3"></script>
+  <!-- App Script Dependencies -->
+  <script src="jobs_latest.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
-
