@@ -1,0 +1,83 @@
+name: Auto Scrape Jobs & Deploy Dashboard
+
+on:
+  schedule:
+    # Runs every 6 hours automatically (00:00, 06:00, 12:00, 18:00 UTC)
+    - cron: '0 */6 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub web UI anytime
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "scrape-and-deploy"
+  cancel-in-progress: false
+
+jobs:
+  scrape-and-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Job Aggregator (India Eligible & Direct ATS)
+        env:
+          ADZUNA_APP_ID: ${{ secrets.ADZUNA_APP_ID }}
+          ADZUNA_APP_KEY: ${{ secrets.ADZUNA_APP_KEY }}
+          ADZUNA_COUNTRIES: "in"
+        run: |
+          python -m aggregator.main --india
+
+      - name: Dispatch Subscriber Job Alerts
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          SUBSCRIBERS_DATA: ${{ secrets.SUBSCRIBERS_DATA }}
+        run: |
+          if [ -n "$RESEND_API_KEY" ] || [ -n "$SMTP_USER" ]; then
+            python -m aggregator.alerts.dispatcher
+          else
+            echo "No email credentials configured. Running alerts dry-run verification..."
+            python -m aggregator.alerts.dispatcher --dry-run
+          fi
+
+      - name: Commit & Push Updated Dashboard Feed
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add dashboard/jobs_latest.js
+          git commit -m "Auto-update job listings [skip ci]" || echo "No changes to commit"
+          git push || echo "Git push skipped or up to date"
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'dashboard'
+
+  deploy-dashboard:
+    needs: scrape-and-update
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+

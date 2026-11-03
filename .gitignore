@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+venv/
+.venv/
+
+# Environment secrets (NEVER upload this)
+.env
+
+# Large database & output files (too big for GitHub)
+output/jobs.db
+output/jobs_latest.json
+
+# Historical scrape exports (CSV/JSON dumps per run)
+output/*.csv
+output/*.json
+
+# Dashboard data files (auto-generated, too large)
+dashboard/jobs_latest.json
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+node_modules/
+scratch/

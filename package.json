@@ -1,0 +1,29 @@
+{
+  "name": "jobaggregater",
+  "version": "1.0.0",
+  "description": "A Python CLI tool that collects job listings from approved free APIs, normalizes them to a common schema, validates and deduplicates records, and exports a timestamped CSV file.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "build:css": "tailwindcss -i ./dashboard/input.css -o ./dashboard/style.css --minify",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ajaypau123/JobAggregater.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ajaypau123/JobAggregater/issues"
+  },
+  "homepage": "https://github.com/ajaypau123/JobAggregater#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}
