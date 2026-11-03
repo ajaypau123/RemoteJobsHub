@@ -115,7 +115,7 @@ function isUserSubscribed() {
 const state = {
   allJobs: [],
   filteredJobs: [],
-  scopeFilter: 'india', // 'india' | 'all'
+  scopeFilter: 'all', // 'india' | 'all'
   activeTrackerTab: 'all', // 'all' | 'saved' | 'applied'
   savedJobIds: getSavedJobIds(),
   appliedJobIds: getAppliedJobIds(),
@@ -422,10 +422,22 @@ function applyFilters() {
       if (!state.appliedJobIds.has(job.job_id)) return false;
     }
 
-    // 0c. Scope Filter: India & Global Remote (default) vs All Worldwide
-    if (state.scopeFilter === 'india' && state.activeTrackerTab === 'all') {
-      if (job.is_india_eligible === false) {
-        return false;
+    // 0c. Geographic Remote Scope Filter
+    if (state.activeTrackerTab === 'all') {
+      if (state.scopeFilter === 'worldwide') {
+        const scope = (job.remote_scope || '').toLowerCase();
+        if (scope !== 'worldwide' && !scope.includes('worldwide')) return false;
+      } else if (state.scopeFilter === 'americas') {
+        const scope = (job.remote_scope || '').toLowerCase();
+        if (!scope.includes('americas') && !scope.includes('us')) return false;
+      } else if (state.scopeFilter === 'europe') {
+        const scope = (job.remote_scope || '').toLowerCase();
+        if (!scope.includes('europe') && !scope.includes('emea')) return false;
+      } else if (state.scopeFilter === 'apac') {
+        const scope = (job.remote_scope || '').toLowerCase();
+        if (!scope.includes('apac') && !scope.includes('asia')) return false;
+      } else if (state.scopeFilter === 'india') {
+        if (job.is_india_eligible === false) return false;
       }
     }
 
@@ -1756,21 +1768,21 @@ if (elements.dateSelect) {
 
 function setScope(scope) {
   state.scopeFilter = scope;
-  if (scope === 'india') {
-    if (elements.scopeIndiaBtn) {
-      elements.scopeIndiaBtn.className = 'px-2.5 py-1 rounded-lg bg-white text-brand-700 font-bold shadow-2xs transition';
+  const buttons = [
+    { el: elements.scopeAllBtn || document.getElementById('scope-all-btn'), id: 'all' },
+    { el: elements.scopeWorldwideBtn || document.getElementById('scope-worldwide-btn'), id: 'worldwide' },
+    { el: elements.scopeAmericasBtn || document.getElementById('scope-americas-btn'), id: 'americas' },
+    { el: elements.scopeEuropeBtn || document.getElementById('scope-europe-btn'), id: 'europe' },
+    { el: elements.scopeApacBtn || document.getElementById('scope-apac-btn'), id: 'apac' },
+  ];
+  buttons.forEach(b => {
+    if (!b.el) return;
+    if (b.id === scope) {
+      b.el.className = 'px-2.5 py-1 rounded-lg bg-white text-brand-700 font-bold shadow-2xs transition whitespace-nowrap cursor-pointer';
+    } else {
+      b.el.className = 'px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition whitespace-nowrap cursor-pointer';
     }
-    if (elements.scopeGlobalBtn) {
-      elements.scopeGlobalBtn.className = 'px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition';
-    }
-  } else {
-    if (elements.scopeIndiaBtn) {
-      elements.scopeIndiaBtn.className = 'px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition';
-    }
-    if (elements.scopeGlobalBtn) {
-      elements.scopeGlobalBtn.className = 'px-2.5 py-1 rounded-lg bg-white text-brand-700 font-bold shadow-2xs transition';
-    }
-  }
+  });
   applyFilters();
 }
 

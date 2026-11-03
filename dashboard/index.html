@@ -148,7 +148,7 @@
           </div>
           <div>
             <div class="flex items-center gap-1.5 sm:gap-2">
-              <span class="text-lg sm:text-2xl font-extrabold tracking-tight text-slate-900">Jobs<span class="text-brand-600">ForIndia</span></span>
+              <span class="text-lg sm:text-2xl font-extrabold tracking-tight text-slate-900">Remote<span class="text-brand-600">JobsHub</span></span>
               <span class="hidden sm:inline-block px-2.5 py-0.5 text-[11px] font-bold bg-emerald-100 text-emerald-800 rounded-full border border-emerald-200">
                 Direct Apply
               </span>
@@ -181,16 +181,16 @@
           <!-- Instant Job Alerts CTA Button -->
           <button id="header-job-alerts-btn" type="button" class="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-gradient-to-r from-amber-50 to-orange-50 text-amber-900 border border-amber-300 hover:from-amber-100 hover:to-orange-100 transition shadow-2xs hover:shadow cursor-pointer" title="Get personalized job alerts in your inbox or Telegram">
             <span>🔔</span> <span class="hidden xs:inline sm:inline">Job </span><span>Alerts</span>
-            <span class="px-1.5 py-0.2 rounded-md bg-amber-500 text-white text-[10px] font-black uppercase">₹49</span>
+            <span class="px-1.5 py-0.2 rounded-md bg-amber-500 text-white text-[10px] font-black uppercase">FREE</span>
           </button>
 
           <!-- Employer Post Job CTA (Desktop) -->
           <button id="employer-post-btn" type="button" class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 hover:from-slate-800 hover:to-indigo-900 text-white shadow-sm hover:shadow transition transform active:scale-95 cursor-pointer" title="Post or feature your job to 10,000+ Indian engineers">
-            <span>🏢</span> <span>Post a Job • ₹1,999</span>
+            <span>🏢</span> <span>Post a Remote Job</span>
           </button>
 
           <!-- Employer Post Job CTA (Mobile Compact Icon) -->
-          <button id="employer-post-btn-mobile" type="button" class="sm:hidden p-2 text-xs font-bold text-slate-800 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-xl transition cursor-pointer flex items-center gap-1" title="Post a Job (₹1,999)">
+          <button id="employer-post-btn-mobile" type="button" class="sm:hidden p-2 text-xs font-bold text-slate-800 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-xl transition cursor-pointer flex items-center gap-1" title="Post a Remote Job">
             <span>🏢</span>
           </button>
 
@@ -344,13 +344,22 @@
 
           <!-- Controls strip (Swipeable on mobile) -->
           <div class="flex items-center overflow-x-auto no-scrollbar gap-2 pb-1 sm:pb-0 w-full sm:w-auto">
-            <!-- Scope Switcher: India & Remote vs Worldwide -->
+            <!-- Scope Switcher: Global Remote Options -->
             <div class="inline-flex items-center bg-slate-100 p-0.5 rounded-xl text-xs font-medium border border-slate-200 shrink-0">
-              <button id="scope-india-btn" type="button" class="px-2.5 py-1 rounded-lg bg-white text-brand-700 font-bold shadow-2xs transition whitespace-nowrap cursor-pointer">
-                🇮🇳 India & Remote
+              <button id="scope-all-btn" type="button" class="px-2.5 py-1 rounded-lg bg-white text-brand-700 font-bold shadow-2xs transition whitespace-nowrap cursor-pointer">
+                🌐 All Remote
               </button>
-              <button id="scope-global-btn" type="button" class="px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition whitespace-nowrap cursor-pointer">
-                🌐 All Worldwide
+              <button id="scope-worldwide-btn" type="button" class="px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition whitespace-nowrap cursor-pointer">
+                🌍 Worldwide
+              </button>
+              <button id="scope-americas-btn" type="button" class="px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition whitespace-nowrap cursor-pointer">
+                🇺🇸 Americas
+              </button>
+              <button id="scope-europe-btn" type="button" class="px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition whitespace-nowrap cursor-pointer">
+                🇪🇺 Europe
+              </button>
+              <button id="scope-apac-btn" type="button" class="px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 transition whitespace-nowrap cursor-pointer">
+                🌏 APAC
               </button>
             </div>
 
@@ -777,7 +786,7 @@
               <span class="text-xl shrink-0">💸</span>
               <div>
                 <h3 class="text-xs font-bold text-white">Never Pay to Apply</h3>
-                <p class="text-[11px] text-slate-400 mt-0.5">Searching and applying will always remain 100% free forever for all job seekers in India.</p>
+                <p class="text-[11px] text-slate-400 mt-0.5">Searching and applying will always remain 100% free forever for all remote job seekers worldwide.</p>
               </div>
             </div>
             <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs flex items-start gap-3">
@@ -953,7 +962,7 @@
           Feature Your Job on RemoteJobsHub
         </h2>
         <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-sm mx-auto">
-          Reach 10,000+ verified Indian tech engineers & remote applicants. Pinned at the top for 30 days.
+          Reach 20,000+ verified remote tech engineers & applicants worldwide. Pinned at the top for 30 days.
         </p>
       </div>
 
@@ -1187,13 +1196,13 @@
             <div class="w-8 h-8 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold text-base shadow-sm">
               🎯
             </div>
-            <span class="text-lg font-extrabold text-slate-900 tracking-tight">Jobs<span class="text-brand-600">ForIndia</span></span>
+            <span class="text-lg font-extrabold text-slate-900 tracking-tight">Remote<span class="text-brand-600">JobsHub</span></span>
             <span class="px-2 py-0.5 text-[10px] font-bold bg-emerald-100 text-emerald-800 rounded-full border border-emerald-200">
               Verified Direct ATS
             </span>
           </div>
           <p class="text-xs text-slate-600 leading-relaxed max-w-md">
-            Direct-to-company job aggregator curated specifically for Indian engineers and tech job seekers. We index directly from Greenhouse, Lever, Ashby, and Workday careers portals with zero consultancies.
+            Direct-to-company job aggregator curated specifically for global tech engineers and remote job seekers. We index directly from Greenhouse, Lever, Ashby, and Workday careers portals with zero consultancies.
           </p>
           <div class="text-[11px] text-slate-400">
             Founded with ❤️ as an <a href="#why-we-built-this" class="font-semibold text-slate-700 hover:text-brand-600 underline">independent initiative</a> for scam-free tech hiring in India.
@@ -1217,11 +1226,11 @@
           <p class="text-xs text-slate-600 leading-relaxed mb-2">
             Found an expired link, have feedback, or employer inquiry? Reach out directly:
           </p>
-          <a id="footer-contact-email" href="mailto:techjobsforindia@gmail.com" class="inline-flex items-center gap-1.5 text-xs font-bold text-brand-600 hover:text-brand-700 hover:underline">
-            <span>✉️</span> <span>techjobsforindia@gmail.com</span>
+          <a id="footer-contact-email" href="mailto:contact.remotejobshub@gmail.com" class="inline-flex items-center gap-1.5 text-xs font-bold text-brand-600 hover:text-brand-700 hover:underline">
+            <span>✉️</span> <span>contact.remotejobshub@gmail.com</span>
           </a>
           <div class="flex items-center gap-2 mt-3">
-            <a id="footer-tg-link" href="https://t.me/jobsforindia_alerts" target="_blank" rel="noopener noreferrer" class="p-1.5 rounded-lg bg-sky-50 text-sky-700 border border-sky-200 hover:bg-sky-100 transition shadow-2xs text-xs font-semibold" title="Join Telegram channel">
+            <a id="footer-tg-link" href="https://t.me/RemoteJobsHub" target="_blank" rel="noopener noreferrer" class="p-1.5 rounded-lg bg-sky-50 text-sky-700 border border-sky-200 hover:bg-sky-100 transition shadow-2xs text-xs font-semibold" title="Join Telegram channel">
               ✈️ Telegram
             </a>
             <a id="footer-wa-link" href="https://chat.whatsapp.com/invite_placeholder" target="_blank" rel="noopener noreferrer" class="p-1.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition shadow-2xs text-xs font-semibold" title="WhatsApp Community">
