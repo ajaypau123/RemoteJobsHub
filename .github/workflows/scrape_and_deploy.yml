@@ -30,8 +30,16 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+            python -m pip install --upgrade pip
+            pip install -r requirements.txt
+
+      - name: Restore Cumulative Jobs Database Cache
+        uses: actions/cache@v4
+        with:
+          path: output/jobs.db
+          key: jobs-db-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: |
+            jobs-db-${{ runner.os }}-
 
       - name: Run Remote Jobs Aggregator (Worldwide & Direct ATS)
         env:
@@ -60,7 +68,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add dashboard/jobs_latest.js
+          git add dashboard/jobs_latest.js dashboard/jobs_recent.json dashboard/jobs_archive.json dashboard/jobs_latest.json
           git commit -m "Auto-update job listings [skip ci]" || echo "No changes to commit"
           git push || echo "Git push skipped or up to date"
 

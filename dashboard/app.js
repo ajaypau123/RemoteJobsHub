@@ -426,6 +426,35 @@ if (document.readyState === 'loading') {
   init();
 }
 
+let isArchiveHydrated = false;
+
+function hydrateArchiveJobs() {
+  if (isArchiveHydrated) return;
+  isArchiveHydrated = true;
+
+  fetch('jobs_archive.json')
+    .then(res => res.json())
+    .then(archiveData => {
+      if (Array.isArray(archiveData) && archiveData.length > 0) {
+        const existingIds = new Set(state.allJobs.map(j => j.job_id));
+        const newJobs = archiveData.filter(j => !existingIds.has(j.job_id));
+        if (newJobs.length > 0) {
+          state.allJobs = state.allJobs.concat(newJobs);
+          const headerCount = document.getElementById('header-count-badge');
+          if (headerCount) {
+            headerCount.textContent = state.allJobs.length.toLocaleString() + ' verified remote jobs';
+          }
+          updateTrackerCounters();
+          populateCompanyDropdown();
+          applyFilters(true);
+        }
+      }
+    })
+    .catch(err => {
+      console.warn('Archive hydration skipped or failed:', err);
+    });
+}
+
 function loadJobsData() {
   const headerCount = document.getElementById('header-count-badge');
   const resultsCount = document.getElementById('results-count-badge');
@@ -446,15 +475,28 @@ function loadJobsData() {
       onJobsLoaded();
     } else if (attempts >= 10) {
       clearInterval(pollTimer);
-      fetch('jobs_latest.json')
+      // Try fast recent feed first, fallback to latest
+      fetch('jobs_recent.json')
         .then(res => res.json())
         .then(data => {
           if (Array.isArray(data) && data.length > 0) {
             state.allJobs = data;
             onJobsLoaded();
           } else {
-            showEmptyState('No remote jobs found in the feed.');
+            throw new Error('Empty recent feed');
           }
+        })
+        .catch(() => {
+          return fetch('jobs_latest.json')
+            .then(res => res.json())
+            .then(data => {
+              if (Array.isArray(data) && data.length > 0) {
+                state.allJobs = data;
+                onJobsLoaded();
+              } else {
+                showEmptyState('No remote jobs found in the feed.');
+              }
+            });
         })
         .catch(err => {
           console.error('Failed loading jobs feed:', err);
@@ -468,11 +510,20 @@ function onJobsLoaded() {
   const count = state.allJobs.length;
   const headerCount = document.getElementById('header-count-badge');
   if (headerCount) {
-    headerCount.textContent = `${count.toLocaleString()} verified remote jobs`;
+    headerCount.textContent = count.toLocaleString() + ' verified remote jobs';
   }
   updateTrackerCounters();
   populateCompanyDropdown();
   applyFilters();
+
+  // Progressive background hydration: stream archive without blocking user interactions
+  if (window.HAS_ARCHIVE_DATA || state.allJobs.length <= 600) {
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(() => hydrateArchiveJobs(), { timeout: 2500 });
+    } else {
+      setTimeout(hydrateArchiveJobs, 600);
+    }
+  }
 }
 
 // ── View Mode & Tracker Tabs ──────────────────────────────────────────────────

@@ -322,6 +322,20 @@ def run(
             logger.warning("Failed reading cumulative jobs from SQLite: %s", exc)
             cumulative_dataset = full_dataset
 
+        # Lifecycle validation: TTL expiration (45 days) & dead ATS requisition link verification
+        try:
+            from aggregator.processing.link_validator import filter_by_ttl, prune_dead_ats_links
+            cumulative_dataset, expired_count = filter_by_ttl(cumulative_dataset, max_age_days=45)
+            cumulative_dataset, dead_count = prune_dead_ats_links(cumulative_dataset, max_checks=150)
+            if expired_count or dead_count:
+                logger.info(
+                    "Lifecycle validation complete: %d expired by TTL, %d closed/404 ATS links pruned.",
+                    expired_count,
+                    dead_count,
+                )
+        except Exception as exc:
+            logger.warning("Lifecycle validation skipped: %s", exc)
+
         df = pd.DataFrame(export_jobs)
         # Ensure all columns are present in the correct order
         for col in CSV_COLUMNS:
@@ -358,8 +372,8 @@ def run(
                 desc = _clean_str(c.get("description"))
                 text = re.sub(r"<[^>]+>", " ", desc)
                 text = re.sub(r"\s+", " ", text).strip()
-                if len(text) > 300:
-                    c["description"] = text[:300] + "... [Click 'Apply' for full details]"
+                if len(text) > 160:
+                    c["description"] = text[:160] + "... [Click 'Apply' for full details]"
                 else:
                     c["description"] = text
                 return c
@@ -392,17 +406,39 @@ def run(
                 else:
                     dash_jobs = [_to_lightweight(j) for j in cumulative_dataset]
 
+                # Sort newest first
+                dash_jobs.sort(
+                    key=lambda j: j.get("posted_date") or j.get("collected_date") or "",
+                    reverse=True,
+                )
+
+                # Two-tier payload splitting:
+                # 1. jobs_recent.json: latest ~500 active jobs (~180 KB) for instant sub-200ms page load
+                # 2. jobs_archive.json: historical active jobs fetched lazily in the background
+                recent_jobs = dash_jobs[:500]
+                archive_jobs = dash_jobs[500:]
+
                 dash_json = os.path.join(dashboard_dir, "jobs_latest.json")
                 with open(dash_json, "w", encoding="utf-8") as f:
                     json.dump(dash_jobs, f, indent=2, ensure_ascii=False)
+
+                recent_json = os.path.join(dashboard_dir, "jobs_recent.json")
+                with open(recent_json, "w", encoding="utf-8") as f:
+                    json.dump(recent_jobs, f, indent=2, ensure_ascii=False)
+
+                archive_json = os.path.join(dashboard_dir, "jobs_archive.json")
+                with open(archive_json, "w", encoding="utf-8") as f:
+                    json.dump(archive_jobs, f, indent=2, ensure_ascii=False)
+
                 dash_js = os.path.join(dashboard_dir, "jobs_latest.js")
+                # Bundle the fast recent jobs in jobs_latest.js so initial bundle is tiny (<200 KB)
                 clean_js = (
-                    json.dumps(dash_jobs, ensure_ascii=False)
+                    json.dumps(recent_jobs, ensure_ascii=False)
                     .replace("\u2028", "\\u2028")
                     .replace("\u2029", "\\u2029")
                 )
                 with open(dash_js, "w", encoding="utf-8") as f:
-                    f.write(f"window.JOBS_DATA = {clean_js};\n")
+                    f.write(f"window.JOBS_DATA = {clean_js};\nwindow.HAS_ARCHIVE_DATA = true;\n")
 
     # ── 6. Terminal summary ───────────────────────────────────────────────────
     _print_summary(
