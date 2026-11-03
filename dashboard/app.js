@@ -94,6 +94,50 @@ function toggleApplyJob(jobId, e) {
   renderJobCards();
 }
 
+// ── Salary & Date Filter Helpers ──────────────────────────────────────────────
+function parseMaxSalary(str) {
+  if (!str) return 0;
+  const matches = [...str.matchAll(/(\d[\d,]*(?:\.\d+)?)\s*(k|kilo|thousand)?/gi)];
+  let max = 0;
+  for (const m of matches) {
+    let val = parseFloat(m[1].replace(/,/g, ''));
+    if (m[2] && m[2].toLowerCase().startsWith('k')) {
+      val *= 1000;
+    }
+    if (val > max) max = val;
+  }
+  return max;
+}
+
+function checkDateFilter(postedDateStr, filterVal) {
+  if (filterVal === 'all') return true;
+  if (!postedDateStr) return false;
+  try {
+    const parts = postedDateStr.split('-');
+    let posted;
+    if (parts.length === 3 && parts[0].length === 4) {
+      posted = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+    } else {
+      posted = new Date(postedDateStr);
+    }
+    if (isNaN(posted.getTime())) return false;
+    const now = new Date();
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const startOfPosted = new Date(posted.getFullYear(), posted.getMonth(), posted.getDate());
+    const diffDays = Math.round((startOfToday - startOfPosted) / (1000 * 60 * 60 * 24));
+
+    if (diffDays <= 0) return true;
+    if (filterVal === '24h') return diffDays <= 1;
+    if (filterVal === '3d') return diffDays <= 3;
+    if (filterVal === '7d') return diffDays <= 7;
+    if (filterVal === '14d') return diffDays <= 14;
+    if (filterVal === '30d') return diffDays <= 30;
+    return true;
+  } catch (e) {
+    return true;
+  }
+}
+
 function updateTrackerCounters() {
   const savedCount = state.savedJobIds.size;
   const appliedCount = Object.keys(state.appliedJobs).length;
@@ -270,6 +314,7 @@ function updateDirectAtsPanelVisibility() {
 
 function populateCompanyDropdown() {
   const companySelect = document.getElementById('company-select');
+  const countBadge = document.getElementById('company-count-badge');
   if (!companySelect) return;
 
   const isDirectAtsActive = state.directAtsOnly || state.source === 'CompanyATS';
@@ -287,7 +332,6 @@ function populateCompanyDropdown() {
     }
   });
 
-  // Sort companies by number of jobs descending, then alphabetically
   const sortedCompanies = Object.keys(companyCounts).sort((a, b) => {
     const diff = companyCounts[b] - companyCounts[a];
     if (diff !== 0) return diff;
@@ -295,15 +339,19 @@ function populateCompanyDropdown() {
   });
 
   const totalCompanies = sortedCompanies.length;
+  if (countBadge) {
+    countBadge.textContent = totalCompanies.toLocaleString() + ' available';
+  }
+
   const currentVal = (state.company || 'all').toLowerCase();
 
-  companySelect.innerHTML = `<option value="all">🏢 All Companies (${totalCompanies} employers • ${totalMatchingJobs.toLocaleString()} jobs)</option>`;
+  companySelect.innerHTML = '<option value="all">🏢 All Companies (' + totalCompanies + ' employers • ' + totalMatchingJobs.toLocaleString() + ' jobs)</option>';
 
   sortedCompanies.forEach(comp => {
     const count = companyCounts[comp];
     const opt = document.createElement('option');
     opt.value = comp;
-    opt.textContent = `${comp} (${count.toLocaleString()} ${count === 1 ? 'job' : 'jobs'})`;
+    opt.textContent = comp + ' (' + count.toLocaleString() + ' ' + (count === 1 ? 'job' : 'jobs') + ')';
     if (comp.toLowerCase() === currentVal) {
       opt.selected = true;
     }
@@ -328,29 +376,28 @@ function renderTopCompanyChips() {
     }
   });
 
-  // Top 12 employers by open positions
   const topCompanies = Object.entries(companyCounts)
     .sort((a, b) => b[1] - a[1])
-    .slice(0, 12);
+    .slice(0, 15);
 
   const isAll = state.company === 'all';
-  container.innerHTML = `
-    <span class="text-[11px] font-bold text-slate-400 shrink-0 mr-1">Top ATS Employers:</span>
-    <button 
-      type="button" 
-      onclick="selectCompany('all')" 
-      class="company-chip px-2.5 py-1 rounded-lg text-xs font-bold ${isAll ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20' : 'bg-slate-900 text-slate-300 hover:text-white border border-slate-800'} transition shrink-0 cursor-pointer"
-    >
-      All Employers
-    </button>
-  `;
+  container.innerHTML =
+    '<span class="text-[11px] font-bold text-slate-400 shrink-0 mr-1 flex items-center gap-1">' +
+    '<span>🏢 Top Employers:</span>' +
+    '</span>' +
+    '<button type="button" onclick="selectCompany(\'all\')" class="company-chip px-2.5 py-1 rounded-lg text-xs font-bold ' +
+    (isAll ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20' : 'bg-slate-950 text-slate-300 hover:text-white border border-slate-800') +
+    ' transition shrink-0 cursor-pointer">All Employers</button>';
 
   topCompanies.forEach(([comp, count]) => {
     const isSelected = state.company.toLowerCase() === comp.toLowerCase();
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = `company-chip px-2.5 py-1 rounded-lg text-xs font-semibold ${isSelected ? 'bg-emerald-500 text-slate-950 font-bold shadow-md shadow-emerald-500/20' : 'bg-slate-900 text-slate-300 hover:text-emerald-400 border border-slate-800'} transition shrink-0 cursor-pointer flex items-center gap-1`;
-    btn.innerHTML = `<span>${escapeHtml(comp)}</span><span class="${isSelected ? 'text-slate-950 font-black' : 'text-emerald-400 font-bold'}">(${count})</span>`;
+    btn.className = 'company-chip px-2.5 py-1 rounded-lg text-xs font-semibold ' +
+      (isSelected ? 'bg-emerald-500 text-slate-950 font-bold shadow-md shadow-emerald-500/20' : 'bg-slate-950 text-slate-300 hover:text-emerald-400 border border-slate-800') +
+      ' transition shrink-0 cursor-pointer flex items-center gap-1';
+    btn.innerHTML = '<span>' + escapeHtml(comp) + '</span><span class="' +
+      (isSelected ? 'text-slate-950 font-black' : 'text-emerald-400 font-bold') + '">(' + count + ')</span>';
     btn.onclick = () => selectCompany(comp);
     container.appendChild(btn);
   });
@@ -513,29 +560,29 @@ function applyFilters() {
       if (!titleMatch && !companyMatch && !locMatch && !descMatch) return false;
     }
 
-    // 4. Category Filter
+    // 4. Category / Job Role Filter
     if (cat !== 'all') {
       const title = (job.title || '').toLowerCase();
       if (cat === 'engineer') {
-        const isEng = /\\b(engineer|developer|architect|fullstack|frontend|backend|software)\\b/i.test(title);
+        const isEng = /\b(engineer|developer|architect|fullstack|frontend|backend|software)\b/i.test(title);
         if (!isEng) return false;
       } else if (cat === 'qa') {
-        const isQA = /\\b(qa|quality\\s+assurance|tester|testing|sdet|test\\s+engineer|automation)\\b/i.test(title);
+        const isQA = /\b(qa|quality\s+assurance|tester|testing|sdet|test\s+engineer|automation)\b/i.test(title);
         if (!isQA) return false;
       } else if (cat === 'ai') {
-        const isAI = /\\b(ai|artificial\\s+intelligence|machine\\s+learning|ml|llm|data\\s+scientist|nlp|deep\\s+learning)\\b/i.test(title);
+        const isAI = /\b(ai|artificial\s+intelligence|machine\s+learning|ml|llm|data\s+scientist|nlp|deep\s+learning)\b/i.test(title);
         if (!isAI) return false;
       } else if (cat === 'devops') {
-        const isDevOps = /\\b(devops|sre|reliability|cloud|infrastructure|platform|kubernetes|aws)\\b/i.test(title);
+        const isDevOps = /\b(devops|sre|reliability|cloud|infrastructure|platform|kubernetes|aws)\b/i.test(title);
         if (!isDevOps) return false;
       } else if (cat === 'data') {
-        const isData = /\\b(data\\s+engineer|bi|analyst|analytics|database|etl|pipeline)\\b/i.test(title);
+        const isData = /\b(data\s+engineer|bi|analyst|analytics|database|etl|pipeline)\b/i.test(title);
         if (!isData) return false;
       } else if (cat === 'mobile') {
-        const isMobile = /\\b(ios|android|mobile|flutter|react\\s+native|swift|kotlin)\\b/i.test(title);
+        const isMobile = /\b(ios|android|mobile|flutter|react\s+native|swift|kotlin)\b/i.test(title);
         if (!isMobile) return false;
       } else if (cat === 'design') {
-        const isDesign = /\\b(designer|ui|ux|product\\s+designer|graphic|creative)\\b/i.test(title);
+        const isDesign = /\b(designer|ui|ux|product\s+designer|graphic|creative)\b/i.test(title);
         if (!isDesign) return false;
       }
     }
@@ -564,31 +611,80 @@ function applyFilters() {
       }
     }
 
-    // 6. Seniority Filter
-    if (sen !== 'all') {
-      const title = (job.title || '').toLowerCase();
-      if (sen === 'junior') {
-        if (!/\\b(junior|jr|entry|associate|intern|trainee)\\b/i.test(title)) return false;
-      } else if (sen === 'mid') {
-        if (/\\b(senior|sr|lead|staff|principal|director|head|vp)\\b/i.test(title)) return false;
-      } else if (sen === 'senior') {
-        if (!/\\b(senior|sr|lead)\\b/i.test(title) || /\\b(principal|staff|director)\\b/i.test(title)) return false;
-      } else if (sen === 'lead') {
-        if (!/\\b(lead|staff|principal|director|head|architect)\\b/i.test(title)) return false;
+    // 6. Worldwide Checkbox Filter
+    if (state.worldwideOnly) {
+      const rScope = (job.remote_scope || '').toLowerCase();
+      const loc = (job.location || '').toLowerCase();
+      if (rScope !== 'worldwide' && !loc.includes('worldwide') && !loc.includes('anywhere')) {
+        return false;
       }
     }
 
-    // 7. Source Filter
-    if (src !== 'all') {
-      if (job.source !== src) return false;
+    // 7. Seniority / Experience Filter
+    if (sen !== 'all') {
+      const title = (job.title || '').toLowerCase();
+      if (sen === 'junior') {
+        if (!/\b(junior|jr|entry|associate|intern|trainee)\b/i.test(title)) return false;
+      } else if (sen === 'mid') {
+        if (/\b(senior|sr|lead|staff|principal|director|head|vp)\b/i.test(title)) return false;
+      } else if (sen === 'senior') {
+        if (!/\b(senior|sr|lead)\b/i.test(title) || /\b(principal|staff|director)\b/i.test(title)) return false;
+      } else if (sen === 'lead') {
+        if (!/\b(lead|staff|principal|director|head|architect)\b/i.test(title)) return false;
+      }
     }
 
-    // 8. Direct ATS Only Filter
+    // 8. Employment Type Filter
+    if (state.employmentType !== 'all') {
+      const emp = (job.employment_type || '').toLowerCase();
+      if (state.employmentType === 'full-time' && !emp.includes('full') && emp !== '') return false;
+      if (state.employmentType === 'contract' && !emp.includes('contract') && !emp.includes('freelance')) return false;
+      if (state.employmentType === 'internship' && !emp.includes('intern') && !emp.includes('trainee') && !emp.includes('graduate')) return false;
+      if (state.employmentType === 'part-time' && !emp.includes('part')) return false;
+    }
+
+    // 9. Source / ATS Provider Filter
+    if (src !== 'all') {
+      const url = (job.direct_apply_url || job.apply_url || '').toLowerCase();
+      if (src === 'ashby') {
+        if (!url.includes('ashbyhq.com')) return false;
+      } else if (src === 'greenhouse') {
+        if (!url.includes('greenhouse.io')) return false;
+      } else if (src === 'lever') {
+        if (!url.includes('lever.co')) return false;
+      } else if (src === 'workday') {
+        if (!url.includes('myworkdayjobs.com') && !url.includes('workday')) return false;
+      } else if (src === 'CompanyATS') {
+        if (!job.direct_apply_url && job.source !== 'CompanyATS') return false;
+      } else {
+        if (job.source !== src) return false;
+      }
+    }
+
+    // 10. Date Posted Filter
+    if (state.datePosted !== 'all') {
+      const d = job.posted_date || job.collected_date || '';
+      if (!checkDateFilter(d, state.datePosted)) return false;
+    }
+
+    // 11. Direct ATS Only Filter
     if (atsOnly) {
       if (!job.direct_apply_url && job.source !== 'CompanyATS') return false;
     }
 
+    // 12. Salary Disclosed Only Filter
+    if (state.salaryOnly) {
+      if (!job.salary) return false;
+    }
+
     return true;
+  });
+
+  // Precompute hiring volume map for sorting
+  const companyCounts = {};
+  state.allJobs.forEach(j => {
+    const c = j.company || '';
+    companyCounts[c] = (companyCounts[c] || 0) + 1;
   });
 
   // Sorting
@@ -596,6 +692,10 @@ function applyFilters() {
     results.sort((a, b) => (a.company || '').localeCompare(b.company || ''));
   } else if (state.sortBy === 'title') {
     results.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+  } else if (state.sortBy === 'salary-high') {
+    results.sort((a, b) => parseMaxSalary(b.salary) - parseMaxSalary(a.salary));
+  } else if (state.sortBy === 'volume') {
+    results.sort((a, b) => (companyCounts[b.company] || 0) - (companyCounts[a.company] || 0));
   } else {
     // Newest first (default)
     results.sort((a, b) => {
@@ -611,13 +711,13 @@ function applyFilters() {
   const badge = document.getElementById('results-count-badge');
   if (badge) {
     if (state.trackerTab === 'applied') {
-      badge.textContent = `${results.length.toLocaleString()} applied positions`;
+      badge.textContent = results.length.toLocaleString() + ' applied positions';
     } else if (state.trackerTab === 'saved') {
-      badge.textContent = `${results.length.toLocaleString()} saved positions`;
+      badge.textContent = results.length.toLocaleString() + ' saved positions';
     } else if (state.company !== 'all') {
-      badge.textContent = `${results.length.toLocaleString()} jobs at ${state.company}`;
+      badge.textContent = results.length.toLocaleString() + ' jobs at ' + state.company;
     } else {
-      badge.textContent = `${results.length.toLocaleString()} jobs`;
+      badge.textContent = results.length.toLocaleString() + ' jobs';
     }
   }
 
@@ -1108,8 +1208,26 @@ function bindEventHandlers() {
     });
   }
 
-  // 2. Category Pills
+  // 2. Category Pills & Role Select Sync
+  const roleSelect = document.getElementById('role-select');
   const rolePills = document.querySelectorAll('.role-pill');
+  
+  if (roleSelect) {
+    roleSelect.addEventListener('change', e => {
+      state.category = e.target.value;
+      rolePills.forEach(p => {
+        const isMatch = (p.dataset.category || 'all') === state.category;
+        if (isMatch) {
+          p.className = 'role-pill active shrink-0 whitespace-nowrap px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20 cursor-pointer';
+        } else {
+          p.className = 'role-pill shrink-0 whitespace-nowrap px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer';
+        }
+      });
+      state.currentPage = 1;
+      applyFilters();
+    });
+  }
+
   rolePills.forEach(pill => {
     pill.addEventListener('click', () => {
       rolePills.forEach(p => {
@@ -1120,6 +1238,7 @@ function bindEventHandlers() {
       pill.classList.remove('bg-slate-900', 'text-slate-400');
 
       state.category = pill.dataset.category || 'all';
+      if (roleSelect) roleSelect.value = state.category;
       state.currentPage = 1;
       applyFilters();
     });
@@ -1141,26 +1260,39 @@ function bindEventHandlers() {
       scopeTabs.forEach(t => {
         const other = document.getElementById(t.id);
         if (other) {
-          other.className = 'scope-tab px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition whitespace-nowrap cursor-pointer';
+          other.className = 'scope-tab px-3 py-1 rounded-xl text-xs font-semibold text-slate-300 hover:text-white bg-slate-950 border border-slate-800 transition cursor-pointer';
         }
       });
-      el.className = 'scope-tab active px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition whitespace-nowrap cursor-pointer';
+      el.className = 'scope-tab active px-3 py-1 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 transition cursor-pointer';
       state.scope = tab.scope;
       state.currentPage = 1;
       applyFilters();
     });
   });
 
-  // 4. Dropdowns
+  // 4. Experience & Seniority Level Dropdowns
   const expSelect = document.getElementById('exp-select');
+  const senioritySelect = document.getElementById('seniority-select');
+
   if (expSelect) {
     expSelect.addEventListener('change', e => {
       state.seniority = e.target.value;
+      if (senioritySelect) senioritySelect.value = e.target.value;
       state.currentPage = 1;
       applyFilters();
     });
   }
 
+  if (senioritySelect) {
+    senioritySelect.addEventListener('change', e => {
+      state.seniority = e.target.value;
+      if (expSelect) expSelect.value = e.target.value;
+      state.currentPage = 1;
+      applyFilters();
+    });
+  }
+
+  // 5. Company Dropdown
   const compSelect = document.getElementById('company-select');
   if (compSelect) {
     compSelect.addEventListener('change', e => {
@@ -1171,21 +1303,74 @@ function bindEventHandlers() {
     });
   }
 
-  const srcSelect = document.getElementById('source-select');
-  if (srcSelect) {
-    srcSelect.addEventListener('change', e => {
-      state.source = e.target.value;
-      if (state.source === 'CompanyATS') {
-        state.directAtsOnly = true;
-        const directAtsCheck = document.getElementById('direct-ats-checkbox');
-        if (directAtsCheck) directAtsCheck.checked = true;
-      }
-      updateDirectAtsPanelVisibility();
+  // 6. Employment Type Dropdown
+  const empSelect = document.getElementById('employment-select');
+  if (empSelect) {
+    empSelect.addEventListener('change', e => {
+      state.employmentType = e.target.value;
       state.currentPage = 1;
       applyFilters();
     });
   }
 
+  // 7. ATS & Source Platform Dropdown
+  const srcSelect = document.getElementById('source-select');
+  if (srcSelect) {
+    srcSelect.addEventListener('change', e => {
+      state.source = e.target.value;
+      if (state.source === 'CompanyATS' || state.source === 'ashby' || state.source === 'greenhouse' || state.source === 'lever') {
+        state.directAtsOnly = true;
+        const directAtsCheck = document.getElementById('direct-ats-checkbox');
+        if (directAtsCheck) directAtsCheck.checked = true;
+      }
+      populateCompanyDropdown();
+      renderTopCompanyChips();
+      state.currentPage = 1;
+      applyFilters();
+    });
+  }
+
+  // 8. Date Posted Dropdown
+  const dateSelect = document.getElementById('date-posted-select');
+  if (dateSelect) {
+    dateSelect.addEventListener('change', e => {
+      state.datePosted = e.target.value;
+      state.currentPage = 1;
+      applyFilters();
+    });
+  }
+
+  // 9. Checkboxes
+  const directAtsCheck = document.getElementById('direct-ats-checkbox');
+  if (directAtsCheck) {
+    directAtsCheck.addEventListener('change', e => {
+      state.directAtsOnly = e.target.checked;
+      populateCompanyDropdown();
+      renderTopCompanyChips();
+      state.currentPage = 1;
+      applyFilters();
+    });
+  }
+
+  const worldwideCheck = document.getElementById('worldwide-checkbox');
+  if (worldwideCheck) {
+    worldwideCheck.addEventListener('change', e => {
+      state.worldwideOnly = e.target.checked;
+      state.currentPage = 1;
+      applyFilters();
+    });
+  }
+
+  const salaryCheck = document.getElementById('salary-checkbox');
+  if (salaryCheck) {
+    salaryCheck.addEventListener('change', e => {
+      state.salaryOnly = e.target.checked;
+      state.currentPage = 1;
+      applyFilters();
+    });
+  }
+
+  // 10. Sort By Dropdown
   const sortSelect = document.getElementById('sort-select');
   if (sortSelect) {
     sortSelect.addEventListener('change', e => {
@@ -1194,17 +1379,7 @@ function bindEventHandlers() {
     });
   }
 
-  const directAtsCheck = document.getElementById('direct-ats-checkbox');
-  if (directAtsCheck) {
-    directAtsCheck.addEventListener('change', e => {
-      state.directAtsOnly = e.target.checked;
-      updateDirectAtsPanelVisibility();
-      state.currentPage = 1;
-      applyFilters();
-    });
-  }
-
-  // 5. Page Size Selector
+  // 11. Page Size Selector
   const pageSizeSelect = document.getElementById('page-size-select');
   if (pageSizeSelect) {
     pageSizeSelect.value = state.pageSize.toString();
@@ -1216,13 +1391,13 @@ function bindEventHandlers() {
     });
   }
 
-  // 6. View Mode Switchers
+  // 12. View Mode Switchers
   const cardBtn = document.getElementById('view-card-btn');
   const listBtn = document.getElementById('view-list-btn');
   if (cardBtn) cardBtn.addEventListener('click', () => setViewMode('card'));
   if (listBtn) listBtn.addEventListener('click', () => setViewMode('list'));
 
-  // 7. Tracker Tabs
+  // 13. Tracker Tabs
   const tabAllBtn = document.getElementById('tab-all-jobs-btn');
   const tabSavedBtn = document.getElementById('tab-saved-jobs-btn');
   const tabAppliedBtn = document.getElementById('tab-applied-jobs-btn');
@@ -1238,7 +1413,14 @@ function bindEventHandlers() {
   const navAppliedBtn = document.getElementById('tracker-applied-nav-btn');
   if (navAppliedBtn) navAppliedBtn.addEventListener('click', () => setTrackerTab('applied'));
 
-  // 8. Toast Confirmation & Dismiss
+  // Quick pills in filter toolbar
+  const quickSavedBtn = document.getElementById('quick-saved-btn');
+  if (quickSavedBtn) quickSavedBtn.addEventListener('click', () => setTrackerTab('saved'));
+
+  const quickAppliedBtn = document.getElementById('quick-applied-btn');
+  if (quickAppliedBtn) quickAppliedBtn.addEventListener('click', () => setTrackerTab('applied'));
+
+  // 14. Toast Confirmation & Dismiss
   const toastConfirmBtn = document.getElementById('toast-confirm-btn');
   const toastDismissBtn = document.getElementById('toast-dismiss-btn');
   const toast = document.getElementById('applied-toast');
@@ -1263,11 +1445,11 @@ function bindEventHandlers() {
     });
   }
 
-  // 9. Reset Filters
+  // 15. Reset Filters
   const resetBtn = document.getElementById('reset-filters-btn');
   if (resetBtn) resetBtn.addEventListener('click', resetAllFilters);
 
-  // 10. Modal Closing
+  // 16. Modal Closing
   const closeBtn = document.getElementById('modal-close-btn');
   const backdrop = document.getElementById('modal-backdrop');
   if (closeBtn) closeBtn.addEventListener('click', closeJobModal);
@@ -1276,7 +1458,7 @@ function bindEventHandlers() {
     if (e.key === 'Escape') closeJobModal();
   });
 
-  // 11. Refresh Button
+  // 17. Refresh Button
   const refreshBtn = document.getElementById('refresh-btn');
   if (refreshBtn) {
     refreshBtn.addEventListener('click', () => {
@@ -1308,8 +1490,12 @@ function resetAllFilters() {
   state.scope = 'all';
   state.seniority = 'all';
   state.company = 'all';
+  state.employmentType = 'all';
   state.source = 'all';
+  state.datePosted = 'all';
   state.directAtsOnly = false;
+  state.worldwideOnly = false;
+  state.salaryOnly = false;
   state.sortBy = 'newest';
   state.searchQuery = '';
   state.trackerTab = 'all';
@@ -1320,14 +1506,26 @@ function resetAllFilters() {
   const clearBtn = document.getElementById('clear-search-btn');
   if (clearBtn) clearBtn.classList.add('hidden');
 
+  const roleSelect = document.getElementById('role-select');
+  if (roleSelect) roleSelect.value = 'all';
+
   const expSelect = document.getElementById('exp-select');
   if (expSelect) expSelect.value = 'all';
+
+  const senioritySelect = document.getElementById('seniority-select');
+  if (senioritySelect) senioritySelect.value = 'all';
 
   const compSelect = document.getElementById('company-select');
   if (compSelect) compSelect.value = 'all';
 
+  const empSelect = document.getElementById('employment-select');
+  if (empSelect) empSelect.value = 'all';
+
   const srcSelect = document.getElementById('source-select');
   if (srcSelect) srcSelect.value = 'all';
+
+  const dateSelect = document.getElementById('date-posted-select');
+  if (dateSelect) dateSelect.value = 'all';
 
   const sortSelect = document.getElementById('sort-select');
   if (sortSelect) sortSelect.value = 'newest';
@@ -1335,7 +1533,14 @@ function resetAllFilters() {
   const directAtsCheck = document.getElementById('direct-ats-checkbox');
   if (directAtsCheck) directAtsCheck.checked = false;
 
-  updateDirectAtsPanelVisibility();
+  const worldwideCheck = document.getElementById('worldwide-checkbox');
+  if (worldwideCheck) worldwideCheck.checked = false;
+
+  const salaryCheck = document.getElementById('salary-checkbox');
+  if (salaryCheck) salaryCheck.checked = false;
+
+  populateCompanyDropdown();
+  renderTopCompanyChips();
 
   // Reset Role Pills
   const rolePills = document.querySelectorAll('.role-pill');
@@ -1353,9 +1558,9 @@ function resetAllFilters() {
     const el = document.getElementById(id);
     if (!el) return;
     if (idx === 0) {
-      el.className = 'scope-tab active px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition whitespace-nowrap cursor-pointer';
+      el.className = 'scope-tab active px-3 py-1 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 transition cursor-pointer';
     } else {
-      el.className = 'scope-tab px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition whitespace-nowrap cursor-pointer';
+      el.className = 'scope-tab px-3 py-1 rounded-xl text-xs font-semibold text-slate-300 hover:text-white bg-slate-950 border border-slate-800 transition cursor-pointer';
     }
   });
 

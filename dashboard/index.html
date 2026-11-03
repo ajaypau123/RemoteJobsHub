@@ -216,13 +216,19 @@
         <!-- Trending Quick Searches -->
         <div class="flex overflow-x-auto no-scrollbar sm:flex-wrap items-center justify-start sm:justify-center gap-1.5 sm:gap-2 mt-4 text-xs text-slate-400 font-medium px-1">
           <span class="text-slate-500 font-semibold mr-1 shrink-0">Popular:</span>
-          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition" onclick="setQuickSearch('Worldwide')">🌐 Worldwide</button>
-          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition" onclick="setQuickSearch('React')">⚛️ React</button>
-          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition" onclick="setQuickSearch('Python')">🐍 Python</button>
-          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition" onclick="setQuickSearch('QA Automation')">🧪 QA Automation</button>
-          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition" onclick="setQuickSearch('SDET')">⚡ SDET</button>
-          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition" onclick="setQuickSearch('DevOps')">☁️ DevOps</button>
-          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition" onclick="setQuickSearch('Senior')">🎯 Senior</button>
+          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('Worldwide')">🌐 Worldwide</button>
+          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('React')">⚛️ React</button>
+          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('Python')">🐍 Python</button>
+          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('TypeScript')">🔷 TypeScript</button>
+          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('Node.js')">🟢 Node.js</button>
+          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('QA Automation')">🧪 QA Automation</button>
+          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('SDET')">⚡ SDET</button>
+          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('DevOps')">☁️ DevOps</button>
+          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('AWS')">☁️ AWS</button>
+          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('AI / LLM')">🤖 AI / LLM</button>
+          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('Go')">🐹 Go</button>
+          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('Java')">☕ Java</button>
+          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('Senior')">🎯 Senior</button>
         </div>
       </div>
 
@@ -301,121 +307,206 @@
     <!-- Faceted Filter Toolbar -->
     <div class="bg-slate-900/90 border border-slate-800 p-4 sm:p-5 rounded-2xl shadow-xl mb-6">
       
-      <!-- Top Row: Results Counter & Quick Scope Tabs -->
-      <div class="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-slate-800 gap-4">
-        
-        <!-- Results Counter & Status -->
-        <div class="flex items-center space-x-3">
-          <h2 class="text-base sm:text-lg font-bold text-white">
-            Remote Openings
+      <!-- Top Row: Available Positions Header, Quick Scope Pills & Reset Button -->
+      <div class="flex flex-wrap items-center justify-between pb-4 border-b border-slate-800 gap-3">
+        <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+          <h2 class="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-2">
+            <span>Available Positions</span>
           </h2>
           <span id="results-count-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
             0 jobs
           </span>
-        </div>
 
-        <!-- Scope Tabs: All vs Worldwide vs Americas vs Europe vs APAC -->
-        <div class="flex items-center overflow-x-auto no-scrollbar gap-1.5 p-1 bg-slate-950 rounded-xl border border-slate-800">
-          <button id="scope-all-btn" type="button" class="scope-tab active px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition whitespace-nowrap cursor-pointer">
-            🌐 All Regions
+          <!-- Quick Scope Pills matching user preferences -->
+          <button id="scope-all-btn" type="button" class="scope-tab active px-3 py-1 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 transition cursor-pointer">
+            🌍 All Jobs
           </button>
-          <button id="scope-worldwide-btn" type="button" class="scope-tab px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition whitespace-nowrap cursor-pointer">
-            🌍 Worldwide Only
+          <button id="scope-worldwide-btn" type="button" class="scope-tab px-3 py-1 rounded-xl text-xs font-semibold text-slate-300 hover:text-white bg-slate-950 border border-slate-800 transition cursor-pointer">
+            🌐 All Worldwide
           </button>
-          <button id="scope-americas-btn" type="button" class="scope-tab px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition whitespace-nowrap cursor-pointer">
+          <button id="scope-americas-btn" type="button" class="scope-tab hidden sm:inline-flex px-3 py-1 rounded-xl text-xs font-semibold text-slate-400 hover:text-white bg-slate-950 border border-slate-800 transition cursor-pointer">
             🇺🇸 Americas
           </button>
-          <button id="scope-europe-btn" type="button" class="scope-tab px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition whitespace-nowrap cursor-pointer">
-            🇪🇺 Europe/EMEA
+          <button id="scope-europe-btn" type="button" class="scope-tab hidden sm:inline-flex px-3 py-1 rounded-xl text-xs font-semibold text-slate-400 hover:text-white bg-slate-950 border border-slate-800 transition cursor-pointer">
+            🇪🇺 Europe
           </button>
-          <button id="scope-apac-btn" type="button" class="scope-tab px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition whitespace-nowrap cursor-pointer">
+          <button id="scope-apac-btn" type="button" class="scope-tab hidden sm:inline-flex px-3 py-1 rounded-xl text-xs font-semibold text-slate-400 hover:text-white bg-slate-950 border border-slate-800 transition cursor-pointer">
             🌏 APAC
+          </button>
+
+          <!-- Tracker Quick Pills -->
+          <button id="quick-saved-btn" type="button" class="px-3 py-1 rounded-xl text-xs font-semibold text-slate-300 hover:text-white bg-slate-950 border border-slate-800 transition cursor-pointer flex items-center gap-1.5">
+            <span>⭐ Saved</span>
+            <span id="quick-saved-count" class="px-1.5 py-0.2 rounded-full text-[10px] bg-amber-500/20 text-amber-300 font-bold">0</span>
+          </button>
+          <button id="quick-applied-btn" type="button" class="px-3 py-1 rounded-xl text-xs font-semibold text-slate-300 hover:text-white bg-slate-950 border border-slate-800 transition cursor-pointer flex items-center gap-1.5">
+            <span>✓ Applied</span>
+            <span id="quick-applied-count" class="px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-500/20 text-emerald-300 font-bold">0</span>
           </button>
         </div>
 
+        <!-- Reset Button -->
+        <button id="reset-filters-btn" type="button" class="px-3.5 py-1.5 text-xs font-bold text-emerald-400 hover:text-slate-950 bg-emerald-500/10 hover:bg-emerald-400 border border-emerald-500/30 rounded-xl transition cursor-pointer flex items-center gap-1.5 shadow-sm active:scale-95">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+          <span>Reset All Filters</span>
+        </button>
       </div>
 
-      <!-- Bottom Row: Filter Dropdowns & Direct ATS Toggle -->
-      <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 pt-4">
-        
-        <!-- Seniority / Experience Dropdown -->
+      <!-- Filter Controls: Row 1 -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-4">
+        <!-- 🎯 Job Role -->
         <div>
-          <label for="exp-select" class="block text-[11px] font-bold text-slate-400 mb-1">
-            ⚡ Seniority Level
+          <div class="flex items-center justify-between mb-1">
+            <label for="role-select" class="text-[11px] font-bold text-slate-400 flex items-center gap-1">
+              <span>🎯 Job Role</span>
+            </label>
+            <span class="text-[10px] font-bold text-emerald-400/80 bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.2 rounded">Essential</span>
+          </div>
+          <select id="role-select" class="w-full text-xs sm:text-sm bg-slate-950 border border-slate-800 hover:border-slate-700 focus:border-emerald-500 rounded-xl px-3 py-2 text-slate-200 outline-none transition font-medium cursor-pointer">
+            <option value="all">All Roles & Domains</option>
+            <option value="engineer">💻 Software Engineers</option>
+            <option value="qa">🧪 QA & SDET Testing</option>
+            <option value="ai">🤖 AI & Machine Learning</option>
+            <option value="devops">☁️ DevOps & Cloud</option>
+            <option value="data">📊 Data & Analytics</option>
+            <option value="mobile">📱 Mobile Apps</option>
+            <option value="design">🎨 Product & Design</option>
+          </select>
+        </div>
+
+        <!-- 🎓 Experience Level -->
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label for="exp-select" class="text-[11px] font-bold text-slate-400">
+              🎓 Experience Level
+            </label>
+          </div>
+          <select id="exp-select" class="w-full text-xs sm:text-sm bg-slate-950 border border-slate-800 hover:border-slate-700 focus:border-emerald-500 rounded-xl px-3 py-2 text-slate-200 outline-none transition font-medium cursor-pointer">
+            <option value="all">All Experience Levels</option>
+            <option value="junior">⚡ Junior / Entry Level (~0-2 yrs)</option>
+            <option value="mid">🚀 Mid-Level (~2-5 yrs)</option>
+            <option value="senior">🎯 Senior Level (~5+ yrs)</option>
+            <option value="lead">👑 Lead / Staff / Principal (~8+ yrs)</option>
+          </select>
+        </div>
+
+        <!-- 🏢 Company -->
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label for="company-select" class="text-[11px] font-bold text-slate-400">
+              🏢 Company
+            </label>
+            <span id="company-count-badge" class="text-[10px] font-semibold text-slate-400">500+ available</span>
+          </div>
+          <select id="company-select" class="w-full text-xs sm:text-sm bg-slate-950 border border-slate-800 hover:border-slate-700 focus:border-emerald-500 rounded-xl px-3 py-2 text-slate-200 outline-none transition font-medium cursor-pointer">
+            <option value="all">All Companies</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Filter Controls: Row 2 -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
+        <!-- 💼 Seniority Level -->
+        <div>
+          <label for="seniority-select" class="block text-[11px] font-bold text-slate-400 mb-1">
+            💼 Seniority Level
           </label>
-          <select id="exp-select" class="w-full text-xs sm:text-sm bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-200 outline-none focus:border-emerald-500">
-            <option value="all">All Seniority</option>
-            <option value="junior">Junior / Entry (~0-2 yrs)</option>
-            <option value="mid">Mid-Level (~2-5 yrs)</option>
-            <option value="senior">Senior (5+ yrs)</option>
+          <select id="seniority-select" class="w-full text-xs sm:text-sm bg-slate-950 border border-slate-800 hover:border-slate-700 focus:border-emerald-500 rounded-xl px-3 py-2 text-slate-200 outline-none transition font-medium cursor-pointer">
+            <option value="all">All Seniority Levels</option>
+            <option value="junior">Entry / Junior</option>
+            <option value="mid">Mid-Level</option>
+            <option value="senior">Senior</option>
             <option value="lead">Lead / Staff / Principal</option>
           </select>
         </div>
 
-        <!-- Source Dropdown -->
+        <!-- ⏰ Employment Type -->
         <div>
-          <label for="source-select" class="block text-[11px] font-bold text-slate-400 mb-1">
-            🎯 Job Source
+          <label for="employment-select" class="block text-[11px] font-bold text-slate-400 mb-1">
+            ⏰ Employment Type
           </label>
-          <select id="source-select" class="w-full text-xs sm:text-sm bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-200 outline-none focus:border-emerald-500">
-            <option value="all">All Sources</option>
-            <option value="CompanyATS">Direct Company ATS 🎯</option>
-            <option value="Himalayas">Himalayas</option>
-            <option value="Remotive">Remotive</option>
-            <option value="RemoteOK">RemoteOK</option>
-            <option value="Jobicy">Jobicy</option>
-            <option value="WeWorkRemotely">WeWorkRemotely</option>
+          <select id="employment-select" class="w-full text-xs sm:text-sm bg-slate-950 border border-slate-800 hover:border-slate-700 focus:border-emerald-500 rounded-xl px-3 py-2 text-slate-200 outline-none transition font-medium cursor-pointer">
+            <option value="all">All Employment Types</option>
+            <option value="full-time">💼 Full-time</option>
+            <option value="contract">📝 Contract / Freelance</option>
+            <option value="internship">🎓 Internship / Graduate</option>
+            <option value="part-time">⏱️ Part-time</option>
           </select>
         </div>
 
-        <!-- Sort By Dropdown -->
+        <!-- 📡 ATS / Source Platform -->
         <div>
-          <label for="sort-select" class="block text-[11px] font-bold text-slate-400 mb-1">
-            ↕️ Sort By
+          <label for="source-select" class="block text-[11px] font-bold text-slate-400 mb-1">
+            📡 ATS / Source Platform
           </label>
-          <select id="sort-select" class="w-full text-xs sm:text-sm bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-200 outline-none focus:border-emerald-500">
+          <select id="source-select" class="w-full text-xs sm:text-sm bg-slate-950 border border-slate-800 hover:border-slate-700 focus:border-emerald-500 rounded-xl px-3 py-2 text-slate-200 outline-none transition font-medium cursor-pointer">
+            <option value="all">All Sources & ATS</option>
+            <option value="ashby">🏢 Ashby ATS (1,600+ jobs)</option>
+            <option value="greenhouse">🌿 Greenhouse ATS (1,500+ jobs)</option>
+            <option value="lever">⚓ Lever ATS (200+ jobs)</option>
+            <option value="workday">💼 Workday Portals</option>
+            <option value="CompanyATS">⚡ Direct Company ATS (Any)</option>
+            <option value="Himalayas">🏔️ Himalayas</option>
+            <option value="WeWorkRemotely">🌐 WeWorkRemotely</option>
+            <option value="Remotive">💻 Remotive</option>
+            <option value="RemoteOK">⚡ RemoteOK</option>
+            <option value="Jobicy">🎯 Jobicy</option>
+          </select>
+        </div>
+
+        <!-- ⚡ Date Posted -->
+        <div>
+          <label for="date-posted-select" class="block text-[11px] font-bold text-slate-400 mb-1">
+            ⚡ Date Posted
+          </label>
+          <select id="date-posted-select" class="w-full text-xs sm:text-sm bg-slate-950 border border-slate-800 hover:border-slate-700 focus:border-emerald-500 rounded-xl px-3 py-2 text-slate-200 outline-none transition font-medium cursor-pointer">
+            <option value="all">🌐 All Active Openings</option>
+            <option value="24h">⚡ Past 24 Hours / Today</option>
+            <option value="3d">🕒 Past 3 Days</option>
+            <option value="7d">📅 Past 7 Days (This Week)</option>
+            <option value="14d">🗓️ Past 14 Days</option>
+            <option value="30d">🗓️ Past 30 Days</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Quick Toggles & Sorting: Row 3 -->
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pt-4 mt-2 border-t border-slate-800/80">
+        <!-- Left Checkboxes -->
+        <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+          <label class="flex items-center gap-2 px-3 py-2 bg-slate-950 border border-slate-800 hover:border-emerald-500/50 rounded-xl cursor-pointer transition select-none">
+            <input type="checkbox" id="direct-ats-checkbox" class="w-4 h-4 text-emerald-500 rounded bg-slate-900 border-slate-700 focus:ring-emerald-500">
+            <span class="text-xs font-bold text-emerald-400 whitespace-nowrap">🎯 Direct ATS Apply Only</span>
+          </label>
+          <label class="flex items-center gap-2 px-3 py-2 bg-slate-950 border border-slate-800 hover:border-emerald-500/50 rounded-xl cursor-pointer transition select-none">
+            <input type="checkbox" id="worldwide-checkbox" class="w-4 h-4 text-emerald-500 rounded bg-slate-900 border-slate-700 focus:ring-emerald-500">
+            <span class="text-xs font-semibold text-slate-300 whitespace-nowrap">🌐 Worldwide Remote</span>
+          </label>
+          <label class="flex items-center gap-2 px-3 py-2 bg-slate-950 border border-slate-800 hover:border-emerald-500/50 rounded-xl cursor-pointer transition select-none">
+            <input type="checkbox" id="salary-checkbox" class="w-4 h-4 text-emerald-500 rounded bg-slate-900 border-slate-700 focus:ring-emerald-500">
+            <span class="text-xs font-semibold text-slate-300 whitespace-nowrap">💰 Salary Disclosed</span>
+          </label>
+        </div>
+
+        <!-- Right: Sort By Dropdown -->
+        <div class="flex items-center gap-2 shrink-0">
+          <label for="sort-select" class="text-xs font-semibold text-slate-400 whitespace-nowrap">
+            Sort by:
+          </label>
+          <select id="sort-select" class="text-xs sm:text-sm bg-slate-950 border border-slate-800 hover:border-slate-700 focus:border-emerald-500 rounded-xl px-3 py-2 text-slate-200 outline-none transition font-medium cursor-pointer">
             <option value="newest">⚡ Newest First</option>
+            <option value="salary-high">💰 Salary: High-to-Low</option>
+            <option value="volume">🏢 Hiring Volume (Most Jobs)</option>
             <option value="company">🏢 Company (A-Z)</option>
             <option value="title">💼 Title (A-Z)</option>
           </select>
         </div>
-
-        <!-- Direct ATS Checkbox Filter -->
-        <div class="flex flex-col justify-end">
-          <label class="flex items-center gap-2 p-2 bg-slate-950 border border-slate-800 hover:border-emerald-500/50 rounded-xl cursor-pointer transition">
-            <input type="checkbox" id="direct-ats-checkbox" class="w-4 h-4 text-emerald-500 rounded bg-slate-900 border-slate-700 focus:ring-emerald-500">
-            <span class="text-xs font-bold text-emerald-400 whitespace-nowrap">⚡ Direct ATS</span>
-          </label>
-        </div>
-
-        <!-- Reset Button -->
-        <div class="flex items-end">
-          <button id="reset-filters-btn" type="button" class="w-full py-2 px-3 text-xs font-semibold text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-xl transition border border-slate-700 cursor-pointer">
-            Reset Filters
-          </button>
-        </div>
-
       </div>
 
-      <!-- Direct ATS Company Filter Section (Revealed when Direct ATS is selected) -->
-      <div id="direct-ats-company-panel" class="hidden mt-4 pt-4 border-t border-slate-800 transition-all">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-2">
-          <div class="flex items-center gap-2 flex-wrap">
-            <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-              ⚡ Direct ATS Company Filter
-            </span>
-            <span class="text-xs font-bold text-white">Filter by Company & Jobs Count:</span>
-          </div>
-          <div class="w-full md:w-80">
-            <select id="company-select" class="w-full text-xs sm:text-sm bg-slate-950 border-2 border-emerald-500/50 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-400 shadow-lg shadow-emerald-500/10">
-              <option value="all">🏢 All Direct ATS Companies</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Quick Top Employers Chips -->
-        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-2 text-xs text-slate-400 font-medium" id="top-companies-chips">
-          <!-- Dynamically populated chips -->
+      <!-- Top Employers Quick Chips Bar -->
+      <div class="mt-3 pt-3 border-t border-slate-800/60">
+        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1 text-xs text-slate-400 font-medium" id="top-companies-chips">
+          <!-- Dynamically populated chips in app.js -->
         </div>
       </div>
     </div>
