@@ -1,28 +1,34 @@
 /**
  * RemoteJobsHub - Global Remote Tech Jobs Web Application
  * Lightweight, zero-dependency, ultra-fast client-side search & filtering engine.
+ * Features: Faceted filtering, Direct ATS indexer, View Mode Switcher, Application Tracker, Numbered Pagination.
  */
 
 // ── State Management ──────────────────────────────────────────────────────────
 const state = {
   allJobs: [],
   filteredJobs: [],
-  renderedCount: 0,
-  pageSize: 30,
+  pageSize: parseInt(localStorage.getItem('rjh_page_size') || '30', 10),
+  currentPage: 1,
   savedJobIds: getSavedJobIds(),
+  appliedJobs: getAppliedJobs(), // { [jobId]: { appliedAt, status, notes } }
   
+  // Layout & Navigation Modes
+  viewMode: localStorage.getItem('rjh_view_mode') || 'card', // 'card' | 'list'
+  trackerTab: 'all', // 'all' | 'saved' | 'applied'
+
   // Filters
   category: 'all',
   scope: 'all',
   seniority: 'all',
+  company: 'all',
   source: 'all',
   directAtsOnly: false,
   sortBy: 'newest',
   searchQuery: '',
-  trackerTab: 'all', // 'all' | 'saved'
 };
 
-// ── Local Storage for Saved Jobs ──────────────────────────────────────────────
+// ── Local Storage: Saved & Applied Jobs ───────────────────────────────────────
 function getSavedJobIds() {
   try {
     const raw = localStorage.getItem('rjh_saved_jobs');
@@ -35,9 +41,9 @@ function getSavedJobIds() {
 function persistSavedJobs() {
   try {
     localStorage.setItem('rjh_saved_jobs', JSON.stringify(Array.from(state.savedJobIds)));
-    updateSavedCounters();
+    updateTrackerCounters();
   } catch (e) {
-    console.error('Failed saving to localStorage', e);
+    console.error('Failed saving saved jobs to localStorage', e);
   }
 }
 
@@ -49,13 +55,86 @@ function toggleSaveJob(jobId, e) {
     state.savedJobIds.add(jobId);
   }
   persistSavedJobs();
-  renderJobCards(false);
+  renderJobCards();
 }
 
-function updateSavedCounters() {
-  const count = state.savedJobIds.size;
-  const navCount = document.getElementById('nav-saved-count');
-  if (navCount) navCount.textContent = count;
+function getAppliedJobs() {
+  try {
+    const raw = localStorage.getItem('rjh_applied_jobs');
+    return raw ? JSON.parse(raw) : {};
+  } catch (e) {
+    return {};
+  }
+}
+
+function persistAppliedJobs() {
+  try {
+    localStorage.setItem('rjh_applied_jobs', JSON.stringify(state.appliedJobs));
+    updateTrackerCounters();
+  } catch (e) {
+    console.error('Failed saving applied jobs to localStorage', e);
+  }
+}
+
+function isJobApplied(jobId) {
+  return !!state.appliedJobs[jobId];
+}
+
+function toggleApplyJob(jobId, e) {
+  if (e) e.stopPropagation();
+  if (state.appliedJobs[jobId]) {
+    delete state.appliedJobs[jobId];
+  } else {
+    state.appliedJobs[jobId] = {
+      appliedAt: new Date().toISOString(),
+      status: 'Applied'
+    };
+  }
+  persistAppliedJobs();
+  renderJobCards();
+}
+
+function updateTrackerCounters() {
+  const savedCount = state.savedJobIds.size;
+  const appliedCount = Object.keys(state.appliedJobs).length;
+  const allCount = state.allJobs.length;
+
+  // Header badges
+  const navSaved = document.getElementById('nav-saved-count');
+  if (navSaved) navSaved.textContent = savedCount.toLocaleString();
+
+  const navApplied = document.getElementById('nav-applied-count');
+  if (navApplied) navApplied.textContent = appliedCount.toLocaleString();
+
+  // Tab badges
+  const tabAll = document.getElementById('tab-all-count');
+  if (tabAll) tabAll.textContent = allCount.toLocaleString();
+
+  const tabSaved = document.getElementById('tab-saved-count');
+  if (tabSaved) tabSaved.textContent = savedCount.toLocaleString();
+
+  const tabApplied = document.getElementById('tab-applied-count');
+  if (tabApplied) tabApplied.textContent = appliedCount.toLocaleString();
+}
+
+// ── Application Tracking Floating Toast ───────────────────────────────────────
+let pendingToastJobId = null;
+
+function handleExternalApply(jobId, companyName, e) {
+  if (e) e.stopPropagation();
+  pendingToastJobId = jobId;
+  const toast = document.getElementById('applied-toast');
+  const toastTitle = document.getElementById('toast-title');
+
+  if (toast && toastTitle) {
+    toastTitle.textContent = `Applying to ${companyName}?`;
+    toast.classList.remove('hidden');
+
+    clearTimeout(window.__toastTimer);
+    window.__toastTimer = setTimeout(() => {
+      toast.classList.add('hidden');
+    }, 12000);
+  }
 }
 
 // ── Common Tech Stack Tag Extractor ───────────────────────────────────────────
@@ -143,11 +222,155 @@ function escapeHtml(str) {
     .replace(/'/g, '&#039;');
 }
 
+// ── Date & Time Utilities ─────────────────────────────────────────────────────
+function formatRelativeDate(dateStr) {
+  if (!dateStr) return '';
+  try {
+    const parts = dateStr.split('-');
+    let posted;
+    if (parts.length === 3 && parts[0].length === 4) {
+      posted = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+    } else {
+      posted = new Date(dateStr);
+    }
+    if (isNaN(posted.getTime())) return '';
+    
+    const now = new Date();
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const startOfPosted = new Date(posted.getFullYear(), posted.getMonth(), posted.getDate());
+    const diffDays = Math.round((startOfToday - startOfPosted) / (1000 * 60 * 60 * 24));
+
+    if (diffDays <= 0) return '⚡ Today';
+    if (diffDays === 1) return '🕒 Yesterday';
+    if (diffDays < 7) return `🕒 ${diffDays}d ago`;
+    if (diffDays < 30) return `🕒 ${Math.floor(diffDays / 7)}w ago`;
+    return `🕒 ${Math.floor(diffDays / 30)}mo ago`;
+  } catch (e) {
+    return '';
+  }
+}
+
+// ── Company Dropdown & Direct ATS Panel ────────────────────────────────────────
+function updateDirectAtsPanelVisibility() {
+  const isDirectAts = state.directAtsOnly || state.source === 'CompanyATS';
+  const panel = document.getElementById('direct-ats-company-panel');
+  if (panel) {
+    if (isDirectAts) {
+      panel.classList.remove('hidden');
+      populateCompanyDropdown();
+      renderTopCompanyChips();
+    } else {
+      panel.classList.add('hidden');
+      state.company = 'all';
+      const companySelect = document.getElementById('company-select');
+      if (companySelect) companySelect.value = 'all';
+    }
+  }
+}
+
+function populateCompanyDropdown() {
+  const companySelect = document.getElementById('company-select');
+  if (!companySelect) return;
+
+  const isDirectAtsActive = state.directAtsOnly || state.source === 'CompanyATS';
+  const companyCounts = {};
+  let totalMatchingJobs = 0;
+
+  state.allJobs.forEach(job => {
+    const isDirectAts = !!job.direct_apply_url || job.source === 'CompanyATS';
+    if (isDirectAtsActive && !isDirectAts) return;
+
+    const c = (job.company || '').trim();
+    if (c) {
+      companyCounts[c] = (companyCounts[c] || 0) + 1;
+      totalMatchingJobs++;
+    }
+  });
+
+  // Sort companies by number of jobs descending, then alphabetically
+  const sortedCompanies = Object.keys(companyCounts).sort((a, b) => {
+    const diff = companyCounts[b] - companyCounts[a];
+    if (diff !== 0) return diff;
+    return a.localeCompare(b, undefined, { sensitivity: 'base' });
+  });
+
+  const totalCompanies = sortedCompanies.length;
+  const currentVal = (state.company || 'all').toLowerCase();
+
+  companySelect.innerHTML = `<option value="all">🏢 All Companies (${totalCompanies} employers • ${totalMatchingJobs.toLocaleString()} jobs)</option>`;
+
+  sortedCompanies.forEach(comp => {
+    const count = companyCounts[comp];
+    const opt = document.createElement('option');
+    opt.value = comp;
+    opt.textContent = `${comp} (${count.toLocaleString()} ${count === 1 ? 'job' : 'jobs'})`;
+    if (comp.toLowerCase() === currentVal) {
+      opt.selected = true;
+    }
+    companySelect.appendChild(opt);
+  });
+}
+
+function renderTopCompanyChips() {
+  const container = document.getElementById('top-companies-chips');
+  if (!container) return;
+
+  const isDirectAtsActive = state.directAtsOnly || state.source === 'CompanyATS';
+  const companyCounts = {};
+
+  state.allJobs.forEach(job => {
+    const isDirectAts = !!job.direct_apply_url || job.source === 'CompanyATS';
+    if (isDirectAtsActive && !isDirectAts) return;
+
+    const c = (job.company || '').trim();
+    if (c) {
+      companyCounts[c] = (companyCounts[c] || 0) + 1;
+    }
+  });
+
+  // Top 12 employers by open positions
+  const topCompanies = Object.entries(companyCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 12);
+
+  const isAll = state.company === 'all';
+  container.innerHTML = `
+    <span class="text-[11px] font-bold text-slate-400 shrink-0 mr-1">Top ATS Employers:</span>
+    <button 
+      type="button" 
+      onclick="selectCompany('all')" 
+      class="company-chip px-2.5 py-1 rounded-lg text-xs font-bold ${isAll ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20' : 'bg-slate-900 text-slate-300 hover:text-white border border-slate-800'} transition shrink-0 cursor-pointer"
+    >
+      All Employers
+    </button>
+  `;
+
+  topCompanies.forEach(([comp, count]) => {
+    const isSelected = state.company.toLowerCase() === comp.toLowerCase();
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = `company-chip px-2.5 py-1 rounded-lg text-xs font-semibold ${isSelected ? 'bg-emerald-500 text-slate-950 font-bold shadow-md shadow-emerald-500/20' : 'bg-slate-900 text-slate-300 hover:text-emerald-400 border border-slate-800'} transition shrink-0 cursor-pointer flex items-center gap-1`;
+    btn.innerHTML = `<span>${escapeHtml(comp)}</span><span class="${isSelected ? 'text-slate-950 font-black' : 'text-emerald-400 font-bold'}">(${count})</span>`;
+    btn.onclick = () => selectCompany(comp);
+    container.appendChild(btn);
+  });
+}
+
+function selectCompany(compName) {
+  state.company = compName;
+  const companySelect = document.getElementById('company-select');
+  if (companySelect) companySelect.value = compName;
+  renderTopCompanyChips();
+  state.currentPage = 1;
+  applyFilters();
+}
+
 // ── Application Initialization ────────────────────────────────────────────────
 function init() {
   loadJobsData();
   bindEventHandlers();
-  updateSavedCounters();
+  updateTrackerCounters();
+  syncViewModeUI();
 }
 
 if (document.readyState === 'loading') {
@@ -176,7 +399,6 @@ function loadJobsData() {
       onJobsLoaded();
     } else if (attempts >= 10) {
       clearInterval(pollTimer);
-      // Fallback: fetch JSON if jobs_latest.js was empty or pending
       fetch('jobs_latest.json')
         .then(res => res.json())
         .then(data => {
@@ -201,6 +423,62 @@ function onJobsLoaded() {
   if (headerCount) {
     headerCount.textContent = `${count.toLocaleString()} verified remote jobs`;
   }
+  updateTrackerCounters();
+  populateCompanyDropdown();
+  applyFilters();
+}
+
+// ── View Mode & Tracker Tabs ──────────────────────────────────────────────────
+function syncViewModeUI() {
+  const cardBtn = document.getElementById('view-card-btn');
+  const listBtn = document.getElementById('view-list-btn');
+
+  if (cardBtn && listBtn) {
+    if (state.viewMode === 'card') {
+      cardBtn.className = 'view-mode-btn active px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition flex items-center gap-1.5 cursor-pointer shadow-sm';
+      listBtn.className = 'view-mode-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5 cursor-pointer';
+    } else {
+      listBtn.className = 'view-mode-btn active px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition flex items-center gap-1.5 cursor-pointer shadow-sm';
+      cardBtn.className = 'view-mode-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5 cursor-pointer';
+    }
+  }
+}
+
+function setViewMode(mode) {
+  state.viewMode = mode;
+  localStorage.setItem('rjh_view_mode', mode);
+  syncViewModeUI();
+  renderJobCards();
+}
+
+function setTrackerTab(tab) {
+  state.trackerTab = tab;
+  state.currentPage = 1;
+
+  const tabs = [
+    { id: 'tab-all-jobs-btn', tab: 'all' },
+    { id: 'tab-saved-jobs-btn', tab: 'saved' },
+    { id: 'tab-applied-jobs-btn', tab: 'applied' }
+  ];
+
+  tabs.forEach(t => {
+    const el = document.getElementById(t.id);
+    if (!el) return;
+    if (t.tab === tab) {
+      el.className = 'tracker-nav-tab active px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 transition cursor-pointer flex items-center gap-2 whitespace-nowrap shadow-md shadow-emerald-500/20';
+      const badge = el.querySelector('span:last-child');
+      if (badge) badge.className = 'px-1.5 py-0.2 rounded-full text-[10px] bg-slate-950/20 text-slate-950 font-black';
+    } else {
+      el.className = 'tracker-nav-tab px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white bg-slate-950 border border-slate-800 transition cursor-pointer flex items-center gap-2 whitespace-nowrap';
+      const badge = el.querySelector('span:last-child');
+      if (badge) {
+        if (t.tab === 'saved') badge.className = 'px-1.5 py-0.2 rounded-full text-[10px] bg-amber-500/20 text-amber-300 font-bold';
+        else if (t.tab === 'applied') badge.className = 'px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-500/20 text-emerald-300 font-bold';
+        else badge.className = 'px-1.5 py-0.2 rounded-full text-[10px] bg-slate-800 text-slate-400 font-bold';
+      }
+    }
+  });
+
   applyFilters();
 }
 
@@ -214,12 +492,19 @@ function applyFilters() {
   const atsOnly = state.directAtsOnly;
 
   let results = state.allJobs.filter(job => {
-    // 1. Saved Tab Filter
+    // 1. Tracker Tab Filter (All | Saved | Applied)
     if (state.trackerTab === 'saved') {
       if (!state.savedJobIds.has(job.job_id)) return false;
+    } else if (state.trackerTab === 'applied') {
+      if (!state.appliedJobs[job.job_id]) return false;
     }
 
-    // 2. Query Search (Title, Company, Location, Description)
+    // 2. Company Filter
+    if (state.company !== 'all') {
+      if ((job.company || '').trim().toLowerCase() !== state.company.toLowerCase()) return false;
+    }
+
+    // 3. Query Search (Title, Company, Location, Description)
     if (query) {
       const titleMatch = (job.title || '').toLowerCase().includes(query);
       const companyMatch = (job.company || '').toLowerCase().includes(query);
@@ -228,34 +513,34 @@ function applyFilters() {
       if (!titleMatch && !companyMatch && !locMatch && !descMatch) return false;
     }
 
-    // 3. Category Filter
+    // 4. Category Filter
     if (cat !== 'all') {
       const title = (job.title || '').toLowerCase();
       if (cat === 'engineer') {
-        const isEng = /\b(engineer|developer|architect|fullstack|frontend|backend|software)\b/i.test(title);
+        const isEng = /\\b(engineer|developer|architect|fullstack|frontend|backend|software)\\b/i.test(title);
         if (!isEng) return false;
       } else if (cat === 'qa') {
-        const isQA = /\b(qa|quality\s+assurance|tester|testing|sdet|test\s+engineer|automation)\b/i.test(title);
+        const isQA = /\\b(qa|quality\\s+assurance|tester|testing|sdet|test\\s+engineer|automation)\\b/i.test(title);
         if (!isQA) return false;
       } else if (cat === 'ai') {
-        const isAI = /\b(ai|artificial\s+intelligence|machine\s+learning|ml|llm|data\s+scientist|nlp|deep\s+learning)\b/i.test(title);
+        const isAI = /\\b(ai|artificial\\s+intelligence|machine\\s+learning|ml|llm|data\\s+scientist|nlp|deep\\s+learning)\\b/i.test(title);
         if (!isAI) return false;
       } else if (cat === 'devops') {
-        const isDevOps = /\b(devops|sre|reliability|cloud|infrastructure|platform|kubernetes|aws)\b/i.test(title);
+        const isDevOps = /\\b(devops|sre|reliability|cloud|infrastructure|platform|kubernetes|aws)\\b/i.test(title);
         if (!isDevOps) return false;
       } else if (cat === 'data') {
-        const isData = /\b(data\s+engineer|bi|analyst|analytics|database|etl|pipeline)\b/i.test(title);
+        const isData = /\\b(data\\s+engineer|bi|analyst|analytics|database|etl|pipeline)\\b/i.test(title);
         if (!isData) return false;
       } else if (cat === 'mobile') {
-        const isMobile = /\b(ios|android|mobile|flutter|react\s+native|swift|kotlin)\b/i.test(title);
+        const isMobile = /\\b(ios|android|mobile|flutter|react\\s+native|swift|kotlin)\\b/i.test(title);
         if (!isMobile) return false;
       } else if (cat === 'design') {
-        const isDesign = /\b(designer|ui|ux|product\s+designer|graphic|creative)\b/i.test(title);
+        const isDesign = /\\b(designer|ui|ux|product\\s+designer|graphic|creative)\\b/i.test(title);
         if (!isDesign) return false;
       }
     }
 
-    // 4. Remote Scope Filter
+    // 5. Remote Scope Filter
     if (scope !== 'all') {
       const rScope = (job.remote_scope || '').toLowerCase();
       const loc = (job.location || '').toLowerCase();
@@ -279,26 +564,26 @@ function applyFilters() {
       }
     }
 
-    // 5. Seniority Filter
+    // 6. Seniority Filter
     if (sen !== 'all') {
       const title = (job.title || '').toLowerCase();
       if (sen === 'junior') {
-        if (!/\b(junior|jr|entry|associate|intern|trainee)\b/i.test(title)) return false;
+        if (!/\\b(junior|jr|entry|associate|intern|trainee)\\b/i.test(title)) return false;
       } else if (sen === 'mid') {
-        if (/\b(senior|sr|lead|staff|principal|director|head|vp)\b/i.test(title)) return false;
+        if (/\\b(senior|sr|lead|staff|principal|director|head|vp)\\b/i.test(title)) return false;
       } else if (sen === 'senior') {
-        if (!/\b(senior|sr|lead)\b/i.test(title) || /\b(principal|staff|director)\b/i.test(title)) return false;
+        if (!/\\b(senior|sr|lead)\\b/i.test(title) || /\\b(principal|staff|director)\\b/i.test(title)) return false;
       } else if (sen === 'lead') {
-        if (!/\b(lead|staff|principal|director|head|architect)\b/i.test(title)) return false;
+        if (!/\\b(lead|staff|principal|director|head|architect)\\b/i.test(title)) return false;
       }
     }
 
-    // 6. Source Filter
+    // 7. Source Filter
     if (src !== 'all') {
       if (job.source !== src) return false;
     }
 
-    // 7. Direct ATS Only Filter
+    // 8. Direct ATS Only Filter
     if (atsOnly) {
       if (!job.direct_apply_url && job.source !== 'CompanyATS') return false;
     }
@@ -321,39 +606,68 @@ function applyFilters() {
   }
 
   state.filteredJobs = results;
-  state.renderedCount = 0;
   
   // Update Results Badge
   const badge = document.getElementById('results-count-badge');
   if (badge) {
-    badge.textContent = `${results.length.toLocaleString()} jobs`;
+    if (state.trackerTab === 'applied') {
+      badge.textContent = `${results.length.toLocaleString()} applied positions`;
+    } else if (state.trackerTab === 'saved') {
+      badge.textContent = `${results.length.toLocaleString()} saved positions`;
+    } else if (state.company !== 'all') {
+      badge.textContent = `${results.length.toLocaleString()} jobs at ${state.company}`;
+    } else {
+      badge.textContent = `${results.length.toLocaleString()} jobs`;
+    }
   }
 
-  renderJobCards(true);
+  renderJobCards();
 }
 
-// ── Render Job Cards to DOM ────────────────────────────────────────────────────
-function renderJobCards(reset = false) {
+// ── Render Job Listings (Cards vs List) & Numbered Pagination ─────────────────
+function goToPage(page) {
+  const totalPages = Math.ceil(state.filteredJobs.length / state.pageSize) || 1;
+  state.currentPage = Math.max(1, Math.min(page, totalPages));
+  renderJobCards();
+  document.getElementById('main-content')?.scrollIntoView({ behavior: 'smooth' });
+}
+
+function renderJobCards() {
   const container = document.getElementById('job-grid');
   const paginationBar = document.getElementById('pagination-bar');
-  const showingEl = document.getElementById('showing-count');
-  const totalEl = document.getElementById('total-count');
+  const rangeStartEl = document.getElementById('showing-range-start');
+  const rangeEndEl = document.getElementById('showing-range-end');
+  const totalCountEl = document.getElementById('total-count');
 
-  if (reset) {
-    container.innerHTML = '';
-    state.renderedCount = 0;
-  }
+  if (!container) return;
+  container.innerHTML = '';
 
-  if (state.filteredJobs.length === 0) {
+  const totalJobs = state.filteredJobs.length;
+  const totalPages = Math.ceil(totalJobs / state.pageSize) || 1;
+  state.currentPage = Math.max(1, Math.min(state.currentPage, totalPages));
+
+  if (totalJobs === 0) {
+    let emptyTitle = 'No matching remote positions found';
+    let emptyMsg = 'Try loosening your keywords, switching to "All Regions", or resetting your filters.';
+
+    if (state.trackerTab === 'applied') {
+      emptyTitle = 'No applied jobs recorded yet';
+      emptyMsg = 'Click "✅ Mark as Applied" on any job card when you submit your application to track your status here!';
+    } else if (state.trackerTab === 'saved') {
+      emptyTitle = 'No saved jobs in your list';
+      emptyMsg = 'Bookmark interesting remote jobs by clicking the ⭐ icon on any card.';
+    }
+
+    container.className = 'min-h-[300px] flex items-center justify-center';
     container.innerHTML = `
-      <div class="p-12 text-center bg-slate-900 border border-slate-800 rounded-2xl">
-        <div class="text-4xl mb-3">🔍</div>
-        <h3 class="text-lg font-bold text-white mb-1">No matching remote positions found</h3>
-        <p class="text-xs text-slate-400 max-w-sm mx-auto mb-4">
-          Try loosening your keywords, switching to "All Regions", or resetting your filters.
+      <div class="p-10 sm:p-14 text-center bg-slate-900 border border-slate-800 rounded-3xl max-w-lg mx-auto shadow-2xl">
+        <div class="text-5xl mb-4">🔍</div>
+        <h3 class="text-lg font-bold text-white mb-2">${emptyTitle}</h3>
+        <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
+          ${emptyMsg}
         </p>
-        <button onclick="resetAllFilters()" class="px-4 py-2 text-xs font-bold bg-emerald-500 text-slate-950 rounded-xl hover:bg-emerald-400 transition cursor-pointer">
-          Reset All Filters
+        <button onclick="resetAllFilters()" class="px-5 py-2.5 text-xs font-bold bg-emerald-500 text-slate-950 rounded-xl hover:bg-emerald-400 transition cursor-pointer shadow-lg shadow-emerald-500/20 active:scale-95">
+          Show All Remote Openings ➔
         </button>
       </div>
     `;
@@ -363,23 +677,33 @@ function renderJobCards(reset = false) {
 
   if (paginationBar) paginationBar.classList.remove('hidden');
 
-  const start = state.renderedCount;
-  const end = Math.min(start + state.pageSize, state.filteredJobs.length);
-  const chunk = state.filteredJobs.slice(start, end);
+  const startIndex = (state.currentPage - 1) * state.pageSize;
+  const endIndex = Math.min(startIndex + state.pageSize, totalJobs);
+  const chunk = state.filteredJobs.slice(startIndex, endIndex);
+
+  // Update Range and Total Numbers
+  if (rangeStartEl) rangeStartEl.textContent = (startIndex + 1).toLocaleString();
+  if (rangeEndEl) rangeEndEl.textContent = endIndex.toLocaleString();
+  if (totalCountEl) totalCountEl.textContent = totalJobs.toLocaleString();
+
+  // Set Container Layout class based on View Mode
+  if (state.viewMode === 'list') {
+    container.className = 'flex flex-col space-y-2 min-h-[400px]';
+  } else {
+    container.className = 'grid grid-cols-1 md:grid-cols-2 gap-3.5 min-h-[400px]';
+  }
 
   const fragment = document.createDocumentFragment();
 
   chunk.forEach(job => {
-    const card = document.createElement('div');
-    card.className = 'job-card-hover bg-slate-900/90 border border-slate-800/90 hover:border-emerald-500/50 p-4 sm:p-5 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition cursor-pointer';
-    card.onclick = () => openJobModal(job);
-
     const isSaved = state.savedJobIds.has(job.job_id);
+    const isApplied = isJobApplied(job.job_id);
     const gradient = getGradient(job.company);
     const initials = getInitials(job.company);
     const tags = extractTags(`${job.title} ${job.description}`);
     const applyLink = job.direct_apply_url || job.apply_url || '#';
     const isDirectAts = !!job.direct_apply_url || job.source === 'CompanyATS';
+    const relDate = formatRelativeDate(job.posted_date || job.collected_date);
 
     // Format Scope Badge
     let scopeBadge = '';
@@ -396,80 +720,253 @@ function renderJobCards(reset = false) {
       scopeBadge = '<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-slate-800 text-slate-300">📍 ' + escapeHtml(job.location || 'Remote') + '</span>';
     }
 
-    card.innerHTML = `
-      <div class="flex items-start gap-3.5 sm:gap-4 flex-grow min-w-0">
-        <!-- Company Monogram / Avatar -->
-        <div class="w-12 h-12 rounded-xl bg-gradient-to-tr ${gradient} flex items-center justify-center text-white font-black text-base shadow-sm shrink-0">
-          ${initials}
+    if (state.viewMode === 'list') {
+      // ── COMPACT LIST ROW ──
+      const row = document.createElement('div');
+      row.className = 'job-card-hover bg-slate-900/90 border border-slate-800/90 hover:border-emerald-500/50 p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition cursor-pointer';
+      row.onclick = () => openJobModal(job);
+
+      row.innerHTML = `
+        <div class="flex items-center gap-3 min-w-0 flex-grow">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr ${gradient} flex items-center justify-center text-white font-black text-sm shrink-0">
+            ${initials}
+          </div>
+          <div class="min-w-0 flex-grow">
+            <div class="flex items-center gap-2 flex-wrap mb-0.5">
+              <span class="text-xs font-bold text-slate-300 truncate max-w-[170px]">${escapeHtml(job.company || 'Company')}</span>
+              ${isDirectAts ? '<span class="px-1.5 py-0.2 rounded text-[10px] font-black uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">⚡ Direct ATS</span>' : ''}
+              ${isApplied ? '<span class="px-1.5 py-0.2 rounded text-[10px] font-black uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">✅ Applied</span>' : ''}
+              ${relDate ? `<span class="text-[11px] text-slate-500">•</span><span class="text-[11px] font-semibold text-emerald-400/90">${relDate}</span>` : ''}
+            </div>
+            <h3 class="text-sm sm:text-base font-bold text-white hover:text-emerald-400 transition truncate">
+              ${escapeHtml(job.title)}
+            </h3>
+          </div>
         </div>
 
-        <div class="flex-grow min-w-0">
-          <!-- Company Name, Source & ATS Pill -->
-          <div class="flex items-center gap-2 flex-wrap mb-1">
-            <span class="text-xs font-bold text-slate-300 truncate max-w-[180px]">${escapeHtml(job.company || 'Hiring Company')}</span>
-            ${isDirectAts ? '<span class="px-1.5 py-0.2 rounded text-[10px] font-black uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">⚡ Direct ATS</span>' : ''}
-            <span class="text-[11px] text-slate-500">•</span>
-            <span class="text-[11px] text-slate-400">${escapeHtml(job.source || 'RemoteFeed')}</span>
+        <div class="flex items-center gap-1.5 flex-wrap shrink-0">
+          ${scopeBadge}
+          ${job.salary ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-500/10 text-amber-300 border border-amber-500/20">💰 ${escapeHtml(job.salary)}</span>` : ''}
+        </div>
+
+        <div class="flex items-center gap-1.5 shrink-0 justify-end pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-800">
+          <!-- Bookmark -->
+          <button 
+            type="button" 
+            onclick="toggleSaveJob('${job.job_id}', event)" 
+            class="p-2 rounded-xl text-xs font-bold ${isSaved ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white border border-slate-700'} transition cursor-pointer"
+            title="${isSaved ? 'Saved' : 'Save'}"
+          >
+            ${isSaved ? '⭐' : '☆'}
+          </button>
+
+          <!-- Apply Tracker -->
+          <button 
+            type="button" 
+            onclick="toggleApplyJob('${job.job_id}', event)" 
+            class="px-2.5 py-2 rounded-xl text-xs font-bold ${isApplied ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white border border-slate-700'} transition cursor-pointer"
+            title="${isApplied ? 'Marked as Applied' : 'Track Application'}"
+          >
+            ${isApplied ? '✅ Applied' : '○ Apply'}
+          </button>
+
+          <!-- Details -->
+          <button 
+            type="button" 
+            onclick="openJobModalById('${job.job_id}', event)" 
+            class="p-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 transition cursor-pointer"
+            title="View Details"
+          >
+            👁️
+          </button>
+
+          <!-- Direct Apply CTA -->
+          <a 
+            href="${escapeHtml(applyLink)}" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            onclick="handleExternalApply('${job.job_id}', '${escapeHtml(job.company)}', event)"
+            class="px-3.5 py-2 text-xs font-bold text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 rounded-xl shadow-md shadow-emerald-500/10 active:scale-95 transition flex items-center gap-1 cursor-pointer whitespace-nowrap"
+          >
+            <span>Apply</span>
+            <span>↗</span>
+          </a>
+        </div>
+      `;
+
+      fragment.appendChild(row);
+    } else {
+      // ── RICH CARD VIEW ──
+      const card = document.createElement('div');
+      card.className = 'job-card-hover bg-slate-900/90 border border-slate-800/90 hover:border-emerald-500/50 p-4 sm:p-5 rounded-2xl flex flex-col justify-between gap-4 transition cursor-pointer';
+      card.onclick = () => openJobModal(job);
+
+      card.innerHTML = `
+        <div>
+          <div class="flex items-start justify-between gap-3 mb-2">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="w-12 h-12 rounded-xl bg-gradient-to-tr ${gradient} flex items-center justify-center text-white font-black text-base shadow-sm shrink-0">
+                ${initials}
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="text-xs font-bold text-slate-300 truncate max-w-[160px]">${escapeHtml(job.company || 'Hiring Company')}</span>
+                  ${isDirectAts ? '<span class="px-1.5 py-0.2 rounded text-[10px] font-black uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">⚡ Direct ATS</span>' : ''}
+                  ${isApplied ? '<span class="px-1.5 py-0.2 rounded text-[10px] font-black uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">✅ Applied</span>' : ''}
+                </div>
+                <div class="flex items-center gap-1.5 text-[11px] text-slate-500 mt-0.5">
+                  <span>${escapeHtml(job.source || 'RemoteFeed')}</span>
+                  ${relDate ? `<span>•</span><span class="font-semibold text-emerald-400/90">${relDate}</span>` : ''}
+                </div>
+              </div>
+            </div>
+
+            <button 
+              type="button" 
+              onclick="toggleSaveJob('${job.job_id}', event)" 
+              class="p-2 rounded-xl text-xs font-bold ${isSaved ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white border border-slate-700'} transition cursor-pointer shrink-0"
+              title="${isSaved ? 'Remove Bookmark' : 'Save Job'}"
+            >
+              ${isSaved ? '⭐' : '☆'}
+            </button>
           </div>
 
           <!-- Job Title -->
-          <h3 class="text-base sm:text-lg font-bold text-white hover:text-emerald-400 transition truncate leading-snug">
+          <h3 class="text-base sm:text-lg font-bold text-white hover:text-emerald-400 transition line-clamp-2 leading-snug my-2">
             ${escapeHtml(job.title)}
           </h3>
 
           <!-- Scope & Tech Stack Tags -->
-          <div class="flex items-center gap-1.5 flex-wrap mt-2">
+          <div class="flex items-center gap-1.5 flex-wrap mt-3">
             ${scopeBadge}
+            ${job.salary ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-500/10 text-amber-300 border border-amber-500/20">💰 ${escapeHtml(job.salary)}</span>` : ''}
             ${job.employment_type ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-800 text-slate-300">${escapeHtml(job.employment_type)}</span>` : ''}
             ${tags.map(t => `<span class="px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-800 text-slate-300">${t}</span>`).join('')}
           </div>
         </div>
-      </div>
 
-      <!-- Action Buttons -->
-      <div class="flex items-center gap-2 w-full sm:w-auto justify-end shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-800">
-        <!-- Bookmark Button -->
-        <button 
-          type="button" 
-          onclick="toggleSaveJob('${job.job_id}', event)" 
-          class="p-2 rounded-xl text-xs font-bold ${isSaved ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white border border-slate-700'} transition cursor-pointer"
-          title="${isSaved ? 'Remove Bookmark' : 'Save Job'}"
-        >
-          ${isSaved ? '⭐' : '☆'}
-        </button>
+        <!-- Card Footer Action Buttons -->
+        <div class="flex items-center justify-between gap-2 pt-3 border-t border-slate-800/80">
+          <button 
+            type="button" 
+            onclick="toggleApplyJob('${job.job_id}', event)" 
+            class="px-3 py-2 text-xs font-bold rounded-xl ${isApplied ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700'} transition cursor-pointer flex items-center gap-1.5"
+            title="${isApplied ? 'Application tracked' : 'Track this application'}"
+          >
+            <span>${isApplied ? '✅ Applied' : '○ Mark Applied'}</span>
+          </button>
 
-        <!-- Direct Apply CTA -->
-        <a 
-          href="${escapeHtml(applyLink)}" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          onclick="event.stopPropagation();"
-          class="px-4 py-2 text-xs font-bold text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 rounded-xl shadow-md shadow-emerald-500/10 active:scale-95 transition flex items-center gap-1.5 cursor-pointer"
-        >
-          <span>Apply</span>
-          <span>↗</span>
-        </a>
-      </div>
-    `;
+          <div class="flex items-center gap-2">
+            <!-- View Details Button -->
+            <button 
+              type="button" 
+              onclick="openJobModalById('${job.job_id}', event)" 
+              class="px-3.5 py-2 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-slate-600 rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
+              title="View full job details"
+            >
+              <span>Details</span>
+              <span>👁️</span>
+            </button>
 
-    fragment.appendChild(card);
+            <!-- Direct Apply CTA -->
+            <a 
+              href="${escapeHtml(applyLink)}" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              onclick="handleExternalApply('${job.job_id}', '${escapeHtml(job.company)}', event)"
+              class="px-4 py-2 text-xs font-bold text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 rounded-xl shadow-md shadow-emerald-500/10 active:scale-95 transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+            >
+              <span>Apply</span>
+              <span>↗</span>
+            </a>
+          </div>
+        </div>
+      `;
+
+      fragment.appendChild(card);
+    }
   });
 
   container.appendChild(fragment);
-  state.renderedCount = end;
+  renderPaginationControls(totalPages);
+}
 
-  // Update Pagination Indicators
-  if (showingEl) showingEl.textContent = state.renderedCount.toLocaleString();
-  if (totalEl) totalEl.textContent = state.filteredJobs.length.toLocaleString();
+function renderPaginationControls(totalPages) {
+  const container = document.getElementById('pagination-controls');
+  if (!container) return;
+  container.innerHTML = '';
 
-  const loadMoreBtn = document.getElementById('load-more-btn');
-  if (loadMoreBtn) {
-    if (state.renderedCount >= state.filteredJobs.length) {
-      loadMoreBtn.classList.add('hidden');
-    } else {
-      loadMoreBtn.classList.remove('hidden');
+  if (totalPages <= 1) return;
+
+  const current = state.currentPage;
+
+  // Previous Button
+  const prevBtn = document.createElement('button');
+  prevBtn.type = 'button';
+  prevBtn.disabled = current === 1;
+  prevBtn.className = `px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 ${
+    current === 1 
+      ? 'bg-slate-900 text-slate-600 border border-slate-800 cursor-not-allowed' 
+      : 'bg-slate-800 text-slate-200 hover:text-white hover:bg-slate-700 border border-slate-700 cursor-pointer shadow-sm active:scale-95'
+  }`;
+  prevBtn.innerHTML = '‹ Prev';
+  prevBtn.onclick = () => goToPage(current - 1);
+  container.appendChild(prevBtn);
+
+  // Pagination Window Calculator
+  const pages = [];
+  if (totalPages <= 7) {
+    for (let i = 1; i <= totalPages; i++) pages.push(i);
+  } else {
+    pages.push(1);
+    let start = Math.max(2, current - 1);
+    let end = Math.min(totalPages - 1, current + 1);
+
+    if (current <= 3) {
+      end = 4;
+    } else if (current >= totalPages - 2) {
+      start = totalPages - 3;
     }
+
+    if (start > 2) pages.push('...');
+    for (let i = start; i <= end; i++) pages.push(i);
+    if (end < totalPages - 1) pages.push('...');
+    pages.push(totalPages);
   }
+
+  pages.forEach(p => {
+    if (p === '...') {
+      const dots = document.createElement('span');
+      dots.className = 'px-1.5 py-1 text-slate-600 text-xs font-bold';
+      dots.textContent = '...';
+      container.appendChild(dots);
+    } else {
+      const pageBtn = document.createElement('button');
+      pageBtn.type = 'button';
+      const isActive = p === current;
+      pageBtn.className = `min-w-[34px] px-2.5 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+        isActive 
+          ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20' 
+          : 'bg-slate-950 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800'
+      }`;
+      pageBtn.textContent = p;
+      pageBtn.onclick = () => goToPage(p);
+      container.appendChild(pageBtn);
+    }
+  });
+
+  // Next Button
+  const nextBtn = document.createElement('button');
+  nextBtn.type = 'button';
+  nextBtn.disabled = current === totalPages;
+  nextBtn.className = `px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 ${
+    current === totalPages 
+      ? 'bg-slate-900 text-slate-600 border border-slate-800 cursor-not-allowed' 
+      : 'bg-slate-800 text-slate-200 hover:text-white hover:bg-slate-700 border border-slate-700 cursor-pointer shadow-sm active:scale-95'
+  }`;
+  nextBtn.innerHTML = 'Next ›';
+  nextBtn.onclick = () => goToPage(current + 1);
+  container.appendChild(nextBtn);
 }
 
 // ── Job Modal (Detail Slide-Over Drawer) ───────────────────────────────────────
@@ -481,6 +978,7 @@ function openJobModal(job) {
   const body = document.getElementById('modal-body');
   const applyBtn = document.getElementById('modal-apply-btn');
   const saveBtn = document.getElementById('modal-save-btn');
+  const trackBtn = document.getElementById('modal-apply-track-btn');
   const scopeBadge = document.getElementById('modal-scope-badge');
   const locBadge = document.getElementById('modal-location-badge');
   const srcBadge = document.getElementById('modal-source-badge');
@@ -492,6 +990,7 @@ function openJobModal(job) {
   avatar.textContent = getInitials(job.company);
   avatar.className = `w-12 h-12 rounded-2xl bg-gradient-to-tr ${getGradient(job.company)} flex items-center justify-center text-white font-black text-xl shrink-0`;
 
+  // Bookmark Button in Modal
   const isSaved = state.savedJobIds.has(job.job_id);
   saveBtn.textContent = isSaved ? '⭐ Saved' : '☆ Save Job';
   saveBtn.onclick = () => {
@@ -499,12 +998,55 @@ function openJobModal(job) {
     saveBtn.textContent = state.savedJobIds.has(job.job_id) ? '⭐ Saved' : '☆ Save Job';
   };
 
+  // Applied Tracker Button in Modal
+  if (trackBtn) {
+    const isApplied = isJobApplied(job.job_id);
+    trackBtn.textContent = isApplied ? '✅ Marked Applied' : '○ Mark as Applied';
+    trackBtn.className = `px-4 py-2.5 text-xs font-bold rounded-xl transition cursor-pointer ${
+      isApplied 
+        ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' 
+        : 'bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800'
+    }`;
+    trackBtn.onclick = () => {
+      toggleApplyJob(job.job_id);
+      const appliedNow = isJobApplied(job.job_id);
+      trackBtn.textContent = appliedNow ? '✅ Marked Applied' : '○ Mark as Applied';
+      trackBtn.className = `px-4 py-2.5 text-xs font-bold rounded-xl transition cursor-pointer ${
+        appliedNow 
+          ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' 
+          : 'bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800'
+      }`;
+    };
+  }
+
   const link = job.direct_apply_url || job.apply_url || '#';
   applyBtn.href = link;
+  applyBtn.onclick = (e) => handleExternalApply(job.job_id, job.company, e);
 
   scopeBadge.textContent = job.remote_scope ? `🌐 ${job.remote_scope}` : '🌐 100% Remote';
   locBadge.textContent = `📍 ${job.location || 'Anywhere'}`;
   srcBadge.textContent = `🎯 ${job.source || 'Company ATS'}`;
+
+  const salaryBadge = document.getElementById('modal-salary-badge');
+  if (salaryBadge) {
+    if (job.salary) {
+      salaryBadge.textContent = `💰 ${job.salary}`;
+      salaryBadge.classList.remove('hidden');
+    } else {
+      salaryBadge.classList.add('hidden');
+    }
+  }
+
+  const dateBadge = document.getElementById('modal-date-badge');
+  if (dateBadge) {
+    const rel = formatRelativeDate(job.posted_date || job.collected_date);
+    if (rel) {
+      dateBadge.textContent = rel;
+      dateBadge.classList.remove('hidden');
+    } else {
+      dateBadge.classList.add('hidden');
+    }
+  }
 
   // Description format
   const cleanDesc = (job.description || 'No description provided. Please click Apply to view complete job details on the hiring company website.')
@@ -519,6 +1061,14 @@ function openJobModal(job) {
 
   modal.classList.remove('hidden');
   document.body.style.overflow = 'hidden';
+}
+
+function openJobModalById(jobId, e) {
+  if (e) e.stopPropagation();
+  const job = state.allJobs.find(j => j.job_id === jobId);
+  if (job) {
+    openJobModal(job);
+  }
 }
 
 function closeJobModal() {
@@ -541,7 +1091,10 @@ function bindEventHandlers() {
         clearBtn.classList.toggle('hidden', !state.searchQuery);
       }
       clearTimeout(timeout);
-      timeout = setTimeout(() => applyFilters(), 250);
+      timeout = setTimeout(() => {
+        state.currentPage = 1;
+        applyFilters();
+      }, 250);
     });
   }
 
@@ -549,6 +1102,7 @@ function bindEventHandlers() {
     clearBtn.addEventListener('click', () => {
       if (searchInput) searchInput.value = '';
       state.searchQuery = '';
+      state.currentPage = 1;
       clearBtn.classList.add('hidden');
       applyFilters();
     });
@@ -566,6 +1120,7 @@ function bindEventHandlers() {
       pill.classList.remove('bg-slate-900', 'text-slate-400');
 
       state.category = pill.dataset.category || 'all';
+      state.currentPage = 1;
       applyFilters();
     });
   });
@@ -591,6 +1146,7 @@ function bindEventHandlers() {
       });
       el.className = 'scope-tab active px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition whitespace-nowrap cursor-pointer';
       state.scope = tab.scope;
+      state.currentPage = 1;
       applyFilters();
     });
   });
@@ -600,6 +1156,17 @@ function bindEventHandlers() {
   if (expSelect) {
     expSelect.addEventListener('change', e => {
       state.seniority = e.target.value;
+      state.currentPage = 1;
+      applyFilters();
+    });
+  }
+
+  const compSelect = document.getElementById('company-select');
+  if (compSelect) {
+    compSelect.addEventListener('change', e => {
+      state.company = e.target.value;
+      renderTopCompanyChips();
+      state.currentPage = 1;
       applyFilters();
     });
   }
@@ -608,6 +1175,13 @@ function bindEventHandlers() {
   if (srcSelect) {
     srcSelect.addEventListener('change', e => {
       state.source = e.target.value;
+      if (state.source === 'CompanyATS') {
+        state.directAtsOnly = true;
+        const directAtsCheck = document.getElementById('direct-ats-checkbox');
+        if (directAtsCheck) directAtsCheck.checked = true;
+      }
+      updateDirectAtsPanelVisibility();
+      state.currentPage = 1;
       applyFilters();
     });
   }
@@ -624,21 +1198,76 @@ function bindEventHandlers() {
   if (directAtsCheck) {
     directAtsCheck.addEventListener('change', e => {
       state.directAtsOnly = e.target.checked;
+      updateDirectAtsPanelVisibility();
+      state.currentPage = 1;
       applyFilters();
     });
   }
 
-  // 5. Reset Filters
+  // 5. Page Size Selector
+  const pageSizeSelect = document.getElementById('page-size-select');
+  if (pageSizeSelect) {
+    pageSizeSelect.value = state.pageSize.toString();
+    pageSizeSelect.addEventListener('change', e => {
+      state.pageSize = parseInt(e.target.value, 10);
+      localStorage.setItem('rjh_page_size', state.pageSize.toString());
+      state.currentPage = 1;
+      renderJobCards();
+    });
+  }
+
+  // 6. View Mode Switchers
+  const cardBtn = document.getElementById('view-card-btn');
+  const listBtn = document.getElementById('view-list-btn');
+  if (cardBtn) cardBtn.addEventListener('click', () => setViewMode('card'));
+  if (listBtn) listBtn.addEventListener('click', () => setViewMode('list'));
+
+  // 7. Tracker Tabs
+  const tabAllBtn = document.getElementById('tab-all-jobs-btn');
+  const tabSavedBtn = document.getElementById('tab-saved-jobs-btn');
+  const tabAppliedBtn = document.getElementById('tab-applied-jobs-btn');
+
+  if (tabAllBtn) tabAllBtn.addEventListener('click', () => setTrackerTab('all'));
+  if (tabSavedBtn) tabSavedBtn.addEventListener('click', () => setTrackerTab('saved'));
+  if (tabAppliedBtn) tabAppliedBtn.addEventListener('click', () => setTrackerTab('applied'));
+
+  // Header Nav Tracker buttons
+  const navSavedBtn = document.getElementById('tracker-saved-nav-btn');
+  if (navSavedBtn) navSavedBtn.addEventListener('click', () => setTrackerTab('saved'));
+
+  const navAppliedBtn = document.getElementById('tracker-applied-nav-btn');
+  if (navAppliedBtn) navAppliedBtn.addEventListener('click', () => setTrackerTab('applied'));
+
+  // 8. Toast Confirmation & Dismiss
+  const toastConfirmBtn = document.getElementById('toast-confirm-btn');
+  const toastDismissBtn = document.getElementById('toast-dismiss-btn');
+  const toast = document.getElementById('applied-toast');
+
+  if (toastConfirmBtn) {
+    toastConfirmBtn.addEventListener('click', () => {
+      if (pendingToastJobId) {
+        state.appliedJobs[pendingToastJobId] = {
+          appliedAt: new Date().toISOString(),
+          status: 'Applied'
+        };
+        persistAppliedJobs();
+        renderJobCards();
+      }
+      if (toast) toast.classList.add('hidden');
+    });
+  }
+
+  if (toastDismissBtn) {
+    toastDismissBtn.addEventListener('click', () => {
+      if (toast) toast.classList.add('hidden');
+    });
+  }
+
+  // 9. Reset Filters
   const resetBtn = document.getElementById('reset-filters-btn');
   if (resetBtn) resetBtn.addEventListener('click', resetAllFilters);
 
-  // 6. Pagination Load More
-  const loadMoreBtn = document.getElementById('load-more-btn');
-  if (loadMoreBtn) {
-    loadMoreBtn.addEventListener('click', () => renderJobCards(false));
-  }
-
-  // 7. Modal Closing
+  // 10. Modal Closing
   const closeBtn = document.getElementById('modal-close-btn');
   const backdrop = document.getElementById('modal-backdrop');
   if (closeBtn) closeBtn.addEventListener('click', closeJobModal);
@@ -647,17 +1276,7 @@ function bindEventHandlers() {
     if (e.key === 'Escape') closeJobModal();
   });
 
-  // 8. Saved Nav Tracker Toggle
-  const savedNavBtn = document.getElementById('tracker-saved-nav-btn');
-  if (savedNavBtn) {
-    savedNavBtn.addEventListener('click', () => {
-      state.trackerTab = state.trackerTab === 'saved' ? 'all' : 'saved';
-      savedNavBtn.classList.toggle('border-emerald-500', state.trackerTab === 'saved');
-      applyFilters();
-    });
-  }
-
-  // 9. Refresh Button
+  // 11. Refresh Button
   const refreshBtn = document.getElementById('refresh-btn');
   if (refreshBtn) {
     refreshBtn.addEventListener('click', () => {
@@ -676,22 +1295,25 @@ function setQuickSearch(keyword) {
   if (searchInput) {
     searchInput.value = keyword;
     state.searchQuery = keyword;
+    state.currentPage = 1;
     const clearBtn = document.getElementById('clear-search-btn');
     if (clearBtn) clearBtn.classList.remove('hidden');
     applyFilters();
     document.getElementById('main-content')?.scrollIntoView({ behavior: 'smooth' });
   }
-};
+}
 
 function resetAllFilters() {
   state.category = 'all';
   state.scope = 'all';
   state.seniority = 'all';
+  state.company = 'all';
   state.source = 'all';
   state.directAtsOnly = false;
   state.sortBy = 'newest';
   state.searchQuery = '';
   state.trackerTab = 'all';
+  state.currentPage = 1;
 
   const searchInput = document.getElementById('search-input');
   if (searchInput) searchInput.value = '';
@@ -701,6 +1323,9 @@ function resetAllFilters() {
   const expSelect = document.getElementById('exp-select');
   if (expSelect) expSelect.value = 'all';
 
+  const compSelect = document.getElementById('company-select');
+  if (compSelect) compSelect.value = 'all';
+
   const srcSelect = document.getElementById('source-select');
   if (srcSelect) srcSelect.value = 'all';
 
@@ -709,6 +1334,8 @@ function resetAllFilters() {
 
   const directAtsCheck = document.getElementById('direct-ats-checkbox');
   if (directAtsCheck) directAtsCheck.checked = false;
+
+  updateDirectAtsPanelVisibility();
 
   // Reset Role Pills
   const rolePills = document.querySelectorAll('.role-pill');
@@ -732,8 +1359,9 @@ function resetAllFilters() {
     }
   });
 
-  applyFilters();
-};
+  // Reset Tracker Tabs
+  setTrackerTab('all');
+}
 
 function showEmptyState(msg) {
   const container = document.getElementById('job-grid');
@@ -747,9 +1375,17 @@ function showEmptyState(msg) {
   }
 }
 
-
+// ── Global Window Exports ─────────────────────────────────────────────────────
 window.resetAllFilters = resetAllFilters;
 window.setQuickSearch = setQuickSearch;
 window.toggleSaveJob = toggleSaveJob;
+window.toggleApplyJob = toggleApplyJob;
+window.handleExternalApply = handleExternalApply;
+window.setViewMode = setViewMode;
+window.setTrackerTab = setTrackerTab;
+window.goToPage = goToPage;
 window.openJobModal = openJobModal;
+window.openJobModalById = openJobModalById;
+window.selectCompany = selectCompany;
+window.updateDirectAtsPanelVisibility = updateDirectAtsPanelVisibility;
 window.closeJobModal = closeJobModal;

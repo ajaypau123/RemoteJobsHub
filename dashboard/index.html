@@ -132,6 +132,12 @@
             <span id="nav-saved-count" class="px-1.5 py-0.2 rounded-full text-[10px] bg-amber-500/20 text-amber-300 font-bold">0</span>
           </button>
 
+          <!-- Applied Jobs Tracker Nav -->
+          <button id="tracker-applied-nav-btn" type="button" class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition cursor-pointer">
+            <span>✅ Applied</span>
+            <span id="nav-applied-count" class="px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-500/20 text-emerald-300 font-bold">0</span>
+          </button>
+
           <!-- Telegram Channel Link -->
           <a href="https://t.me/RemoteJobsHub" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-sky-500/10 text-sky-400 border border-sky-500/20 hover:bg-sky-500/20 transition">
             <span>✈️ Alerts</span>
@@ -254,6 +260,44 @@
   <!-- Main Content Layout -->
   <main id="main-content" class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
     
+    <!-- Personal Job Tracker & View Switcher Bar -->
+    <div class="mb-6 p-3 sm:p-4 bg-slate-900/90 border border-slate-800 rounded-2xl shadow-lg flex flex-col md:flex-row items-center justify-between gap-3">
+      <!-- Tracker Navigation Tabs -->
+      <div class="flex items-center gap-2 overflow-x-auto no-scrollbar w-full md:w-auto pb-1 md:pb-0">
+        <button id="tab-all-jobs-btn" type="button" class="tracker-nav-tab active px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 transition cursor-pointer flex items-center gap-2 whitespace-nowrap shadow-md shadow-emerald-500/20">
+          <span>🌐 All Openings</span>
+          <span id="tab-all-count" class="px-1.5 py-0.2 rounded-full text-[10px] bg-slate-950/20 text-slate-950 font-black">0</span>
+        </button>
+        <button id="tab-saved-jobs-btn" type="button" class="tracker-nav-tab px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white bg-slate-950 border border-slate-800 transition cursor-pointer flex items-center gap-2 whitespace-nowrap">
+          <span>⭐ Saved Jobs</span>
+          <span id="tab-saved-count" class="px-1.5 py-0.2 rounded-full text-[10px] bg-amber-500/20 text-amber-300 font-bold">0</span>
+        </button>
+        <button id="tab-applied-jobs-btn" type="button" class="tracker-nav-tab px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white bg-slate-950 border border-slate-800 transition cursor-pointer flex items-center gap-2 whitespace-nowrap">
+          <span>✅ Applied Tracker</span>
+          <span id="tab-applied-count" class="px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-500/20 text-emerald-300 font-bold">0</span>
+        </button>
+      </div>
+
+      <!-- Right: View Mode Switcher (Cards vs Compact List) -->
+      <div class="flex items-center justify-between md:justify-end gap-2.5 w-full md:w-auto border-t md:border-t-0 border-slate-800 pt-2 md:pt-0">
+        <span class="text-xs text-slate-400 font-medium">Layout:</span>
+        <div class="flex items-center bg-slate-950 p-1 rounded-xl border border-slate-800">
+          <button id="view-card-btn" type="button" class="view-mode-btn active px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition flex items-center gap-1.5 cursor-pointer" title="Card Grid Layout">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+            </svg>
+            <span>Cards</span>
+          </button>
+          <button id="view-list-btn" type="button" class="view-mode-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5 cursor-pointer" title="Compact List Layout">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+            <span>List</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    
     <!-- Faceted Filter Toolbar -->
     <div class="bg-slate-900/90 border border-slate-800 p-4 sm:p-5 rounded-2xl shadow-xl mb-6">
       
@@ -338,21 +382,42 @@
 
         <!-- Direct ATS Checkbox Filter -->
         <div class="flex flex-col justify-end">
-          <label class="flex items-center gap-2 p-2 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer hover:border-emerald-500/50 transition">
+          <label class="flex items-center gap-2 p-2 bg-slate-950 border border-slate-800 hover:border-emerald-500/50 rounded-xl cursor-pointer transition">
             <input type="checkbox" id="direct-ats-checkbox" class="w-4 h-4 text-emerald-500 rounded bg-slate-900 border-slate-700 focus:ring-emerald-500">
-            <span class="text-xs font-bold text-emerald-400">⚡ Direct ATS Only</span>
+            <span class="text-xs font-bold text-emerald-400 whitespace-nowrap">⚡ Direct ATS</span>
           </label>
         </div>
 
         <!-- Reset Button -->
         <div class="flex items-end">
-          <button id="reset-filters-btn" type="button" class="w-full py-2 px-3 text-xs font-semibold text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-xl transition border border-slate-700">
+          <button id="reset-filters-btn" type="button" class="w-full py-2 px-3 text-xs font-semibold text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-xl transition border border-slate-700 cursor-pointer">
             Reset Filters
           </button>
         </div>
 
       </div>
 
+      <!-- Direct ATS Company Filter Section (Revealed when Direct ATS is selected) -->
+      <div id="direct-ats-company-panel" class="hidden mt-4 pt-4 border-t border-slate-800 transition-all">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-2">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              ⚡ Direct ATS Company Filter
+            </span>
+            <span class="text-xs font-bold text-white">Filter by Company & Jobs Count:</span>
+          </div>
+          <div class="w-full md:w-80">
+            <select id="company-select" class="w-full text-xs sm:text-sm bg-slate-950 border-2 border-emerald-500/50 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-400 shadow-lg shadow-emerald-500/10">
+              <option value="all">🏢 All Direct ATS Companies</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Quick Top Employers Chips -->
+        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-2 text-xs text-slate-400 font-medium" id="top-companies-chips">
+          <!-- Dynamically populated chips -->
+        </div>
+      </div>
     </div>
 
     <!-- Job Cards Grid Container -->
@@ -360,14 +425,28 @@
       <!-- Job cards populated via app.js -->
     </div>
 
-    <!-- Pagination / Load More Bar -->
-    <div id="pagination-bar" class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-slate-900 border border-slate-800 rounded-2xl">
-      <div class="text-xs text-slate-400">
-        Showing <span id="showing-count" class="font-bold text-white">0</span> of <span id="total-count" class="font-bold text-white">0</span> remote jobs
+    <!-- Pagination & Controls Bar -->
+    <div id="pagination-bar" class="mt-8 flex flex-col md:flex-row items-center justify-between gap-4 p-4 sm:p-5 bg-slate-900 border border-slate-800 rounded-2xl shadow-xl">
+      <!-- Showing range and Per-Page Selector -->
+      <div class="text-xs text-slate-400 flex flex-wrap items-center gap-3 w-full md:w-auto justify-between md:justify-start">
+        <div>
+          Showing <span id="showing-range-start" class="font-bold text-white">0</span> - <span id="showing-range-end" class="font-bold text-white">0</span> of <span id="total-count" class="font-bold text-white">0</span> jobs
+        </div>
+        <div class="flex items-center gap-1.5 bg-slate-950 px-2.5 py-1 rounded-xl border border-slate-800">
+          <label for="page-size-select" class="text-[11px] text-slate-400 font-medium">Per page:</label>
+          <select id="page-size-select" class="bg-transparent text-white font-bold text-xs outline-none cursor-pointer">
+            <option value="20" class="bg-slate-900 text-white">20</option>
+            <option value="30" selected class="bg-slate-900 text-white">30</option>
+            <option value="50" class="bg-slate-900 text-white">50</option>
+            <option value="100" class="bg-slate-900 text-white">100</option>
+          </select>
+        </div>
       </div>
-      <button id="load-more-btn" type="button" class="w-full sm:w-auto px-6 py-2.5 rounded-xl text-xs font-bold bg-slate-800 hover:bg-emerald-500 hover:text-slate-950 text-white border border-slate-700 transition cursor-pointer">
-        Load More Remote Jobs ➔
-      </button>
+
+      <!-- Numbered Pagination Controls -->
+      <div id="pagination-controls" class="flex items-center gap-1 overflow-x-auto no-scrollbar w-full md:w-auto justify-center">
+        <!-- Rendered dynamically via app.js -->
+      </div>
     </div>
 
   </main>
@@ -398,7 +477,9 @@
           <!-- Badges Strip -->
           <div class="flex flex-wrap items-center gap-2 mt-4 text-xs">
             <span id="modal-scope-badge" class="px-2.5 py-1 rounded-lg font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"></span>
+            <span id="modal-salary-badge" class="hidden px-2.5 py-1 rounded-lg font-bold bg-amber-500/10 text-amber-300 border border-amber-500/20"></span>
             <span id="modal-location-badge" class="px-2.5 py-1 rounded-lg font-medium bg-slate-800 text-slate-300"></span>
+            <span id="modal-date-badge" class="hidden px-2.5 py-1 rounded-lg font-medium bg-slate-800 text-emerald-400 border border-emerald-500/20"></span>
             <span id="modal-source-badge" class="px-2.5 py-1 rounded-lg font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20"></span>
           </div>
         </div>
@@ -408,12 +489,17 @@
           <!-- Populated dynamically -->
         </div>
 
-        <!-- Modal Footer with Direct Apply Link -->
-        <div class="p-6 bg-slate-950 border-t border-slate-800 flex items-center justify-between gap-4">
-          <button id="modal-save-btn" class="px-4 py-2.5 text-xs font-bold text-slate-300 hover:text-white bg-slate-900 border border-slate-800 rounded-xl transition">
-            ⭐ Save Job
-          </button>
-          <a id="modal-apply-btn" href="#" target="_blank" rel="noopener noreferrer" class="px-6 py-2.5 text-xs sm:text-sm font-extrabold text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 rounded-xl shadow-lg shadow-emerald-500/20 transition flex items-center gap-1.5">
+        <!-- Modal Footer with Direct Apply Link & Tracking -->
+        <div class="p-6 bg-slate-950 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-2">
+            <button id="modal-save-btn" class="px-4 py-2.5 text-xs font-bold text-slate-300 hover:text-white bg-slate-900 border border-slate-800 rounded-xl transition cursor-pointer">
+              ⭐ Save Job
+            </button>
+            <button id="modal-apply-track-btn" class="px-4 py-2.5 text-xs font-bold text-slate-300 hover:text-white bg-slate-900 border border-slate-800 rounded-xl transition cursor-pointer">
+              ✅ Mark Applied
+            </button>
+          </div>
+          <a id="modal-apply-btn" href="#" target="_blank" rel="noopener noreferrer" class="px-6 py-2.5 text-xs sm:text-sm font-extrabold text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 rounded-xl shadow-lg shadow-emerald-500/20 transition flex items-center gap-1.5 cursor-pointer">
             <span>Apply on Official Site</span>
             <span>↗</span>
           </a>
@@ -441,6 +527,25 @@
       </div>
     </div>
   </footer>
+
+  <!-- Application Tracker Floating Toast -->
+  <div id="applied-toast" class="fixed bottom-6 right-6 z-50 hidden max-w-sm bg-slate-900/95 border-2 border-emerald-500/50 p-4 rounded-2xl shadow-2xl backdrop-blur-xl transition-all">
+    <div class="flex items-start gap-3">
+      <div class="text-2xl shrink-0">🎯</div>
+      <div class="flex-grow min-w-0">
+        <div class="text-xs font-bold text-white" id="toast-title">Applying to role?</div>
+        <div class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Keep your search organized by tracking this in your Applied Dashboard.</div>
+        <div class="flex items-center gap-2 mt-3">
+          <button id="toast-confirm-btn" type="button" class="px-3 py-1.5 text-xs font-bold bg-emerald-500 text-slate-950 rounded-lg hover:bg-emerald-400 transition cursor-pointer shadow-sm">
+            ✅ Mark as Applied
+          </button>
+          <button id="toast-dismiss-btn" type="button" class="px-2.5 py-1.5 text-xs font-medium text-slate-400 hover:text-white transition cursor-pointer">
+            Dismiss
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- App Script Dependencies -->
   <script src="jobs_latest.js"></script>
