@@ -1628,6 +1628,28 @@ function bindEventHandlers() {
   const resetBtn = document.getElementById('reset-filters-btn');
   if (resetBtn) resetBtn.addEventListener('click', resetAllFilters);
 
+  // 15b. Toggle Advanced Filters (Mobile & Responsive)
+  const toggleAdvBtn = document.getElementById('toggle-advanced-filters-btn');
+  const advRow = document.getElementById('advanced-filters-row');
+  const toggleText = document.getElementById('toggle-filter-text');
+  const toggleIcon = document.getElementById('toggle-filter-icon');
+  if (toggleAdvBtn && advRow) {
+    toggleAdvBtn.addEventListener('click', () => {
+      const isHidden = advRow.classList.contains('hidden');
+      if (isHidden) {
+        advRow.classList.remove('hidden');
+        if (toggleText) toggleText.textContent = 'Fewer Filters';
+        if (toggleIcon) toggleIcon.textContent = '▲';
+        toggleAdvBtn.classList.add('bg-slate-800', 'text-emerald-400');
+      } else {
+        advRow.classList.add('hidden');
+        if (toggleText) toggleText.textContent = 'More Filters';
+        if (toggleIcon) toggleIcon.textContent = '⚙️';
+        toggleAdvBtn.classList.remove('bg-slate-800', 'text-emerald-400');
+      }
+    });
+  }
+
   // 16. Modal Closing
   const closeBtn = document.getElementById('modal-close-btn');
   const backdrop = document.getElementById('modal-backdrop');

@@ -346,6 +346,10 @@
         </div>
 
         <!-- Reset Button -->
+        <button id="toggle-advanced-filters-btn" type="button" class="px-3.5 py-1.5 text-xs font-semibold text-slate-300 hover:text-white bg-slate-950 border border-slate-800 rounded-xl transition cursor-pointer flex items-center gap-1.5 shadow-sm active:scale-95">
+          <span id="toggle-filter-icon">⚙️</span>
+          <span id="toggle-filter-text">More Filters</span>
+        </button>
         <button id="reset-filters-btn" type="button" class="px-3.5 py-1.5 text-xs font-bold text-emerald-400 hover:text-slate-950 bg-emerald-500/10 hover:bg-emerald-400 border border-emerald-500/30 rounded-xl transition cursor-pointer flex items-center gap-1.5 shadow-sm active:scale-95">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
           <span>Reset All Filters</span>
@@ -404,8 +408,8 @@
         </div>
       </div>
 
-      <!-- Filter Controls: Row 2 -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
+      <!-- Advanced Filter Controls: Row 2 (Collapsible on Mobile) -->
+      <div id="advanced-filters-row" class="hidden sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3 transition-all duration-300">
         <!-- 💼 Seniority Level -->
         <div>
           <label for="seniority-select" class="block text-[11px] font-bold text-slate-400 mb-1">
