@@ -1,5 +1,5 @@
 """
-TechJobsForIndia - Automated Candidate Job Alert Dispatcher
+RemoteJobsHub - Automated Candidate Job Alert Dispatcher
 
 Matches new direct-ATS job postings against subscriber preferences and sends
 curated daily/weekly alerts via Email (Resend API or SMTP) or Telegram.
@@ -135,7 +135,7 @@ def render_email_html(subscriber: Dict[str, Any], matched_jobs: List[Dict[str, A
         title = j.get("title", "Software Role")
         company = j.get("company", "Verified Employer")
         location = j.get("location", "India / Remote")
-        apply_url = j.get("direct_apply_url") or j.get("apply_url", "https://techjobsforindia.com")
+        apply_url = j.get("direct_apply_url") or j.get("apply_url", "https://ajaypau123.github.io/RemoteJobsHub/")
         ats_source = j.get("source", "Direct ATS")
         
         jobs_cards_html += f"""
@@ -173,7 +173,7 @@ def render_email_html(subscriber: Dict[str, Any], matched_jobs: List[Dict[str, A
         <!-- Header -->
         <div style="background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); color: #ffffff; padding: 28px 24px; text-align: center;">
           <div style="font-size: 28px; margin-bottom: 4px;">🎯</div>
-          <h1 style="margin: 0; font-size: 20px; font-weight: 800; letter-spacing: -0.5px;">JobsForIndia Alerts</h1>
+          <h1 style="margin: 0; font-size: 20px; font-weight: 800; letter-spacing: -0.5px;">RemoteJobsHub Alerts</h1>
           <p style="margin: 6px 0 0 0; font-size: 13px; color: #cbd5e1;">
             Curated Direct-to-ATS Tech Openings • Zero Consultancies
           </p>
@@ -190,15 +190,15 @@ def render_email_html(subscriber: Dict[str, Any], matched_jobs: List[Dict[str, A
 
           <!-- View All Jobs CTA -->
           <div style="text-align: center; margin-top: 24px;">
-            <a href="https://techjobsforindia.com" target="_blank" style="display: inline-block; background-color: #0f172a; color: #ffffff; text-decoration: none; font-size: 13px; font-weight: 700; padding: 12px 28px; border-radius: 10px;">
-              Browse All 3,300+ Verified Tech Jobs ➔
+            <a href="https://ajaypau123.github.io/RemoteJobsHub/" target="_blank" style="display: inline-block; background-color: #0f172a; color: #ffffff; text-decoration: none; font-size: 13px; font-weight: 700; padding: 12px 28px; border-radius: 10px;">
+              Browse All Verified Remote Tech Jobs ➔
             </a>
           </div>
         </div>
 
         <!-- Footer -->
         <div style="background-color: #ffffff; border-top: 1px solid #e2e8f0; padding: 20px 24px; text-align: center; font-size: 11px; color: #94a3b8; line-height: 1.5;">
-          <p style="margin: 0 0 6px 0;">You received this email because you subscribed to VIP Job Alerts on JobsForIndia.</p>
+          <p style="margin: 0 0 6px 0;">You received this email because you subscribed to Job Alerts on RemoteJobsHub.</p>
           <p style="margin: 0;">100% Direct Company Applications. Zero spam.</p>
         </div>
 
@@ -209,7 +209,7 @@ def render_email_html(subscriber: Dict[str, Any], matched_jobs: List[Dict[str, A
     return html
 
 
-def send_via_resend(api_key: str, to_email: str, subject: str, html_body: str, from_email: str = "JobsForIndia Alerts <alerts@techjobsforindia.com>") -> bool:
+def send_via_resend(api_key: str, to_email: str, subject: str, html_body: str, from_email: str = "RemoteJobsHub Alerts <alerts@remotejobshub.com>") -> bool:
     """Sends email via Resend REST API (Zero 3rd party libs)."""
     url = "https://api.resend.com/emails"
     headers = {
@@ -240,7 +240,7 @@ def send_via_smtp(to_email: str, subject: str, html_body: str) -> bool:
     smtp_port = int(os.environ.get("SMTP_PORT", "587"))
     smtp_user = os.environ.get("SMTP_USER")
     smtp_pass = os.environ.get("SMTP_PASS")
-    sender_email = os.environ.get("SENDER_EMAIL", "alerts@techjobsforindia.com")
+    sender_email = os.environ.get("SENDER_EMAIL", "alerts@remotejobshub.com")
 
     if not smtp_user or not smtp_pass:
         logger.warning("SMTP credentials not provided in environment.")

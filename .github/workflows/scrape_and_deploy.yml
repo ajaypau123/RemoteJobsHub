@@ -76,8 +76,8 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add -f dashboard/jobs_latest.js dashboard/jobs_recent.json dashboard/jobs_archive.json dashboard/jobs_latest.json || true
-          git commit -m "Auto-update job listings [skip ci]" || echo "No changes to commit"
+          git add -f dashboard/jobs_latest.js dashboard/jobs_recent.json dashboard/jobs_archive.json dashboard/jobs_latest.json output/jobs.db || true
+          git commit -m "Auto-update job listings & database [skip ci]" || echo "No changes to commit"
           git pull --rebase origin main || true
           git push origin main || echo "Git push skipped or up to date"
 

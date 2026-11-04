@@ -20,7 +20,7 @@ class RemoteOKSource(BaseJobSource):
         super().__init__(config)
         # RemoteOK requires a descriptive User-Agent header
         self.session.headers.update({
-            "User-Agent": "JobsForIndia-Aggregator/1.0 (https://jobsforindia.local; contact@jobsforindia.local)"
+            "User-Agent": "RemoteJobsHub-Aggregator/1.0 (https://remotejobshub.local; contact@remotejobshub.com)"
         })
 
     def collect_jobs(self) -> list[dict]:

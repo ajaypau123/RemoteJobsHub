@@ -1,4 +1,4 @@
-"""Lightweight local development server for the JobsForIndia dashboard.
+"""Lightweight local development server for the RemoteJobsHub dashboard.
 
 Usage:
     python serve.py
@@ -43,7 +43,7 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Start JobsForIndia Dashboard local server")
+    parser = argparse.ArgumentParser(description="Start RemoteJobsHub Dashboard local server")
     parser.add_argument("--port", type=int, default=DEFAULT_PORT, help="Port to bind (default: 8000)")
     args = parser.parse_args()
 
@@ -56,7 +56,7 @@ def main():
 
     port = args.port
     print("=" * 60)
-    print("  JobsForIndia -- Job Search Dashboard")
+    print("  RemoteJobsHub -- Job Search Dashboard")
     print("=" * 60)
     print(f"  Local URL : http://localhost:{port}")
     print(f"  Dashboard : {DASHBOARD_DIR}")

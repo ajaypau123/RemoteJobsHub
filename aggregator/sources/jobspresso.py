@@ -20,7 +20,7 @@ class JobspressoSource(BaseJobSource):
     def __init__(self, config) -> None:
         super().__init__(config)
         self.session.headers.update({
-            "User-Agent": "JobsForIndia-Aggregator/1.0 (https://jobsforindia.local)"
+            "User-Agent": "RemoteJobsHub-Aggregator/1.0 (https://remotejobshub.local)"
         })
 
     def collect_jobs(self) -> list[dict]:

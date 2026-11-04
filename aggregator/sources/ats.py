@@ -21,7 +21,7 @@ class CompanyATSSource(BaseJobSource):
         self.companies = list(companies) if companies is not None else DEFAULT_ATS_COMPANIES
         # Use descriptive user-agent
         self.session.headers.update({
-            "User-Agent": "JobsForIndia-Aggregator/1.0 (https://jobsforindia.local)"
+            "User-Agent": "RemoteJobsHub-Aggregator/1.0 (https://remotejobshub.local)"
         })
 
     def collect_jobs(self) -> list[dict]:
