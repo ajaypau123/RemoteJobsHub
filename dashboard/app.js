@@ -851,7 +851,13 @@ function renderJobCards() {
     const isApplied = isJobApplied(job.job_id);
     const gradient = getGradient(job.company);
     const initials = getInitials(job.company);
-    const tags = extractTags(`${job.title} ${job.description}`);
+    let jobTech = [];
+    if (Array.isArray(job.tech_stack)) {
+      jobTech = job.tech_stack;
+    } else if (typeof job.tech_stack === 'string' && job.tech_stack) {
+      try { jobTech = JSON.parse(job.tech_stack); } catch (e) { jobTech = job.tech_stack.split(',').map(s => s.trim()).filter(Boolean); }
+    }
+    const tags = jobTech.length > 0 ? jobTech.slice(0, 3) : extractTags(`${job.title} ${job.description}`).slice(0, 3);
     const applyLink = job.direct_apply_url || job.apply_url || '#';
     const isDirectAts = !!job.direct_apply_url || job.source === 'CompanyATS';
     const relDate = formatRelativeDate(job.posted_date || job.collected_date);
@@ -896,6 +902,7 @@ function renderJobCards() {
         </div>
 
         <div class="flex items-center gap-1.5 flex-wrap shrink-0">
+          ${job.experience_required ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">🎯 ${escapeHtml(job.experience_required)}</span>` : ''}
           ${scopeBadge}
           ${job.salary ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-500/10 text-amber-300 border border-amber-500/20">💰 ${escapeHtml(job.salary)}</span>` : ''}
         </div>
@@ -990,6 +997,8 @@ function renderJobCards() {
           <!-- Scope & Tech Stack Tags -->
           <div class="flex items-center gap-1.5 flex-wrap mt-3">
             ${scopeBadge}
+            ${job.experience_required ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">🎯 ${escapeHtml(job.experience_required)}</span>` : ''}
+            ${job.seniority_level ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-800 text-slate-300">⚡ ${escapeHtml(job.seniority_level)}</span>` : ''}
             ${job.salary ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-500/10 text-amber-300 border border-amber-500/20">💰 ${escapeHtml(job.salary)}</span>` : ''}
             ${job.employment_type ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-800 text-slate-300">${escapeHtml(job.employment_type)}</span>` : ''}
             ${tags.map(t => `<span class="px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-800 text-slate-300">${t}</span>`).join('')}
@@ -1199,14 +1208,131 @@ function openJobModal(job) {
     }
   }
 
+  let techList = [];
+  if (Array.isArray(job.tech_stack)) {
+    techList = job.tech_stack;
+  } else if (typeof job.tech_stack === 'string' && job.tech_stack.trim()) {
+    try {
+      techList = JSON.parse(job.tech_stack);
+    } catch (e) {
+      techList = job.tech_stack.split(',').map(s => s.trim()).filter(Boolean);
+    }
+  }
+
+  const expText = job.experience_required 
+    ? escapeHtml(job.experience_required)
+    : 'Not explicitly specified by employer';
+  const expSub = job.experience_required
+    ? 'Verified requirement from posting'
+    : 'No strict year cutoff specified by employer';
+  const expIcon = job.experience_required ? '🎯' : '📋';
+
+  const seniorityText = job.seniority_level || 'Mid-Level';
+  const seniorityRationale = job.seniority_rationale || 'Deliver core features autonomously, collaborate across disciplines, and uphold clean code principles.';
+
+  const scopeText = job.remote_scope ? escapeHtml(job.remote_scope) : (job.is_remote ? '100% Remote' : 'Location Dependent');
+  const salaryText = job.salary ? escapeHtml(job.salary) : 'Competitive / Unstated';
+
+  const techChipsHtml = techList.length > 0
+    ? techList.map(t => `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-semibold bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 hover:border-emerald-500/40 hover:bg-emerald-500/20 transition cursor-default shadow-xs"><span>⚡</span>${escapeHtml(t)}</span>`).join(' ')
+    : '<span class="text-xs text-slate-400 italic">General engineering & cross-functional skills. See description below for complete context.</span>';
+
   // Description format
   const cleanDesc = (job.description || 'No description provided. Please click Apply to view complete job details on the hiring company website.')
     .replace(/\n\n+/g, '<br/><br/>')
     .replace(/\n/g, '<br/>');
 
   body.innerHTML = `
-    <div class="prose prose-invert max-w-none text-slate-300">
-      ${cleanDesc}
+    <!-- Candidate Fast Decision Grid (Experience, Seniority, Scope, Salary) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+      
+      <!-- Experience Required -->
+      <div class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 flex items-start gap-3.5 shadow-sm">
+        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg shrink-0">
+          ${expIcon}
+        </div>
+        <div class="min-w-0">
+          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Experience Required</div>
+          <div class="text-base font-extrabold text-white mt-0.5 truncate">${expText}</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">${expSub}</div>
+        </div>
+      </div>
+
+      <!-- Seniority Tier -->
+      <div class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 flex items-start gap-3.5 shadow-sm">
+        <div class="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 text-teal-400 flex items-center justify-center text-lg shrink-0">
+          ⚡
+        </div>
+        <div class="min-w-0">
+          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Seniority Level</div>
+          <div class="text-base font-extrabold text-white mt-0.5 truncate">${escapeHtml(seniorityText)}</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">Autonomy & ownership expectations</div>
+        </div>
+      </div>
+
+      <!-- Remote Work Scope -->
+      <div class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 flex items-start gap-3.5 shadow-sm">
+        <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center text-lg shrink-0">
+          🌐
+        </div>
+        <div class="min-w-0">
+          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Geographic Scope</div>
+          <div class="text-base font-extrabold text-white mt-0.5 truncate">${scopeText}</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">${escapeHtml(job.location || 'Anywhere / Worldwide')}</div>
+        </div>
+      </div>
+
+      <!-- Compensation -->
+      <div class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 flex items-start gap-3.5 shadow-sm">
+        <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center text-lg shrink-0">
+          💰
+        </div>
+        <div class="min-w-0">
+          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Compensation</div>
+          <div class="text-base font-extrabold text-white mt-0.5 truncate">${salaryText}</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">${job.employment_type || 'Full-time / Permanent'}</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Why This Level & Role Expectations Callout Banner -->
+    <div class="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-emerald-950/30 via-slate-950/70 to-teal-950/20 border border-emerald-500/20 mb-4 shadow-sm">
+      <div class="flex items-center gap-2 mb-1.5 text-xs font-bold text-emerald-400 uppercase tracking-wider">
+        <span>💡</span>
+        <span>Why This Level & Role Expectations</span>
+      </div>
+      <p class="text-xs sm:text-sm text-slate-200 leading-relaxed font-normal">
+        ${escapeHtml(seniorityRationale)}
+      </p>
+    </div>
+
+    <!-- Verified Tech Stack & Skills -->
+    <div class="p-4 sm:p-5 rounded-2xl bg-slate-950/80 border border-slate-800 mb-4 shadow-sm">
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2 text-xs font-bold text-slate-300 uppercase tracking-wider">
+          <span>🛠️</span>
+          <span>Verified Tech Stack & Key Skills</span>
+        </div>
+        <span class="text-[11px] text-slate-500 font-semibold">${techList.length} skills identified</span>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        ${techChipsHtml}
+      </div>
+    </div>
+
+    <!-- Role Overview & Full Description -->
+    <div class="pt-2">
+      <div class="flex items-center justify-between mb-2.5">
+        <div class="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
+          <span>📄</span>
+          <span>Job Description & Requirements</span>
+        </div>
+        <span class="text-[11px] text-slate-500">Official ATS Posting</span>
+      </div>
+      <div class="text-sm text-slate-300 leading-relaxed font-normal bg-slate-950/60 p-4 sm:p-5 rounded-2xl border border-slate-800/80 max-h-[320px] overflow-y-auto space-y-3">
+        ${cleanDesc}
+      </div>
     </div>
   `;
 

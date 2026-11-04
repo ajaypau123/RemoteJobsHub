@@ -4,6 +4,8 @@ Provides deterministic persistence, deduplication across runs, and historical
 tracking without requiring external database servers or recurring costs.
 """
 
+import html
+import json
 import logging
 import os
 import sqlite3
@@ -34,6 +36,10 @@ CREATE TABLE IF NOT EXISTS jobs (
     status TEXT DEFAULT 'active',
     is_direct_ats INTEGER DEFAULT 0,
     is_india_eligible INTEGER DEFAULT 0,
+    experience_required TEXT,
+    seniority_level TEXT,
+    seniority_rationale TEXT,
+    tech_stack TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -48,13 +54,17 @@ INSERT INTO jobs (
     remote_type, employment_type, experience, salary,
     description, apply_url, direct_apply_url, source,
     source_job_id, posted_date, collected_date, status,
-    is_direct_ats, is_india_eligible, updated_at
+    is_direct_ats, is_india_eligible,
+    experience_required, seniority_level, seniority_rationale, tech_stack,
+    updated_at
 ) VALUES (
     :job_id, :title, :company, :location, :country,
     :remote_type, :employment_type, :experience, :salary,
     :description, :apply_url, :direct_apply_url, :source,
     :source_job_id, :posted_date, :collected_date, :status,
-    :is_direct_ats, :is_india_eligible, CURRENT_TIMESTAMP
+    :is_direct_ats, :is_india_eligible,
+    :experience_required, :seniority_level, :seniority_rationale, :tech_stack,
+    CURRENT_TIMESTAMP
 )
 ON CONFLICT(job_id) DO UPDATE SET
     title = excluded.title,
@@ -71,6 +81,10 @@ ON CONFLICT(job_id) DO UPDATE SET
     status = excluded.status,
     is_direct_ats = excluded.is_direct_ats,
     is_india_eligible = excluded.is_india_eligible,
+    experience_required = excluded.experience_required,
+    seniority_level = excluded.seniority_level,
+    seniority_rationale = excluded.seniority_rationale,
+    tech_stack = excluded.tech_stack,
     updated_at = CURRENT_TIMESTAMP;
 """
 
@@ -88,6 +102,14 @@ def init_db(db_path: str = DEFAULT_DB_PATH) -> sqlite3.Connection:
         existing_cols = {row[1] for row in cursor.fetchall()}
         if "is_india_eligible" not in existing_cols:
             conn.execute("ALTER TABLE jobs ADD COLUMN is_india_eligible INTEGER DEFAULT 0")
+        if "experience_required" not in existing_cols:
+            conn.execute("ALTER TABLE jobs ADD COLUMN experience_required TEXT")
+        if "seniority_level" not in existing_cols:
+            conn.execute("ALTER TABLE jobs ADD COLUMN seniority_level TEXT")
+        if "seniority_rationale" not in existing_cols:
+            conn.execute("ALTER TABLE jobs ADD COLUMN seniority_rationale TEXT")
+        if "tech_stack" not in existing_cols:
+            conn.execute("ALTER TABLE jobs ADD COLUMN tech_stack TEXT")
         conn.execute("CREATE INDEX IF NOT EXISTS idx_jobs_india_eligible ON jobs(is_india_eligible)")
     return conn
 
@@ -106,6 +128,12 @@ def save_jobs_to_db(jobs: list[dict[str, Any]], db_path: str = DEFAULT_DB_PATH) 
 
     with conn:
         for job in jobs:
+            stack = job.get("tech_stack")
+            if isinstance(stack, list):
+                tech_stack_str = json.dumps(stack)
+            else:
+                tech_stack_str = stack or ""
+
             payload = {
                 "job_id": job.get("job_id"),
                 "title": job.get("title") or "Untitled",
@@ -126,6 +154,10 @@ def save_jobs_to_db(jobs: list[dict[str, Any]], db_path: str = DEFAULT_DB_PATH) 
                 "status": job.get("status", "active"),
                 "is_direct_ats": 1 if job.get("is_direct_ats") else 0,
                 "is_india_eligible": 1 if job.get("is_india_eligible") else 0,
+                "experience_required": job.get("experience_required"),
+                "seniority_level": job.get("seniority_level"),
+                "seniority_rationale": job.get("seniority_rationale"),
+                "tech_stack": tech_stack_str,
             }
             conn.execute(UPSERT_JOB_SQL, payload)
             processed += 1
@@ -150,10 +182,18 @@ def get_active_jobs_from_db(db_path: str = DEFAULT_DB_PATH) -> list[dict[str, An
     jobs = [dict(row) for row in rows]
     conn.close()
 
-    # Convert integer flags back to booleans for consistency
+    # Convert integer flags back to booleans and decode JSON tech stack
     for j in jobs:
         j["is_direct_ats"] = bool(j.get("is_direct_ats"))
         j["is_india_eligible"] = bool(j.get("is_india_eligible"))
+        ts = j.get("tech_stack")
+        if isinstance(ts, str) and ts:
+            try:
+                j["tech_stack"] = json.loads(ts)
+            except Exception:
+                j["tech_stack"] = [t.strip() for t in ts.split(",") if t.strip()]
+        elif not isinstance(ts, list):
+            j["tech_stack"] = []
 
     return jobs
 
@@ -231,6 +271,14 @@ def query_jobs_from_db(
     for j in jobs:
         j["is_direct_ats"] = bool(j.get("is_direct_ats"))
         j["is_india_eligible"] = bool(j.get("is_india_eligible"))
+        ts = j.get("tech_stack")
+        if isinstance(ts, str) and ts:
+            try:
+                j["tech_stack"] = json.loads(ts)
+            except Exception:
+                j["tech_stack"] = [t.strip() for t in ts.split(",") if t.strip()]
+        elif not isinstance(ts, list):
+            j["tech_stack"] = []
 
     return jobs
 

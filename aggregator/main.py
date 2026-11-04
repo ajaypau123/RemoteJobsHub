@@ -303,6 +303,14 @@ def run(
     csv_path = os.path.join(output_dir, csv_filename)
 
     if export_jobs:
+        # Enrich candidate decision intelligence (experience, seniority, tech stack)
+        try:
+            from aggregator.processing.intelligence import enrich_job_intelligence
+            for j in full_dataset:
+                enrich_job_intelligence(j)
+        except Exception as exc:
+            logger.warning("Job intelligence enrichment failed: %s", exc)
+
         # Save permanently to SQLite database
         db_path = os.path.join(output_dir, "jobs.db")
         try:
@@ -316,8 +324,11 @@ def run(
             if not cumulative_dataset:
                 cumulative_dataset = full_dataset
             else:
+                from aggregator.processing.intelligence import enrich_job_intelligence
                 for cj in cumulative_dataset:
                     cj["is_india_eligible"] = check_india(cj)
+                    if not cj.get("seniority_level") or not cj.get("tech_stack"):
+                        enrich_job_intelligence(cj)
         except Exception as exc:
             logger.warning("Failed reading cumulative jobs from SQLite: %s", exc)
             cumulative_dataset = full_dataset
@@ -376,6 +387,11 @@ def run(
                     c["description"] = text[:160] + "... [Click 'Apply' for full details]"
                 else:
                     c["description"] = text
+                # Retain candidate decision intelligence
+                c["experience_required"] = j.get("experience_required")
+                c["seniority_level"] = j.get("seniority_level")
+                c["seniority_rationale"] = j.get("seniority_rationale")
+                c["tech_stack"] = j.get("tech_stack") or []
                 return c
 
             json_filename = f"jobs{filter_slug}_{timestamp}.json"
