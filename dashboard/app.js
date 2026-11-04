@@ -5,6 +5,8 @@
  */
 
 // ── State Management ──────────────────────────────────────────────────────────
+let isArchiveHydrated = false;
+
 const state = {
   allJobs: [],
   filteredJobs: [],
@@ -164,9 +166,11 @@ function updateTrackerCounters() {
 // ── Application Tracking Floating Toast ───────────────────────────────────────
 let pendingToastJobId = null;
 
-function handleExternalApply(jobId, companyName, e) {
+function handleExternalApply(jobId, e) {
   if (e) e.stopPropagation();
   pendingToastJobId = jobId;
+  const targetJob = state.allJobs.find(j => j.job_id === jobId);
+  const companyName = (targetJob && targetJob.company) ? targetJob.company : 'Company';
   const toast = document.getElementById('applied-toast');
   const toastTitle = document.getElementById('toast-title');
 
@@ -425,8 +429,6 @@ if (document.readyState === 'loading') {
 } else {
   init();
 }
-
-let isArchiveHydrated = false;
 
 function hydrateArchiveJobs() {
   if (isArchiveHydrated) return;
@@ -943,7 +945,7 @@ function renderJobCards() {
             href="${escapeHtml(applyLink)}" 
             target="_blank" 
             rel="noopener noreferrer" 
-            onclick="handleExternalApply('${job.job_id}', '${escapeHtml(job.company)}', event)"
+            onclick="handleExternalApply('${job.job_id}', event)"
             class="px-3.5 py-2 text-xs font-bold text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 rounded-xl shadow-md shadow-emerald-500/10 active:scale-95 transition flex items-center gap-1 cursor-pointer whitespace-nowrap"
           >
             <span>Apply</span>
@@ -1033,7 +1035,7 @@ function renderJobCards() {
               href="${escapeHtml(applyLink)}" 
               target="_blank" 
               rel="noopener noreferrer" 
-              onclick="handleExternalApply('${job.job_id}', '${escapeHtml(job.company)}', event)"
+              onclick="handleExternalApply('${job.job_id}', event)"
               class="px-4 py-2 text-xs font-bold text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 rounded-xl shadow-md shadow-emerald-500/10 active:scale-95 transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
             >
               <span>Apply</span>
