@@ -198,6 +198,50 @@ def get_active_jobs_from_db(db_path: str = DEFAULT_DB_PATH) -> list[dict[str, An
     return jobs
 
 
+def mark_jobs_closed(job_ids: set[str] | list[str], db_path: str = DEFAULT_DB_PATH) -> int:
+    """Mark a set of job IDs as closed in SQLite so they are permanently excluded from active queries."""
+    if not job_ids or not os.path.exists(db_path):
+        return 0
+
+    conn = init_db(db_path)
+    count = 0
+    with conn:
+        cursor = conn.cursor()
+        for jid in job_ids:
+            cursor.execute(
+                "UPDATE jobs SET status = 'closed', updated_at = CURRENT_TIMESTAMP WHERE job_id = ? AND status = 'active'",
+                (jid,),
+            )
+            count += cursor.rowcount
+    conn.close()
+    return count
+
+
+def expire_stale_jobs_in_db(max_age_days: int = 120, db_path: str = DEFAULT_DB_PATH) -> int:
+    """Mark jobs older than max_age_days as expired in SQLite."""
+    if not os.path.exists(db_path):
+        return 0
+
+    conn = init_db(db_path)
+    with conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            UPDATE jobs
+            SET status = 'expired', updated_at = CURRENT_TIMESTAMP
+            WHERE status = 'active'
+              AND (
+                (posted_date IS NOT NULL AND posted_date < date('now', ?))
+                OR (posted_date IS NULL AND collected_date < date('now', ?))
+              )
+            """,
+            (f"-{max_age_days} days", f"-{max_age_days} days"),
+        )
+        count = cursor.rowcount
+    conn.close()
+    return count
+
+
 def query_jobs_from_db(
     db_path: str = DEFAULT_DB_PATH,
     search: str | None = None,
