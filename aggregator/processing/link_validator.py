@@ -147,3 +147,4 @@ def prune_dead_ats_links(
         return pruned_jobs, len(dead_job_ids)
 
     return jobs, 0
+

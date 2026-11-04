@@ -21,9 +21,6 @@ output/jobs_latest.json
 output/*.csv
 output/*.json
 
-# Dashboard data files (auto-generated, too large)
-dashboard/jobs_latest.json
-
 # OS files
 .DS_Store
 Thumbs.db
