@@ -333,14 +333,17 @@ def run(
             logger.warning("Failed reading cumulative jobs from SQLite: %s", exc)
             cumulative_dataset = full_dataset
 
-        # Lifecycle validation: TTL expiration (45 days) & dead ATS requisition link verification
+        # Lifecycle validation: TTL expiration (120 days) & dead ATS requisition link verification
         try:
             from aggregator.processing.link_validator import filter_by_ttl, prune_dead_ats_links
-            cumulative_dataset, expired_count = filter_by_ttl(cumulative_dataset, max_age_days=45)
-            cumulative_dataset, dead_count = prune_dead_ats_links(cumulative_dataset, max_checks=150)
-            if expired_count or dead_count:
+            from aggregator.db import expire_stale_jobs_in_db
+            db_expired = expire_stale_jobs_in_db(max_age_days=120, db_path=db_path)
+            cumulative_dataset, expired_count = filter_by_ttl(cumulative_dataset, max_age_days=120)
+            cumulative_dataset, dead_count = prune_dead_ats_links(cumulative_dataset, max_checks=300, db_path=db_path)
+            if db_expired or expired_count or dead_count:
                 logger.info(
-                    "Lifecycle validation complete: %d expired by TTL, %d closed/404 ATS links pruned.",
+                    "Lifecycle validation complete: %d DB expired, %d memory expired by TTL, %d closed/404 ATS links pruned.",
+                    db_expired,
                     expired_count,
                     dead_count,
                 )

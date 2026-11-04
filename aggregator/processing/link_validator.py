@@ -25,8 +25,8 @@ CHECKER_HEADERS = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
 }
 
-DEFAULT_MAX_CHECKS_PER_RUN = 150
-DEFAULT_TTL_DAYS = 45
+DEFAULT_MAX_CHECKS_PER_RUN = 300
+DEFAULT_TTL_DAYS = 120
 
 
 def filter_by_ttl(jobs: list[dict], max_age_days: int = DEFAULT_TTL_DAYS) -> tuple[list[dict], int]:
@@ -101,6 +101,7 @@ def _check_single_url(job: dict, session: requests.Session) -> tuple[str, bool]:
 def prune_dead_ats_links(
     jobs: list[dict],
     max_checks: int = DEFAULT_MAX_CHECKS_PER_RUN,
+    db_path: str | None = None,
 ) -> tuple[list[dict], int]:
     """Verify a sample of oldest ATS job links and prune 404s/closed jobs."""
     ats_candidates = [
@@ -128,7 +129,7 @@ def prune_dead_ats_links(
 
     with requests.Session() as session:
         session.headers.update(CHECKER_HEADERS)
-        with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
             futures = [executor.submit(_check_single_url, j, session) for j in batch]
             for future in concurrent.futures.as_completed(futures):
                 try:
@@ -143,6 +144,13 @@ def prune_dead_ats_links(
             "[Validator] Pruned %d closed / 404 ATS requisitions.",
             len(dead_job_ids),
         )
+        if db_path:
+            try:
+                from aggregator.db import mark_jobs_closed
+                mark_jobs_closed(dead_job_ids, db_path=db_path)
+            except Exception as exc:
+                logger.warning("Failed to mark closed jobs in DB: %s", exc)
+
         pruned_jobs = [j for j in jobs if j.get("job_id") not in dead_job_ids]
         return pruned_jobs, len(dead_job_ids)
 
