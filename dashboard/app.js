@@ -508,6 +508,63 @@ function loadJobsData() {
   }, 150);
 }
 
+// ── Role Category Job Counters ─────────────────────────────────────────────
+const ROLE_PATTERNS = {
+  engineer: /\b(engineer|developer|architect|fullstack|frontend|backend|software)\b/i,
+  qa: /\b(qa|quality\s+assurance|tester|testing|sdet|test\s+engineer|automation)\b/i,
+  ai: /\b(ai|artificial\s+intelligence|machine\s+learning|ml|llm|data\s+scientist|nlp|deep\s+learning)\b/i,
+  devops: /\b(devops|sre|reliability|cloud|infrastructure|platform|kubernetes|aws)\b/i,
+  data: /\b(data\s+engineer|bi|analyst|analytics|database|etl|pipeline)\b/i,
+  mobile: /\b(ios|android|mobile|flutter|react\s+native|swift|kotlin)\b/i,
+  design: /\b(designer|ui|ux|product\s+designer|graphic|creative)\b/i,
+};
+
+function updateRoleCategoryBadges() {
+  const counts = { all: state.allJobs.length };
+  for (const key of Object.keys(ROLE_PATTERNS)) {
+    counts[key] = 0;
+  }
+
+  for (let i = 0; i < state.allJobs.length; i++) {
+    const title = state.allJobs[i].title || '';
+    for (const [key, regex] of Object.entries(ROLE_PATTERNS)) {
+      if (regex.test(title)) {
+        counts[key]++;
+      }
+    }
+  }
+
+  // Update pills badges
+  document.querySelectorAll('.role-pill').forEach(pill => {
+    const cat = pill.dataset.category || 'all';
+    const badge = pill.querySelector('.role-count-badge');
+    if (badge) {
+      badge.textContent = (counts[cat] || 0).toLocaleString();
+    }
+  });
+
+  // Update role select option labels
+  const roleSelect = document.getElementById('role-select');
+  if (roleSelect) {
+    const labels = {
+      all: 'All Roles & Domains',
+      engineer: '💻 Software Engineers',
+      qa: '🧪 QA & SDET Testing',
+      ai: '🤖 AI & Machine Learning',
+      devops: '☁️ DevOps & Cloud',
+      data: '📊 Data & Analytics',
+      mobile: '📱 Mobile Apps',
+      design: '🎨 Product & Design'
+    };
+    for (const opt of roleSelect.options) {
+      const baseLabel = labels[opt.value];
+      if (baseLabel) {
+        opt.textContent = `${baseLabel} (${(counts[opt.value] || 0).toLocaleString()})`;
+      }
+    }
+  }
+}
+
 function onJobsLoaded() {
   const count = state.allJobs.length;
   const headerCount = document.getElementById('header-count-badge');
@@ -515,6 +572,7 @@ function onJobsLoaded() {
     headerCount.textContent = count.toLocaleString() + ' verified remote jobs';
   }
   updateTrackerCounters();
+  updateRoleCategoryBadges();
   populateCompanyDropdown();
   applyFilters();
 
@@ -1396,10 +1454,13 @@ function bindEventHandlers() {
       state.category = e.target.value;
       rolePills.forEach(p => {
         const isMatch = (p.dataset.category || 'all') === state.category;
+        const b = p.querySelector('.role-count-badge');
         if (isMatch) {
-          p.className = 'role-pill active shrink-0 whitespace-nowrap px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20 cursor-pointer';
+          p.className = 'role-pill active shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20 cursor-pointer flex items-center gap-2';
+          if (b) b.className = 'role-count-badge px-1.5 py-0.5 rounded-full text-[10px] font-black bg-slate-950/20 text-slate-950';
         } else {
-          p.className = 'role-pill shrink-0 whitespace-nowrap px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer';
+          p.className = 'role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer flex items-center gap-2';
+          if (b) b.className = 'role-count-badge px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400';
         }
       });
       state.currentPage = 1;
@@ -1410,11 +1471,13 @@ function bindEventHandlers() {
   rolePills.forEach(pill => {
     pill.addEventListener('click', () => {
       rolePills.forEach(p => {
-        p.classList.remove('active', 'bg-emerald-500', 'text-slate-950', 'shadow-md', 'shadow-emerald-500/20');
-        p.classList.add('bg-slate-900', 'text-slate-400');
+        p.className = 'role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer flex items-center gap-2';
+        const b = p.querySelector('.role-count-badge');
+        if (b) b.className = 'role-count-badge px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400';
       });
-      pill.classList.add('active', 'bg-emerald-500', 'text-slate-950', 'shadow-md', 'shadow-emerald-500/20');
-      pill.classList.remove('bg-slate-900', 'text-slate-400');
+      pill.className = 'role-pill active shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20 cursor-pointer flex items-center gap-2';
+      const activeBadge = pill.querySelector('.role-count-badge');
+      if (activeBadge) activeBadge.className = 'role-count-badge px-1.5 py-0.5 rounded-full text-[10px] font-black bg-slate-950/20 text-slate-950';
 
       state.category = pill.dataset.category || 'all';
       if (roleSelect) roleSelect.value = state.category;
