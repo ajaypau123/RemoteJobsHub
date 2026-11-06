@@ -447,6 +447,7 @@ function hydrateArchiveJobs() {
             headerCount.textContent = state.allJobs.length.toLocaleString() + ' verified remote jobs';
           }
           updateTrackerCounters();
+          updateRoleCategoryBadges();
           populateCompanyDropdown();
           applyFilters(true);
         }
@@ -510,13 +511,19 @@ function loadJobsData() {
 
 // ── Role Category Job Counters ─────────────────────────────────────────────
 const ROLE_PATTERNS = {
-  engineer: /\b(engineer|developer|architect|fullstack|frontend|backend|software)\b/i,
-  qa: /\b(qa|quality\s+assurance|tester|testing|sdet|test\s+engineer|automation)\b/i,
-  ai: /\b(ai|artificial\s+intelligence|machine\s+learning|ml|llm|data\s+scientist|nlp|deep\s+learning)\b/i,
-  devops: /\b(devops|sre|reliability|cloud|infrastructure|platform|kubernetes|aws)\b/i,
-  data: /\b(data\s+engineer|bi|analyst|analytics|database|etl|pipeline)\b/i,
+  engineer: /\b(engineer|developer|architect|fullstack|frontend|backend|software|coder|programmer)\b/i,
+  sales: /\b(account\s+executive|sales|bdr|sdr|business\s+development|commercial|revenue|partnership|partnerships|account\s+manager)\b/i,
+  ai: /\b(ai|artificial\s+intelligence|machine\s+learning|ml|llm|data\s+scientist|nlp|deep\s+learning|computer\s+vision)\b/i,
+  marketing: /\b(marketing|growth|seo|sem|content|social\s+media|copywriter|brand|communications|pr)\b/i,
+  finance_hr: /\b(finance|accounting|accountant|payroll|tax|legal|compliance|counsel|recruiter|recruiting|talent|hr|people)\b/i,
+  devops: /\b(devops|sre|reliability|cloud|infrastructure|platform|kubernetes|aws|sysadmin)\b/i,
+  operations: /\b(operations|operations\s+manager|coo|chief\s+of\s+staff|bizops|process|procurement|logistics)\b/i,
+  support: /\b(customer\s+success|support|customer\s+support|csm|client\s+success|help\s+desk|customer\s+experience|cx)\b/i,
+  data: /\b(data\s+engineer|bi|analyst|analytics|database|etl|pipeline|sql)\b/i,
+  product: /\b(product\s+manager|product\s+management|product\s+owner|head\s+of\s+product|director\s+of\s+product|vp\s+of\s+product|cpo)\b/i,
+  design: /\b(designer|ui|ux|product\s+designer|graphic|creative|visual|art\s+director)\b/i,
   mobile: /\b(ios|android|mobile|flutter|react\s+native|swift|kotlin)\b/i,
-  design: /\b(designer|ui|ux|product\s+designer|graphic|creative)\b/i,
+  qa: /\b(qa|quality\s+assurance|tester|testing|sdet|test\s+engineer|automation)\b/i,
 };
 
 function updateRoleCategoryBadges() {
@@ -525,14 +532,21 @@ function updateRoleCategoryBadges() {
     counts[key] = 0;
   }
 
+  let otherCount = 0;
   for (let i = 0; i < state.allJobs.length; i++) {
     const title = state.allJobs[i].title || '';
+    let matchedAny = false;
     for (const [key, regex] of Object.entries(ROLE_PATTERNS)) {
       if (regex.test(title)) {
         counts[key]++;
+        matchedAny = true;
       }
     }
+    if (!matchedAny) {
+      otherCount++;
+    }
   }
+  counts['other'] = otherCount;
 
   // Update pills badges
   document.querySelectorAll('.role-pill').forEach(pill => {
@@ -548,13 +562,20 @@ function updateRoleCategoryBadges() {
   if (roleSelect) {
     const labels = {
       all: 'All Roles & Domains',
-      engineer: '💻 Software Engineers',
-      qa: '🧪 QA & SDET Testing',
+      engineer: '💻 Software Engineering',
+      sales: '📈 Sales & Account Execs',
       ai: '🤖 AI & Machine Learning',
+      marketing: '📢 Marketing & Growth',
+      finance_hr: '👥 People, HR & Finance',
       devops: '☁️ DevOps & Cloud',
+      operations: '⚙️ Operations & BizOps',
+      support: '🎧 Customer Success & Support',
       data: '📊 Data & Analytics',
+      product: '🚀 Product Management',
+      design: '🎨 Product & Design',
       mobile: '📱 Mobile Apps',
-      design: '🎨 Product & Design'
+      qa: '🧪 QA & Testing',
+      other: '💼 Other Remote Positions'
     };
     for (const opt of roleSelect.options) {
       const baseLabel = labels[opt.value];
@@ -674,27 +695,13 @@ function applyFilters() {
     // 4. Category / Job Role Filter
     if (cat !== 'all') {
       const title = (job.title || '').toLowerCase();
-      if (cat === 'engineer') {
-        const isEng = /\b(engineer|developer|architect|fullstack|frontend|backend|software)\b/i.test(title);
-        if (!isEng) return false;
-      } else if (cat === 'qa') {
-        const isQA = /\b(qa|quality\s+assurance|tester|testing|sdet|test\s+engineer|automation)\b/i.test(title);
-        if (!isQA) return false;
-      } else if (cat === 'ai') {
-        const isAI = /\b(ai|artificial\s+intelligence|machine\s+learning|ml|llm|data\s+scientist|nlp|deep\s+learning)\b/i.test(title);
-        if (!isAI) return false;
-      } else if (cat === 'devops') {
-        const isDevOps = /\b(devops|sre|reliability|cloud|infrastructure|platform|kubernetes|aws)\b/i.test(title);
-        if (!isDevOps) return false;
-      } else if (cat === 'data') {
-        const isData = /\b(data\s+engineer|bi|analyst|analytics|database|etl|pipeline)\b/i.test(title);
-        if (!isData) return false;
-      } else if (cat === 'mobile') {
-        const isMobile = /\b(ios|android|mobile|flutter|react\s+native|swift|kotlin)\b/i.test(title);
-        if (!isMobile) return false;
-      } else if (cat === 'design') {
-        const isDesign = /\b(designer|ui|ux|product\s+designer|graphic|creative)\b/i.test(title);
-        if (!isDesign) return false;
+      if (cat === 'other') {
+        // Must not match any of the defined patterns
+        for (const regex of Object.values(ROLE_PATTERNS)) {
+          if (regex.test(title)) return false;
+        }
+      } else if (ROLE_PATTERNS[cat]) {
+        if (!ROLE_PATTERNS[cat].test(title)) return false;
       }
     }
 
