@@ -6,6 +6,7 @@ and descriptions for targeted querying (e.g., QA positions with ~2 years experie
 
 import logging
 import re
+from aggregator.config.exclusions import is_excluded
 
 logger = logging.getLogger(__name__)
 
@@ -233,6 +234,11 @@ def filter_jobs(
     """
     filtered = []
     for job in jobs:
+        # Check exclusion / takedown list
+        company = job.get("company")
+        url = job.get("direct_apply_url") or job.get("apply_url")
+        if is_excluded(company, url):
+            continue
         title = job.get("title") or ""
         description = job.get("description") or ""
         combined_text = f"{title}\n{description}"
