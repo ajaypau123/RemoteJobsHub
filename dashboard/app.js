@@ -1292,6 +1292,17 @@ function openJobModal(job) {
     }
   }
 
+  // ATS Resume Matcher Affiliate Hook
+  const resumeCard = document.getElementById('modal-resume-affiliate-card');
+  const resumeBtn = document.getElementById('modal-resume-btn');
+  if (resumeCard && resumeBtn) {
+    const config = window.MONETIZATION_CONFIG?.resumeChecker;
+    if (config && config.enabled !== false) {
+      resumeCard.classList.remove('hidden');
+      if (config.url) resumeBtn.href = config.url;
+    }
+  }
+
   const dateBadge = document.getElementById('modal-date-badge');
   if (dateBadge) {
     const rel = formatRelativeDate(job.posted_date || job.collected_date);
@@ -1453,6 +1464,13 @@ function closeJobModal() {
 // Google Sheets Webhook endpoint for Option 1 Subscriber data collection
 // Replace or configure via window.REMOTE_JOBS_HUB_WEBHOOK_URL
 const GOOGLE_SHEET_WEBHOOK_URL = window.REMOTE_JOBS_HUB_WEBHOOK_URL || '';
+
+// Optional Stripe Checkout Links (Create in dashboard.stripe.com/payment-links)
+const STRIPE_CHECKOUT_LINKS = window.STRIPE_CHECKOUT_LINKS || {
+  vip1mo: '',
+  vip3mo: '',
+  postJob: ''
+};
 
 function openAlertsModal(defaultPlan = 'vip3mo') {
   const modal = document.getElementById('alerts-modal');
@@ -1964,6 +1982,19 @@ function bindEventHandlers() {
         }
       }
 
+      // 3. Paid Stripe Checkout Redirection (if configured)
+      if ((plan === 'vip3mo' || plan === 'vip1mo') && STRIPE_CHECKOUT_LINKS[plan]) {
+        try {
+          const stripeUrl = new URL(STRIPE_CHECKOUT_LINKS[plan]);
+          stripeUrl.searchParams.set('prefilled_email', email);
+          stripeUrl.searchParams.set('client_reference_id', plan);
+          window.location.href = stripeUrl.toString();
+          return;
+        } catch (urlErr) {
+          console.warn('Stripe URL format warning:', urlErr);
+        }
+      }
+
       const form = document.getElementById('alerts-form');
       const success = document.getElementById('alerts-success');
       const titleEl = document.getElementById('alerts-success-title');
@@ -2039,6 +2070,18 @@ function bindEventHandlers() {
       persistFeaturedJob(featuredJob);
       state.allJobs.unshift(featuredJob);
       applyFilters();
+
+      // Recruiter Stripe Checkout Redirection (if configured)
+      if (STRIPE_CHECKOUT_LINKS.postJob) {
+        try {
+          const stripeUrl = new URL(STRIPE_CHECKOUT_LINKS.postJob);
+          if (email) stripeUrl.searchParams.set('prefilled_email', email);
+          window.location.href = stripeUrl.toString();
+          return;
+        } catch (urlErr) {
+          console.warn('Stripe URL format warning:', urlErr);
+        }
+      }
 
       const form = document.getElementById('post-job-form');
       const success = document.getElementById('post-job-success');

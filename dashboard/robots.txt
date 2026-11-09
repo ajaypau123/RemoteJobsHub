@@ -1,0 +1,6 @@
+# RemoteJobsHub - robots.txt
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://ajaypau123.github.io/RemoteJobsHub/sitemap.xml

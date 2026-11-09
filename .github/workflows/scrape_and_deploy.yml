@@ -64,6 +64,7 @@ jobs:
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
           SUBSCRIBERS_DATA: ${{ secrets.SUBSCRIBERS_DATA }}
+          SUBSCRIBERS_SHEET_CSV_URL: ${{ secrets.SUBSCRIBERS_SHEET_CSV_URL }}
         run: |
           if [ -n "$RESEND_API_KEY" ] || [ -n "$SMTP_USER" ]; then
             python -m aggregator.alerts.dispatcher

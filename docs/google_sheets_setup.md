@@ -151,3 +151,4 @@ To let Python read the subscribers list directly from Google Sheets:
    export SUBSCRIBERS_SHEET_CSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-.../pub?output=csv"
    ```
 5. When the GitHub Action or cron runs `python -m aggregator.alerts.dispatcher --instant`, it will fetch active subscribers directly from your Google Sheet, check if `ExpiresAt` is valid, and send direct-ATS alerts automatically!
+
