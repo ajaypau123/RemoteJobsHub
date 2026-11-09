@@ -1537,63 +1537,41 @@ function persistFeaturedJob(job) {
 
 // ── Search & Filter Event Handlers ─────────────────────────────────────────────
 function bindEventHandlers() {
-  // 0. Search Target Radio Toggle (All Content vs Title Only - Synchronized)
-  function syncSearchTarget(val) {
-    state.searchTarget = val;
-    document.querySelectorAll('input[name="search-target"]').forEach(r => {
-      r.checked = (r.value === val);
-    });
-    document.querySelectorAll('input[name="toolbar-search-target"]').forEach(r => {
-      r.checked = (r.value === val);
-    });
-    state.currentPage = 1;
-    applyFilters();
-  }
-
-  document.querySelectorAll('input[name="search-target"], input[name="toolbar-search-target"]').forEach(radio => {
+  // 0. Search Target Radio Toggle (All Content vs Title Only)
+  document.querySelectorAll('input[name="search-target"]').forEach(radio => {
     radio.addEventListener('change', e => {
-      syncSearchTarget(e.target.value);
+      state.searchTarget = e.target.value;
+      state.currentPage = 1;
+      applyFilters();
     });
   });
 
-  // 1. Omni-Search Form & Dual Inputs (Hero & Filter Toolbar Synchronized)
+  // 1. Omni-Search Form & Input
   const searchInput = document.getElementById('search-input');
-  const toolbarSearchInput = document.getElementById('toolbar-search-input');
   const clearBtn = document.getElementById('clear-search-btn');
-  const toolbarClearBtn = document.getElementById('toolbar-clear-search-btn');
 
   let searchTimeout = null;
-  function handleSearchInput(val) {
-    state.searchQuery = val;
-    if (searchInput && searchInput.value !== val) searchInput.value = val;
-    if (toolbarSearchInput && toolbarSearchInput.value !== val) toolbarSearchInput.value = val;
-    
-    const hasQuery = Boolean(val);
-    if (clearBtn) clearBtn.classList.toggle('hidden', !hasQuery);
-    if (toolbarClearBtn) toolbarClearBtn.classList.toggle('hidden', !hasQuery);
-
-    clearTimeout(searchTimeout);
-    searchTimeout = setTimeout(() => {
-      state.currentPage = 1;
-      applyFilters();
-    }, 250);
-  }
-
   if (searchInput) {
-    searchInput.addEventListener('input', e => handleSearchInput(e.target.value));
-  }
-  if (toolbarSearchInput) {
-    toolbarSearchInput.addEventListener('input', e => handleSearchInput(e.target.value));
+    searchInput.addEventListener('input', e => {
+      state.searchQuery = e.target.value;
+      if (clearBtn) clearBtn.classList.toggle('hidden', !state.searchQuery);
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        state.currentPage = 1;
+        applyFilters();
+      }, 250);
+    });
   }
 
-  function handleSearchClear() {
-    handleSearchInput('');
-    state.currentPage = 1;
-    applyFilters();
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      if (searchInput) searchInput.value = '';
+      state.searchQuery = '';
+      state.currentPage = 1;
+      clearBtn.classList.add('hidden');
+      applyFilters();
+    });
   }
-
-  if (clearBtn) clearBtn.addEventListener('click', handleSearchClear);
-  if (toolbarClearBtn) toolbarClearBtn.addEventListener('click', handleSearchClear);
 
   // Header Nav Search Button (Quick Jump & Focus)
   const navSearchBtn = document.getElementById('nav-search-btn');
@@ -2035,14 +2013,10 @@ function setQuickSearch(keyword) {
   state.currentPage = 1;
 
   const searchInput = document.getElementById('search-input');
-  const toolbarSearchInput = document.getElementById('toolbar-search-input');
   const clearBtn = document.getElementById('clear-search-btn');
-  const toolbarClearBtn = document.getElementById('toolbar-clear-search-btn');
 
   if (searchInput) searchInput.value = keyword;
-  if (toolbarSearchInput) toolbarSearchInput.value = keyword;
   if (clearBtn) clearBtn.classList.remove('hidden');
-  if (toolbarClearBtn) toolbarClearBtn.classList.remove('hidden');
 
   applyFilters();
   document.getElementById('main-content')?.scrollIntoView({ behavior: 'smooth' });
@@ -2066,19 +2040,12 @@ function resetAllFilters() {
   state.currentPage = 1;
 
   const searchInput = document.getElementById('search-input');
-  const toolbarSearchInput = document.getElementById('toolbar-search-input');
   const clearBtn = document.getElementById('clear-search-btn');
-  const toolbarClearBtn = document.getElementById('toolbar-clear-search-btn');
 
   if (searchInput) searchInput.value = '';
-  if (toolbarSearchInput) toolbarSearchInput.value = '';
   if (clearBtn) clearBtn.classList.add('hidden');
-  if (toolbarClearBtn) toolbarClearBtn.classList.add('hidden');
 
   document.querySelectorAll('input[name="search-target"]').forEach(r => {
-    r.checked = (r.value === 'all');
-  });
-  document.querySelectorAll('input[name="toolbar-search-target"]').forEach(r => {
     r.checked = (r.value === 'all');
   });
 
