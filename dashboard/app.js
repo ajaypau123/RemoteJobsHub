@@ -1428,41 +1428,72 @@ function closeJobModal() {
 
 // ── Search & Filter Event Handlers ─────────────────────────────────────────────
 function bindEventHandlers() {
-  // 0. Search Target Radio Toggle (All Content vs Title Only)
-  document.querySelectorAll('input[name="search-target"]').forEach(radio => {
+  // 0. Search Target Radio Toggle (All Content vs Title Only - Synchronized)
+  function syncSearchTarget(val) {
+    state.searchTarget = val;
+    document.querySelectorAll('input[name="search-target"]').forEach(r => {
+      r.checked = (r.value === val);
+    });
+    document.querySelectorAll('input[name="toolbar-search-target"]').forEach(r => {
+      r.checked = (r.value === val);
+    });
+    state.currentPage = 1;
+    applyFilters();
+  }
+
+  document.querySelectorAll('input[name="search-target"], input[name="toolbar-search-target"]').forEach(radio => {
     radio.addEventListener('change', e => {
-      state.searchTarget = e.target.value;
-      state.currentPage = 1;
-      applyFilters();
+      syncSearchTarget(e.target.value);
     });
   });
 
-  // 1. Omni-Search Form & Input
+  // 1. Omni-Search Form & Dual Inputs (Hero & Filter Toolbar Synchronized)
   const searchInput = document.getElementById('search-input');
+  const toolbarSearchInput = document.getElementById('toolbar-search-input');
   const clearBtn = document.getElementById('clear-search-btn');
+  const toolbarClearBtn = document.getElementById('toolbar-clear-search-btn');
 
-  if (searchInput) {
-    let timeout = null;
-    searchInput.addEventListener('input', e => {
-      state.searchQuery = e.target.value;
-      if (clearBtn) {
-        clearBtn.classList.toggle('hidden', !state.searchQuery);
-      }
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        state.currentPage = 1;
-        applyFilters();
-      }, 250);
-    });
+  let searchTimeout = null;
+  function handleSearchInput(val) {
+    state.searchQuery = val;
+    if (searchInput && searchInput.value !== val) searchInput.value = val;
+    if (toolbarSearchInput && toolbarSearchInput.value !== val) toolbarSearchInput.value = val;
+    
+    const hasQuery = Boolean(val);
+    if (clearBtn) clearBtn.classList.toggle('hidden', !hasQuery);
+    if (toolbarClearBtn) toolbarClearBtn.classList.toggle('hidden', !hasQuery);
+
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+      state.currentPage = 1;
+      applyFilters();
+    }, 250);
   }
 
-  if (clearBtn) {
-    clearBtn.addEventListener('click', () => {
-      if (searchInput) searchInput.value = '';
-      state.searchQuery = '';
-      state.currentPage = 1;
-      clearBtn.classList.add('hidden');
-      applyFilters();
+  if (searchInput) {
+    searchInput.addEventListener('input', e => handleSearchInput(e.target.value));
+  }
+  if (toolbarSearchInput) {
+    toolbarSearchInput.addEventListener('input', e => handleSearchInput(e.target.value));
+  }
+
+  function handleSearchClear() {
+    handleSearchInput('');
+    state.currentPage = 1;
+    applyFilters();
+  }
+
+  if (clearBtn) clearBtn.addEventListener('click', handleSearchClear);
+  if (toolbarClearBtn) toolbarClearBtn.addEventListener('click', handleSearchClear);
+
+  // Header Nav Search Button (Quick Jump & Focus)
+  const navSearchBtn = document.getElementById('nav-search-btn');
+  if (navSearchBtn) {
+    navSearchBtn.addEventListener('click', () => {
+      if (searchInput) {
+        searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => searchInput.focus(), 300);
+      }
     });
   }
 
@@ -1758,16 +1789,21 @@ function bindEventHandlers() {
 
 // ── Quick Helpers ─────────────────────────────────────────────────────────────
 function setQuickSearch(keyword) {
+  state.searchQuery = keyword;
+  state.currentPage = 1;
+
   const searchInput = document.getElementById('search-input');
-  if (searchInput) {
-    searchInput.value = keyword;
-    state.searchQuery = keyword;
-    state.currentPage = 1;
-    const clearBtn = document.getElementById('clear-search-btn');
-    if (clearBtn) clearBtn.classList.remove('hidden');
-    applyFilters();
-    document.getElementById('main-content')?.scrollIntoView({ behavior: 'smooth' });
-  }
+  const toolbarSearchInput = document.getElementById('toolbar-search-input');
+  const clearBtn = document.getElementById('clear-search-btn');
+  const toolbarClearBtn = document.getElementById('toolbar-clear-search-btn');
+
+  if (searchInput) searchInput.value = keyword;
+  if (toolbarSearchInput) toolbarSearchInput.value = keyword;
+  if (clearBtn) clearBtn.classList.remove('hidden');
+  if (toolbarClearBtn) toolbarClearBtn.classList.remove('hidden');
+
+  applyFilters();
+  document.getElementById('main-content')?.scrollIntoView({ behavior: 'smooth' });
 }
 
 function resetAllFilters() {
@@ -1783,13 +1819,26 @@ function resetAllFilters() {
   state.salaryOnly = false;
   state.sortBy = 'newest';
   state.searchQuery = '';
+  state.searchTarget = 'all';
   state.trackerTab = 'all';
   state.currentPage = 1;
 
   const searchInput = document.getElementById('search-input');
-  if (searchInput) searchInput.value = '';
+  const toolbarSearchInput = document.getElementById('toolbar-search-input');
   const clearBtn = document.getElementById('clear-search-btn');
+  const toolbarClearBtn = document.getElementById('toolbar-clear-search-btn');
+
+  if (searchInput) searchInput.value = '';
+  if (toolbarSearchInput) toolbarSearchInput.value = '';
   if (clearBtn) clearBtn.classList.add('hidden');
+  if (toolbarClearBtn) toolbarClearBtn.classList.add('hidden');
+
+  document.querySelectorAll('input[name="search-target"]').forEach(r => {
+    r.checked = (r.value === 'all');
+  });
+  document.querySelectorAll('input[name="toolbar-search-target"]').forEach(r => {
+    r.checked = (r.value === 'all');
+  });
 
   const roleSelect = document.getElementById('role-select');
   if (roleSelect) roleSelect.value = 'all';

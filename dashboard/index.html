@@ -156,6 +156,12 @@
             <span>✈️ Alerts</span>
           </a>
 
+          <!-- Search Quick Jump Nav -->
+          <button id="nav-search-btn" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-200 hover:text-emerald-400 border border-slate-800 hover:border-emerald-500/40 transition cursor-pointer" title="Search by Profession or Skill">
+            <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <span>Search</span>
+          </button>
+
           <!-- Refresh Button -->
           <button id="refresh-btn" type="button" aria-label="Refresh job listings" class="p-2 text-slate-400 hover:text-white hover:bg-slate-900 rounded-xl transition border border-slate-800/80" title="Refresh Listings">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -193,7 +199,15 @@
 
       <!-- Omni-Search Bar -->
       <div class="mt-8 max-w-3xl mx-auto">
-        <form id="search-form" class="flex flex-col sm:flex-row gap-2 bg-slate-900/90 p-2 sm:p-2.5 rounded-2xl shadow-2xl border-2 border-slate-800 focus-within:border-emerald-500 focus-within:ring-4 focus-within:ring-emerald-500/20 transition-all" onsubmit="event.preventDefault();">
+        <!-- Prominent Badge -->
+        <div class="flex items-center justify-center gap-2 mb-2.5">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm">
+            <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <span>Search by Profession, Job Title, or Tech Stack</span>
+          </span>
+        </div>
+
+        <form id="search-form" class="flex flex-col sm:flex-row gap-2 bg-slate-900 p-2.5 sm:p-3 rounded-2xl shadow-2xl border-2 border-emerald-500/60 hover:border-emerald-400 focus-within:border-emerald-400 ring-4 ring-emerald-500/15 focus-within:ring-emerald-500/30 transition-all" onsubmit="event.preventDefault();">
           <div class="relative flex-grow flex items-center">
             <div class="pl-3.5 pr-2 pointer-events-none text-emerald-400">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -203,8 +217,8 @@
             <input 
               type="search" 
               id="search-input" 
-              placeholder="Search by role, skills, keywords (e.g. React, Python, QA, SDET, Senior, Worldwide)..." 
-              class="w-full py-2.5 bg-transparent text-white placeholder-slate-500 text-sm sm:text-base outline-none font-medium"
+              placeholder="Search profession, job title, keywords (e.g. React, Python, QA Engineer, DevOps, Senior)..." 
+              class="w-full py-2.5 bg-transparent text-white placeholder-slate-400 text-sm sm:text-base outline-none font-semibold"
               autocomplete="off"
             >
           </div>
@@ -218,24 +232,26 @@
             </button>
             <button 
               type="submit" 
-              class="inline-flex items-center justify-center gap-1.5 px-6 py-2.5 text-sm font-bold text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 rounded-xl shadow-lg shadow-emerald-500/20 active:scale-95 transition-all cursor-pointer"
+              class="inline-flex items-center justify-center gap-2 px-7 py-3 text-sm font-extrabold text-slate-950 bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-400 hover:from-emerald-300 hover:to-teal-200 rounded-xl shadow-lg shadow-emerald-500/25 active:scale-95 transition-all cursor-pointer uppercase tracking-wider"
             >
               <span>Search</span>
-              <span>➔</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             </button>
           </div>
         </form>
 
         <!-- Search Mode Toggle (Title Only vs Full Description) -->
-        <div class="flex items-center justify-center sm:justify-start gap-4 mt-2.5 px-2 text-xs select-none">
-          <span class="text-slate-400 font-semibold text-[11px] uppercase tracking-wider">Search in:</span>
+        <div class="flex items-center justify-center sm:justify-start gap-3 sm:gap-4 mt-3 px-3 py-2 text-xs select-none bg-slate-900/80 border border-slate-800 rounded-xl">
+          <span class="text-slate-400 font-bold text-[11px] uppercase tracking-wider flex items-center gap-1">
+            <span>🎯 Search in:</span>
+          </span>
           <label class="inline-flex items-center gap-1.5 cursor-pointer text-slate-300 hover:text-white transition">
-            <input type="radio" name="search-target" id="search-target-all" value="all" checked class="w-3.5 h-3.5 text-emerald-500 bg-slate-900 border-slate-700 focus:ring-emerald-500 cursor-pointer">
+            <input type="radio" name="search-target" id="search-target-all" value="all" checked class="w-4 h-4 text-emerald-500 bg-slate-900 border-slate-700 focus:ring-emerald-500 cursor-pointer">
             <span class="font-medium">All Content (Skills & Description)</span>
           </label>
           <label class="inline-flex items-center gap-1.5 cursor-pointer text-slate-300 hover:text-white transition">
-            <input type="radio" name="search-target" id="search-target-title" value="title" class="w-3.5 h-3.5 text-emerald-500 bg-slate-900 border-slate-700 focus:ring-emerald-500 cursor-pointer">
-            <span class="font-medium text-emerald-400 font-bold">🎯 Job Title / Profession Only</span>
+            <input type="radio" name="search-target" id="search-target-title" value="title" class="w-4 h-4 text-emerald-500 bg-slate-900 border-slate-700 focus:ring-emerald-500 cursor-pointer">
+            <span class="font-bold text-emerald-400">⚡ Job Title / Profession Only</span>
           </label>
         </div>
 
@@ -416,6 +432,46 @@
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
           <span>Reset All Filters</span>
         </button>
+      </div>
+
+      <!-- Prominent Search Bar in Filter Toolbar -->
+      <div class="pt-4 pb-1 border-b border-slate-800/80">
+        <div class="flex flex-col sm:flex-row gap-2.5 items-stretch sm:items-center">
+          <div class="relative flex-grow flex items-center bg-slate-950 rounded-xl border-2 border-slate-700/80 hover:border-emerald-500/60 focus-within:border-emerald-400 focus-within:ring-2 focus-within:ring-emerald-500/20 transition shadow-inner">
+            <div class="pl-3.5 pr-2 pointer-events-none text-emerald-400">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </div>
+            <input 
+              type="search" 
+              id="toolbar-search-input" 
+              placeholder="🔍 Search profession, job title, or skill (e.g. React, QA, Python, DevOps, Manager)..." 
+              class="w-full py-2.5 bg-transparent text-white placeholder-slate-400 text-xs sm:text-sm outline-none font-medium"
+              autocomplete="off"
+            >
+            <button 
+              type="button" 
+              id="toolbar-clear-search-btn" 
+              class="hidden px-3 py-1.5 text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition mr-1.5 cursor-pointer"
+            >
+              Clear
+            </button>
+          </div>
+          <!-- Target selector in toolbar -->
+          <div class="flex items-center gap-2 shrink-0 text-xs bg-slate-950 px-3.5 py-2.5 rounded-xl border border-slate-800 text-slate-300">
+            <span class="text-slate-400 text-[11px] font-bold">Search in:</span>
+            <label class="inline-flex items-center gap-1 cursor-pointer hover:text-white">
+              <input type="radio" name="toolbar-search-target" value="all" checked class="w-3.5 h-3.5 text-emerald-500 bg-slate-900 border-slate-700 cursor-pointer">
+              <span>All Content</span>
+            </label>
+            <span class="text-slate-700">|</span>
+            <label class="inline-flex items-center gap-1 cursor-pointer hover:text-emerald-400">
+              <input type="radio" name="toolbar-search-target" value="title" class="w-3.5 h-3.5 text-emerald-500 bg-slate-900 border-slate-700 cursor-pointer">
+              <span class="font-bold text-emerald-400">🎯 Title / Profession Only</span>
+            </label>
+          </div>
+        </div>
       </div>
 
       <!-- Filter Controls: Row 1 -->
@@ -725,7 +781,7 @@
   </div>
 
   <!-- App Script Dependencies -->
-  <script src="jobs_latest.js?v=20261104_01"></script>
-  <script src="app.js?v=20261104_01"></script>
+  <script src="jobs_latest.js?v=20261109_search_v2"></script>
+  <script src="app.js?v=20261109_search_v2"></script>
 </body>
 </html>
