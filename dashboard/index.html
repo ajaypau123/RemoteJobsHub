@@ -210,120 +210,42 @@
         Curated software engineering, QA, DevOps, AI, and tech positions worldwide. Direct application links to official company Greenhouse, Lever, Ashby, and Workday portals.
       </p>
 
-      <!-- Omni-Search Bar -->
+      <!-- High-Converting Hero Promotion Card (Alerts, Newsletter & Featured Post) -->
       <div class="mt-8 max-w-3xl mx-auto">
-        <!-- Prominent Badge -->
-        <div class="flex items-center justify-center gap-2 mb-2.5">
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm">
-            <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-            <span>Search by Profession, Job Title, or Tech Stack</span>
-          </span>
-        </div>
+        <div class="p-5 sm:p-7 bg-gradient-to-r from-emerald-950/80 via-slate-900 to-teal-950/80 border-2 border-emerald-500/40 rounded-3xl shadow-2xl shadow-emerald-500/10 text-left relative overflow-hidden">
+          <!-- Ambient subtle glow -->
+          <div class="absolute -right-10 -bottom-10 w-44 h-44 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-        <form id="search-form" class="flex flex-col sm:flex-row gap-2 bg-slate-900 p-2.5 sm:p-3 rounded-2xl shadow-2xl border-2 border-emerald-500/60 hover:border-emerald-400 focus-within:border-emerald-400 ring-4 ring-emerald-500/15 focus-within:ring-emerald-500/30 transition-all" onsubmit="event.preventDefault();">
-          <div class="relative flex-grow flex items-center">
-            <div class="pl-3.5 pr-2 pointer-events-none text-emerald-400">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-              </svg>
+          <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative z-10">
+            <div class="space-y-2 max-w-lg">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                  ⚡ Instant Direct-ATS Alerts
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                  Monday Digest
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-teal-500/20 text-teal-300 border border-teal-500/30">
+                  Post a Job $49
+                </span>
+              </div>
+              <h2 class="text-lg sm:text-2xl font-extrabold text-white tracking-tight leading-snug">
+                Verified Remote Jobs Sent Directly to Your Inbox
+              </h2>
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Be the 1st applicant before jobs get saturated. Join thousands of engineers getting our free Monday digest or upgrade to <strong>⚡ VIP Pro Instant Alerts ($5/mo)</strong>.
+              </p>
             </div>
-            <input 
-              type="search" 
-              id="search-input" 
-              placeholder="Search profession, job title, keywords (e.g. React, Python, QA Engineer, DevOps, Senior)..." 
-              class="w-full py-2.5 bg-transparent text-white placeholder-slate-400 text-sm sm:text-base outline-none font-semibold"
-              autocomplete="off"
-            >
-          </div>
-          <div class="flex items-center gap-1.5 shrink-0">
-            <button 
-              type="button" 
-              id="clear-search-btn" 
-              class="hidden px-3 py-2 text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition"
-            >
-              Clear
-            </button>
-            <button 
-              type="submit" 
-              class="inline-flex items-center justify-center gap-2 px-7 py-3 text-sm font-extrabold text-slate-950 bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-400 hover:from-emerald-300 hover:to-teal-200 rounded-xl shadow-lg shadow-emerald-500/25 active:scale-95 transition-all cursor-pointer uppercase tracking-wider"
-            >
-              <span>Search</span>
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-            </button>
-          </div>
-        </form>
 
-        <!-- Search Mode Toggle (Title Only vs Full Description) -->
-        <div class="flex items-center justify-center sm:justify-start gap-3 sm:gap-4 mt-3 px-3 py-2 text-xs select-none bg-slate-900/80 border border-slate-800 rounded-xl">
-          <span class="text-slate-400 font-bold text-[11px] uppercase tracking-wider flex items-center gap-1">
-            <span>🎯 Search in:</span>
-          </span>
-          <label class="inline-flex items-center gap-1.5 cursor-pointer text-slate-300 hover:text-white transition">
-            <input type="radio" name="search-target" id="search-target-all" value="all" checked class="w-4 h-4 text-emerald-500 bg-slate-900 border-slate-700 focus:ring-emerald-500 cursor-pointer">
-            <span class="font-medium">All Content (Skills & Description)</span>
-          </label>
-          <label class="inline-flex items-center gap-1.5 cursor-pointer text-slate-300 hover:text-white transition">
-            <input type="radio" name="search-target" id="search-target-title" value="title" class="w-4 h-4 text-emerald-500 bg-slate-900 border-slate-700 focus:ring-emerald-500 cursor-pointer">
-            <span class="font-bold text-emerald-400">⚡ Job Title / Profession Only</span>
-          </label>
-        </div>
-
-        <!-- Trending Quick Searches -->
-        <div class="flex overflow-x-auto no-scrollbar sm:flex-wrap items-center justify-start sm:justify-center gap-1.5 sm:gap-2 mt-4 text-xs text-slate-400 font-medium px-1">
-          <span class="text-slate-500 font-semibold mr-1 shrink-0">Popular:</span>
-          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('Worldwide')">🌐 Worldwide</button>
-          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('React')">⚛️ React</button>
-          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('Python')">🐍 Python</button>
-          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('TypeScript')">🔷 TypeScript</button>
-          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('Node.js')">🟢 Node.js</button>
-          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('QA Automation')">🧪 QA Automation</button>
-          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('SDET')">⚡ SDET</button>
-          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('DevOps')">☁️ DevOps</button>
-          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('AWS')">☁️ AWS</button>
-          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('AI / LLM')">🤖 AI / LLM</button>
-          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('Go')">🐹 Go</button>
-          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('Java')">☕ Java</button>
-          <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('Senior')">🎯 Senior</button>
-        </div>
-
-        <!-- Action Cards: Email Alerts & Post a Job -->
-        <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto text-left">
-          <!-- Newsletter & Alerts CTA -->
-          <div class="p-3.5 bg-gradient-to-r from-emerald-950/70 via-slate-900 to-slate-900 border border-emerald-500/30 hover:border-emerald-500/60 rounded-2xl flex items-center justify-between gap-3 shadow-lg transition">
-            <div class="flex items-center gap-2.5 min-w-0">
-              <div class="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-lg shrink-0">
-                📬
-              </div>
-              <div class="min-w-0">
-                <div class="text-xs font-bold text-white flex items-center gap-1.5">
-                  <span>Job Alerts & Digest</span>
-                  <span class="px-1.5 py-0.2 rounded text-[9px] font-black uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Free & VIP</span>
-                </div>
-                <div class="text-[11px] text-slate-400 truncate mt-0.5">Direct-ATS alerts sent to your inbox</div>
-              </div>
+            <div class="flex flex-col sm:flex-row md:flex-col gap-2.5 shrink-0 w-full md:w-auto">
+              <button type="button" id="hero-alerts-btn" class="px-6 py-3 rounded-xl font-extrabold text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-300 hover:from-emerald-300 hover:to-teal-200 transition shadow-lg shadow-emerald-500/20 active:scale-95 cursor-pointer flex items-center justify-center gap-2">
+                <span>⚡ Get Instant Alerts</span>
+                <span>➔</span>
+              </button>
+              <button type="button" id="hero-post-job-btn" class="px-5 py-2.5 rounded-xl font-bold text-xs text-slate-200 hover:text-white bg-slate-950/80 hover:bg-slate-800 border border-slate-700 hover:border-teal-500/50 transition active:scale-95 cursor-pointer flex items-center justify-center gap-1.5">
+                <span>💼 Post a Featured Job ($49)</span>
+              </button>
             </div>
-            <button type="button" id="hero-alerts-btn" class="shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 hover:bg-emerald-400 transition cursor-pointer shadow-sm">
-              Get Alerts
-            </button>
-          </div>
-
-          <!-- Post a Job CTA -->
-          <div class="p-3.5 bg-gradient-to-r from-teal-950/70 via-slate-900 to-slate-900 border border-teal-500/30 hover:border-teal-500/60 rounded-2xl flex items-center justify-between gap-3 shadow-lg transition">
-            <div class="flex items-center gap-2.5 min-w-0">
-              <div class="w-9 h-9 rounded-xl bg-teal-500/15 border border-teal-500/30 flex items-center justify-center text-lg shrink-0">
-                ⭐
-              </div>
-              <div class="min-w-0">
-                <div class="text-xs font-bold text-white flex items-center gap-1.5">
-                  <span>Hiring Remote?</span>
-                  <span class="px-1.5 py-0.2 rounded text-[9px] font-black uppercase bg-amber-500/20 text-amber-300 border border-amber-500/30">$49 Pin</span>
-                </div>
-                <div class="text-[11px] text-slate-400 truncate mt-0.5">Feature your role to 14,000+ candidates</div>
-              </div>
-            </div>
-            <button type="button" id="hero-post-job-btn" class="shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold bg-gradient-to-r from-teal-400 to-cyan-300 text-slate-950 hover:from-teal-300 hover:to-cyan-200 transition cursor-pointer shadow-sm">
-              Post a Job
-            </button>
           </div>
         </div>
       </div>
@@ -486,6 +408,59 @@
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
           <span>Reset All Filters</span>
         </button>
+      </div>
+
+      <!-- Primary Search Bar in Filter Section -->
+      <div class="pt-4 pb-2 border-b border-slate-800/80">
+        <form id="search-form" class="flex flex-col sm:flex-row gap-2.5 items-stretch sm:items-center" onsubmit="event.preventDefault();">
+          <div class="relative flex-grow flex items-center bg-slate-950 rounded-xl border-2 border-slate-700/80 hover:border-emerald-500/60 focus-within:border-emerald-400 focus-within:ring-2 focus-within:ring-emerald-500/20 transition shadow-inner">
+            <div class="pl-3.5 pr-2 pointer-events-none text-emerald-400">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </div>
+            <input 
+              type="search" 
+              id="search-input" 
+              placeholder="🔍 Search profession, job title, or skill (e.g. React, QA, Python, DevOps, Manager)..." 
+              class="w-full py-2.5 bg-transparent text-white placeholder-slate-400 text-xs sm:text-sm outline-none font-medium"
+              autocomplete="off"
+            >
+            <button 
+              type="button" 
+              id="clear-search-btn" 
+              class="hidden px-3 py-1.5 text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition mr-1.5 cursor-pointer"
+            >
+              Clear
+            </button>
+          </div>
+
+          <!-- Target selector in filter section -->
+          <div class="flex items-center gap-2 shrink-0 text-xs bg-slate-950 px-3.5 py-2.5 rounded-xl border border-slate-800 text-slate-300">
+            <span class="text-slate-400 text-[11px] font-bold">Search in:</span>
+            <label class="inline-flex items-center gap-1 cursor-pointer hover:text-white">
+              <input type="radio" name="search-target" id="search-target-all" value="all" checked class="w-3.5 h-3.5 text-emerald-500 bg-slate-900 border-slate-700 cursor-pointer">
+              <span>All Content</span>
+            </label>
+            <span class="text-slate-700">|</span>
+            <label class="inline-flex items-center gap-1 cursor-pointer hover:text-emerald-400">
+              <input type="radio" name="search-target" id="search-target-title" value="title" class="w-3.5 h-3.5 text-emerald-500 bg-slate-900 border-slate-700 cursor-pointer">
+              <span class="font-bold text-emerald-400">🎯 Title Only</span>
+            </label>
+          </div>
+        </form>
+
+        <!-- Quick Popular Searches -->
+        <div class="flex overflow-x-auto no-scrollbar sm:flex-wrap items-center gap-1.5 mt-2.5 text-xs text-slate-400 font-medium px-1">
+          <span class="text-slate-500 font-semibold mr-1 shrink-0 text-[11px]">Popular:</span>
+          <button type="button" class="quick-tag px-2 py-0.5 rounded-lg bg-slate-950 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer text-[11px]" onclick="setQuickSearch('Worldwide')">🌐 Worldwide</button>
+          <button type="button" class="quick-tag px-2 py-0.5 rounded-lg bg-slate-950 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer text-[11px]" onclick="setQuickSearch('React')">⚛️ React</button>
+          <button type="button" class="quick-tag px-2 py-0.5 rounded-lg bg-slate-950 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer text-[11px]" onclick="setQuickSearch('Python')">🐍 Python</button>
+          <button type="button" class="quick-tag px-2 py-0.5 rounded-lg bg-slate-950 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer text-[11px]" onclick="setQuickSearch('QA Automation')">🧪 QA</button>
+          <button type="button" class="quick-tag px-2 py-0.5 rounded-lg bg-slate-950 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer text-[11px]" onclick="setQuickSearch('DevOps')">☁️ DevOps</button>
+          <button type="button" class="quick-tag px-2 py-0.5 rounded-lg bg-slate-950 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer text-[11px]" onclick="setQuickSearch('AI / LLM')">🤖 AI</button>
+          <button type="button" class="quick-tag px-2 py-0.5 rounded-lg bg-slate-950 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer text-[11px]" onclick="setQuickSearch('Senior')">🎯 Senior</button>
+        </div>
       </div>
 
       <!-- Filter Controls: Row 1 -->
@@ -1057,7 +1032,7 @@
   </div>
 
   <!-- App Script Dependencies -->
-  <script src="jobs_latest.js?v=20261109_clean_ui"></script>
-  <script src="app.js?v=20261109_clean_ui"></script>
+  <script src="jobs_latest.js?v=20261109_filter_search_hero_promo"></script>
+  <script src="app.js?v=20261109_filter_search_hero_promo"></script>
 </body>
 </html>
