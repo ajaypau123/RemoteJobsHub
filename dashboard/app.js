@@ -28,6 +28,7 @@ const state = {
   directAtsOnly: false,
   sortBy: 'newest',
   searchQuery: '',
+  searchTarget: 'all', // 'all' | 'title'
 };
 
 // ── Local Storage: Saved & Applied Jobs ───────────────────────────────────────
@@ -683,13 +684,17 @@ function applyFilters() {
       if ((job.company || '').trim().toLowerCase() !== state.company.toLowerCase()) return false;
     }
 
-    // 3. Query Search (Title, Company, Location, Description)
+    // 3. Query Search (Title Only vs Everywhere)
     if (query) {
       const titleMatch = (job.title || '').toLowerCase().includes(query);
-      const companyMatch = (job.company || '').toLowerCase().includes(query);
-      const locMatch = (job.location || '').toLowerCase().includes(query);
-      const descMatch = (job.description || '').toLowerCase().includes(query);
-      if (!titleMatch && !companyMatch && !locMatch && !descMatch) return false;
+      if (state.searchTarget === 'title') {
+        if (!titleMatch) return false;
+      } else {
+        const companyMatch = (job.company || '').toLowerCase().includes(query);
+        const locMatch = (job.location || '').toLowerCase().includes(query);
+        const descMatch = (job.description || '').toLowerCase().includes(query);
+        if (!titleMatch && !companyMatch && !locMatch && !descMatch) return false;
+      }
     }
 
     // 4. Category / Job Role Filter
@@ -1423,6 +1428,15 @@ function closeJobModal() {
 
 // ── Search & Filter Event Handlers ─────────────────────────────────────────────
 function bindEventHandlers() {
+  // 0. Search Target Radio Toggle (All Content vs Title Only)
+  document.querySelectorAll('input[name="search-target"]').forEach(radio => {
+    radio.addEventListener('change', e => {
+      state.searchTarget = e.target.value;
+      state.currentPage = 1;
+      applyFilters();
+    });
+  });
+
   // 1. Omni-Search Form & Input
   const searchInput = document.getElementById('search-input');
   const clearBtn = document.getElementById('clear-search-btn');

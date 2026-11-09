@@ -29,3 +29,4 @@ def is_excluded(company: str | None, url: str | None) -> bool:
                 return True
 
     return False
+

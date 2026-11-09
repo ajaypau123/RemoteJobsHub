@@ -26,6 +26,19 @@
   <meta property="twitter:title" content="RemoteJobsHub | Curated Global Work-From-Anywhere & Remote Tech Jobs">
   <meta property="twitter:description" content="Discover 15,000+ verified 100% remote tech jobs with direct apply links to hiring company ATS portals.">
 
+  <!-- Privacy-Friendly Google Analytics 4 (GA4) Placeholder -->
+  <!-- To activate: Replace 'G-XXXXXXXXXX' with your Google Analytics Measurement ID -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    // Only fire if real measurement ID is configured
+    if ('G-XXXXXXXXXX' !== 'G-XXXXXXXXXX') {
+      gtag('config', 'G-XXXXXXXXXX', { anonymize_ip: true });
+    }
+  </script>
+
   <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>">
 
@@ -212,6 +225,19 @@
             </button>
           </div>
         </form>
+
+        <!-- Search Mode Toggle (Title Only vs Full Description) -->
+        <div class="flex items-center justify-center sm:justify-start gap-4 mt-2.5 px-2 text-xs select-none">
+          <span class="text-slate-400 font-semibold text-[11px] uppercase tracking-wider">Search in:</span>
+          <label class="inline-flex items-center gap-1.5 cursor-pointer text-slate-300 hover:text-white transition">
+            <input type="radio" name="search-target" id="search-target-all" value="all" checked class="w-3.5 h-3.5 text-emerald-500 bg-slate-900 border-slate-700 focus:ring-emerald-500 cursor-pointer">
+            <span class="font-medium">All Content (Skills & Description)</span>
+          </label>
+          <label class="inline-flex items-center gap-1.5 cursor-pointer text-slate-300 hover:text-white transition">
+            <input type="radio" name="search-target" id="search-target-title" value="title" class="w-3.5 h-3.5 text-emerald-500 bg-slate-900 border-slate-700 focus:ring-emerald-500 cursor-pointer">
+            <span class="font-medium text-emerald-400 font-bold">🎯 Job Title / Profession Only</span>
+          </label>
+        </div>
 
         <!-- Trending Quick Searches -->
         <div class="flex overflow-x-auto no-scrollbar sm:flex-wrap items-center justify-start sm:justify-center gap-1.5 sm:gap-2 mt-4 text-xs text-slate-400 font-medium px-1">
