@@ -9,6 +9,8 @@ Zero third-party package dependencies: Uses standard library urllib and smtplib.
 
 import os
 import sys
+import io
+import csv
 import json
 import logging
 import argparse
@@ -50,9 +52,10 @@ def load_jobs(json_path: str = "output/jobs_latest.json") -> List[Dict[str, Any]
         if os.path.exists(js_path):
             with open(js_path, "r", encoding="utf-8") as f:
                 content = f.read().strip()
-                # strip window.ALL_JOBS = [ ... ];
-                if "=" in content:
-                    raw_json = content.split("=", 1)[1].strip().rstrip(";")
+                start = content.find("[")
+                end = content.rfind("]")
+                if start != -1 and end != -1:
+                    raw_json = content[start:end+1]
                     return json.loads(raw_json)
         return []
 
@@ -67,8 +70,45 @@ def load_jobs(json_path: str = "output/jobs_latest.json") -> List[Dict[str, Any]
 
 def load_subscribers(subscribers_file: str = "output/subscribers.json") -> List[Dict[str, Any]]:
     """
-    Loads active subscribers from JSON file or SUBSCRIBERS_DATA env var.
+    Loads active subscribers from:
+    1. Google Sheets published CSV URL (SUBSCRIBERS_SHEET_CSV_URL or GOOGLE_SHEET_CSV_URL)
+    2. SUBSCRIBERS_DATA env var (JSON array)
+    3. Local subscribers_file (output/subscribers.json)
+    4. Fallback demo subscriber for testing.
     """
+    # 1. Option 1: Live Google Sheets CSV URL
+    csv_url = os.environ.get("SUBSCRIBERS_SHEET_CSV_URL") or os.environ.get("GOOGLE_SHEET_CSV_URL")
+    if csv_url:
+        try:
+            req = urllib.request.Request(csv_url, headers={"User-Agent": "RemoteJobsHub-AlertDispatcher/1.0"})
+            with urllib.request.urlopen(req, timeout=12) as response:
+                raw_csv = response.read().decode("utf-8")
+                reader = csv.DictReader(io.StringIO(raw_csv))
+                subs = []
+                for row in reader:
+                    email = (row.get("Email") or row.get("email") or "").strip()
+                    if not email or "@" not in email:
+                        continue
+                    status = (row.get("Status") or row.get("status") or "active").strip().lower()
+                    if status == "unsubscribed":
+                        continue
+                    subs.append({
+                        "email": email,
+                        "roleCategory": (row.get("Role") or row.get("roleCategory") or "all").strip().lower(),
+                        "location": (row.get("Scope") or row.get("location") or "worldwide").strip().lower(),
+                        "keywords": (row.get("Keywords") or row.get("keywords") or "").strip(),
+                        "plan": (row.get("Plan") or row.get("plan") or "free").strip().lower(),
+                        "expiresAt": (row.get("ExpiresAt") or row.get("expiresAt") or "").strip(),
+                        "status": status,
+                        "subscribedAt": (row.get("Timestamp") or row.get("subscribedAt") or "").strip()
+                    })
+                if subs:
+                    logger.info(f"Loaded {len(subs)} active subscribers from Google Sheet CSV.")
+                    return subs
+        except Exception as e:
+            logger.error(f"Failed to fetch or parse subscribers from Google Sheet CSV: {e}")
+
+    # 2. SUBSCRIBERS_DATA env var
     env_data = os.environ.get("SUBSCRIBERS_DATA")
     if env_data:
         try:
@@ -76,11 +116,12 @@ def load_subscribers(subscribers_file: str = "output/subscribers.json") -> List[
         except Exception as e:
             logger.error(f"Failed to parse SUBSCRIBERS_DATA env var: {e}")
 
+    # 3. Local JSON file
     if os.path.exists(subscribers_file):
         with open(subscribers_file, "r", encoding="utf-8") as f:
             return json.load(f)
 
-    # Sample demo subscriber for testing/dry-runs
+    # 4. Sample demo subscriber for testing/dry-runs
     return [
         {
             "email": "demo.subscriber@example.com",
@@ -89,9 +130,46 @@ def load_subscribers(subscribers_file: str = "output/subscribers.json") -> List[
             "location": "remote",
             "experience": "all",
             "plan": "vip3mo",
+            "expiresAt": "2027-02-15T00:00:00Z",
+            "status": "active",
             "subscribedAt": "2026-10-29T00:00:00Z"
         }
     ]
+
+
+def is_subscriber_eligible(sub: Dict[str, Any], instant_mode: bool = False) -> bool:
+    """
+    Verifies if a subscriber is eligible for dispatch:
+    - Excludes 'unsubscribed' users.
+    - If plan has expired, downgrades user from VIP instant alerts to the free weekly digest.
+    - If instant_mode=True, only sends to active, non-expired VIP subscribers (vip3mo, vip1mo).
+    """
+    if sub.get("status", "active").lower() == "unsubscribed":
+        return False
+
+    plan = (sub.get("plan") or "free").lower()
+    expires_at_str = sub.get("expiresAt")
+    now = datetime.now(timezone.utc)
+
+    is_expired = False
+    if expires_at_str:
+        try:
+            exp_dt = datetime.fromisoformat(expires_at_str.replace("Z", "+00:00"))
+            if exp_dt.tzinfo is None:
+                exp_dt = exp_dt.replace(tzinfo=timezone.utc)
+            if now > exp_dt:
+                is_expired = True
+        except Exception:
+            pass
+
+    if instant_mode:
+        if is_expired:
+            logger.debug(f"Subscriber {sub.get('email')} expired on {expires_at_str}. Skipping instant alert.")
+            return False
+        return plan in ("vip1mo", "vip3mo", "vip_pro")
+
+    # Weekly digest is available to all non-unsubscribed users
+    return True
 
 
 def matches_subscriber(job: Dict[str, Any], sub: Dict[str, Any]) -> bool:
@@ -115,10 +193,23 @@ def matches_subscriber(job: Dict[str, Any], sub: Dict[str, Any]) -> bool:
         if kw_list and not any(kw in title or kw in desc for kw in kw_list):
             return False
 
-    # 3. Location filter
-    if target_location != "any":
-        if target_location == "remote":
-            if "remote" not in location:
+    # 3. Location / Remote Scope filter
+    if target_location not in ("any", "all"):
+        remote_scope = (job.get("remote_scope") or "").lower()
+        if target_location == "worldwide":
+            if remote_scope != "worldwide" and "worldwide" not in location and "anywhere" not in location and not job.get("is_remote"):
+                return False
+        elif target_location == "americas":
+            if "americas" not in remote_scope and "us" not in location and "united states" not in location and "canada" not in location:
+                return False
+        elif target_location == "europe":
+            if "europe" not in remote_scope and "emea" not in remote_scope and "uk" not in location and "europe" not in location:
+                return False
+        elif target_location == "apac":
+            if "apac" not in remote_scope and "asia" not in location and "india" not in location:
+                return False
+        elif target_location == "remote":
+            if not job.get("is_remote") and "remote" not in location:
                 return False
         else:
             synonyms = CITY_SYNONYMS.get(target_location, [target_location])
@@ -265,12 +356,13 @@ def send_via_smtp(to_email: str, subject: str, html_body: str) -> bool:
         return False
 
 
-def run_alert_dispatch(dry_run: bool = False, limit_subscribers: int = 50) -> Dict[str, Any]:
+def run_alert_dispatch(dry_run: bool = False, limit_subscribers: int = 50, instant_mode: bool = False) -> Dict[str, Any]:
     """Runs the alert matching and dispatch pipeline."""
     jobs = load_jobs()
-    subscribers = load_subscribers()
+    all_subscribers = load_subscribers()
+    subscribers = [s for s in all_subscribers if is_subscriber_eligible(s, instant_mode=instant_mode)]
 
-    logger.info(f"Loaded {len(jobs)} jobs and {len(subscribers)} subscribers.")
+    logger.info(f"Loaded {len(jobs)} jobs and {len(subscribers)} eligible subscribers (instant_mode={instant_mode}).")
     resend_key = os.environ.get("RESEND_API_KEY")
 
     dispatched = 0
@@ -283,7 +375,8 @@ def run_alert_dispatch(dry_run: bool = False, limit_subscribers: int = 50) -> Di
             continue
 
         matched_total += len(matched)
-        subject = f"🎯 {len(matched)} New {sub.get('roleCategory', 'Tech').upper()} Jobs Open for Direct Apply"
+        mode_prefix = "⚡ Instant Alert:" if instant_mode else "🎯 Monday Digest:"
+        subject = f"{mode_prefix} {len(matched)} New {sub.get('roleCategory', 'Tech').upper()} Jobs Open for Direct Apply"
         html = render_email_html(sub, matched)
 
         if dry_run:
@@ -303,6 +396,7 @@ def run_alert_dispatch(dry_run: bool = False, limit_subscribers: int = 50) -> Di
         "matched_jobs_total": matched_total,
         "alerts_dispatched": dispatched,
         "mode": "dry_run" if dry_run else "live",
+        "instant_mode": instant_mode,
         "timestamp": datetime.now(timezone.utc).isoformat()
     }
     logger.info(f"Dispatch summary: {summary}")
@@ -312,6 +406,7 @@ def run_alert_dispatch(dry_run: bool = False, limit_subscribers: int = 50) -> Di
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Dispatch tech job alerts to subscribers")
     parser.add_argument("--dry-run", action="store_true", help="Preview matches without sending actual emails")
+    parser.add_argument("--instant", action="store_true", help="Run in VIP instant alert mode (skips weekly-only subscribers and expired passes)")
     args = parser.parse_args()
 
-    run_alert_dispatch(dry_run=args.dry_run)
+    run_alert_dispatch(dry_run=args.dry_run, instant_mode=args.instant)

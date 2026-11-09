@@ -1450,7 +1450,11 @@ function closeJobModal() {
 }
 
 // ── Alerts & Newsletter Modal Functions ─────────────────────────────────────────
-function openAlertsModal(defaultPlan = 'free') {
+// Google Sheets Webhook endpoint for Option 1 Subscriber data collection
+// Replace or configure via window.REMOTE_JOBS_HUB_WEBHOOK_URL
+const GOOGLE_SHEET_WEBHOOK_URL = window.REMOTE_JOBS_HUB_WEBHOOK_URL || '';
+
+function openAlertsModal(defaultPlan = 'vip3mo') {
   const modal = document.getElementById('alerts-modal');
   if (!modal) return;
   
@@ -1472,23 +1476,37 @@ function closeAlertsModal() {
 
 function setAlertPlan(plan) {
   const freeRadio = document.querySelector('input[name="alert-plan"][value="free"]');
-  const proRadio = document.querySelector('input[name="alert-plan"][value="vip_pro"]');
+  const vip1moRadio = document.querySelector('input[name="alert-plan"][value="vip1mo"]');
+  const vip3moRadio = document.querySelector('input[name="alert-plan"][value="vip3mo"]');
+  
   const freeCard = document.getElementById('plan-free-card');
-  const proCard = document.getElementById('plan-pro-card');
+  const vip1moCard = document.getElementById('plan-vip1mo-card');
+  const vip3moCard = document.getElementById('plan-vip3mo-card');
   const submitBtn = document.getElementById('alerts-submit-btn');
 
-  if (plan === 'vip_pro') {
-    if (proRadio) proRadio.checked = true;
-    if (proCard) proCard.className = 'alert-plan-card active relative p-3 rounded-2xl border-2 border-amber-500 bg-amber-500/10 cursor-pointer transition flex flex-col justify-between';
-    if (freeCard) freeCard.className = 'alert-plan-card relative p-3 rounded-2xl border-2 border-slate-800 bg-slate-950/60 hover:border-slate-700 cursor-pointer transition flex flex-col justify-between';
+  // Reset all cards to default inactive styling
+  const inactiveClass = 'alert-plan-card relative p-3 rounded-2xl border-2 border-slate-800 bg-slate-950/60 hover:border-slate-700 cursor-pointer transition flex flex-col justify-between';
+  if (freeCard) freeCard.className = inactiveClass;
+  if (vip1moCard) vip1moCard.className = inactiveClass;
+  if (vip3moCard) vip3moCard.className = inactiveClass;
+
+  if (plan === 'vip3mo') {
+    if (vip3moRadio) vip3moRadio.checked = true;
+    if (vip3moCard) vip3moCard.className = 'alert-plan-card active relative p-3 rounded-2xl border-2 border-amber-500 bg-amber-500/10 cursor-pointer transition flex flex-col justify-between shadow-lg shadow-amber-500/10';
     if (submitBtn) {
-      submitBtn.innerHTML = '<span>Proceed to VIP Pro Instant Alerts ($5/mo)</span> <span>⚡</span>';
-      submitBtn.className = 'w-full py-3 px-4 rounded-xl font-extrabold text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-amber-400 to-amber-300 hover:from-amber-300 hover:to-amber-200 transition shadow-lg shadow-amber-500/20 cursor-pointer flex items-center justify-center gap-1.5';
+      submitBtn.innerHTML = '<span>Get 3-Month Sprint Pass ($10) • Save 33%</span> <span>⚡</span>';
+      submitBtn.className = 'w-full py-3 px-4 rounded-xl font-extrabold text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 hover:from-amber-300 hover:to-yellow-300 transition shadow-lg shadow-amber-500/20 cursor-pointer flex items-center justify-center gap-1.5';
+    }
+  } else if (plan === 'vip1mo') {
+    if (vip1moRadio) vip1moRadio.checked = true;
+    if (vip1moCard) vip1moCard.className = 'alert-plan-card active relative p-3 rounded-2xl border-2 border-sky-500 bg-sky-500/10 cursor-pointer transition flex flex-col justify-between shadow-lg shadow-sky-500/10';
+    if (submitBtn) {
+      submitBtn.innerHTML = '<span>Proceed to 1-Month VIP Alerts ($5/mo)</span> <span>⚡</span>';
+      submitBtn.className = 'w-full py-3 px-4 rounded-xl font-extrabold text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-sky-400 to-teal-300 hover:from-sky-300 hover:to-teal-200 transition shadow-lg shadow-sky-500/20 cursor-pointer flex items-center justify-center gap-1.5';
     }
   } else {
     if (freeRadio) freeRadio.checked = true;
-    if (freeCard) freeCard.className = 'alert-plan-card active relative p-3 rounded-2xl border-2 border-emerald-500 bg-emerald-500/10 cursor-pointer transition flex flex-col justify-between';
-    if (proCard) proCard.className = 'alert-plan-card relative p-3 rounded-2xl border-2 border-slate-800 bg-slate-950/60 hover:border-slate-700 cursor-pointer transition flex flex-col justify-between';
+    if (freeCard) freeCard.className = 'alert-plan-card active relative p-3 rounded-2xl border-2 border-emerald-500 bg-emerald-500/10 cursor-pointer transition flex flex-col justify-between shadow-lg shadow-emerald-500/10';
     if (submitBtn) {
       submitBtn.innerHTML = '<span>Subscribe to Free Weekly Digest</span>';
       submitBtn.className = 'w-full py-3 px-4 rounded-xl font-extrabold text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 transition shadow-lg shadow-emerald-500/20 cursor-pointer';
@@ -1873,30 +1891,43 @@ function bindEventHandlers() {
   const alertsSuccessCloseBtn = document.getElementById('alerts-success-close-btn');
   const alertsForm = document.getElementById('alerts-form');
 
-  if (navAlertsBtn) navAlertsBtn.addEventListener('click', () => openAlertsModal('free'));
-  if (heroAlertsBtn) heroAlertsBtn.addEventListener('click', () => openAlertsModal('free'));
+  if (navAlertsBtn) navAlertsBtn.addEventListener('click', () => openAlertsModal('vip3mo'));
+  if (heroAlertsBtn) heroAlertsBtn.addEventListener('click', () => openAlertsModal('vip3mo'));
   if (alertsCloseBtn) alertsCloseBtn.addEventListener('click', closeAlertsModal);
   if (alertsBackdrop) alertsBackdrop.addEventListener('click', closeAlertsModal);
   if (alertsSuccessCloseBtn) alertsSuccessCloseBtn.addEventListener('click', closeAlertsModal);
 
   const planFreeCard = document.getElementById('plan-free-card');
-  const planProCard = document.getElementById('plan-pro-card');
+  const planVip1moCard = document.getElementById('plan-vip1mo-card');
+  const planVip3moCard = document.getElementById('plan-vip3mo-card');
   if (planFreeCard) planFreeCard.addEventListener('click', () => setAlertPlan('free'));
-  if (planProCard) planProCard.addEventListener('click', () => setAlertPlan('vip_pro'));
+  if (planVip1moCard) planVip1moCard.addEventListener('click', () => setAlertPlan('vip1mo'));
+  if (planVip3moCard) planVip3moCard.addEventListener('click', () => setAlertPlan('vip3mo'));
   document.querySelectorAll('input[name="alert-plan"]').forEach(r => {
     r.addEventListener('change', e => setAlertPlan(e.target.value));
   });
 
   if (alertsForm) {
-    alertsForm.addEventListener('submit', e => {
+    alertsForm.addEventListener('submit', async e => {
       e.preventDefault();
       const email = (document.getElementById('alerts-email')?.value || '').trim();
       const role = document.getElementById('alerts-role')?.value || 'all';
       const scope = document.getElementById('alerts-scope')?.value || 'worldwide';
       const keywords = (document.getElementById('alerts-keywords')?.value || '').trim();
-      const plan = document.querySelector('input[name="alert-plan"]:checked')?.value || 'free';
+      const plan = document.querySelector('input[name="alert-plan"]:checked')?.value || 'vip3mo';
 
       if (!email) return;
+
+      // Expiration date calculation
+      let expiresAt = null;
+      const now = new Date();
+      if (plan === 'vip3mo') {
+        const exp = new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000);
+        expiresAt = exp.toISOString();
+      } else if (plan === 'vip1mo') {
+        const exp = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+        expiresAt = exp.toISOString();
+      }
 
       const subData = {
         email,
@@ -1904,15 +1935,33 @@ function bindEventHandlers() {
         location: scope,
         keywords,
         plan,
-        subscribedAt: new Date().toISOString()
+        expiresAt,
+        status: 'active',
+        subscribedAt: now.toISOString()
       };
 
+      // 1. Local backup persistence
       try {
         const stored = JSON.parse(localStorage.getItem('rjh_alert_subscribers') || '[]');
         stored.push(subData);
         localStorage.setItem('rjh_alert_subscribers', JSON.stringify(stored));
       } catch (err) {
-        console.error('Failed saving subscriber', err);
+        console.error('Failed saving subscriber locally', err);
+      }
+
+      // 2. Google Sheets Webhook Dispatch (Option 1)
+      const webhookUrl = GOOGLE_SHEET_WEBHOOK_URL || window.REMOTE_JOBS_HUB_WEBHOOK_URL;
+      if (webhookUrl) {
+        try {
+          fetch(webhookUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(subData)
+          }).catch(err => console.warn('Google Sheets Webhook non-fatal warning:', err));
+        } catch (fetchErr) {
+          console.warn('Google Sheets Webhook dispatch error:', fetchErr);
+        }
       }
 
       const form = document.getElementById('alerts-form');
@@ -1923,9 +1972,13 @@ function bindEventHandlers() {
       if (form) form.classList.add('hidden');
       if (success) success.classList.remove('hidden');
 
-      if (plan === 'vip_pro') {
-        if (titleEl) titleEl.textContent = '⚡ VIP Pro Alerts Activated!';
-        if (descEl) descEl.textContent = `You're all set! Instant alerts for ${role.toUpperCase()} roles will be dispatched directly to ${email} as soon as company ATS feeds update.`;
+      if (plan === 'vip3mo') {
+        if (titleEl) titleEl.textContent = '⭐ 3-Month Job Search Sprint Pass Activated!';
+        const expFormatted = new Date(expiresAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+        if (descEl) descEl.textContent = `You're covered for your entire job search through ${expFormatted}! Instant direct-ATS alerts for ${role.toUpperCase()} roles will be dispatched directly to ${email}.`;
+      } else if (plan === 'vip1mo') {
+        if (titleEl) titleEl.textContent = '⚡ 1-Month VIP Alerts Activated!';
+        if (descEl) descEl.textContent = `You're all set for 30 days! Instant direct-ATS alerts for ${role.toUpperCase()} roles will be dispatched directly to ${email}.`;
       } else {
         if (titleEl) titleEl.textContent = "You're Subscribed to the Monday Digest!";
         if (descEl) descEl.textContent = `Every Monday morning, we will deliver the top 20 verified remote jobs directly to ${email}.`;
