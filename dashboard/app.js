@@ -588,6 +588,16 @@ function updateRoleCategoryBadges() {
 }
 
 function onJobsLoaded() {
+  // Hydrate local featured jobs if any
+  const featured = getStoredFeaturedJobs();
+  if (featured.length > 0) {
+    const existingIds = new Set(state.allJobs.map(j => j.job_id));
+    const newFeatured = featured.filter(fj => !existingIds.has(fj.job_id));
+    if (newFeatured.length > 0) {
+      state.allJobs = [...newFeatured, ...state.allJobs];
+    }
+  }
+
   const count = state.allJobs.length;
   const headerCount = document.getElementById('header-count-badge');
   if (headerCount) {
@@ -828,6 +838,13 @@ function applyFilters() {
     });
   }
 
+  // Pinned placement: Always pin featured listings to the very top!
+  results.sort((a, b) => {
+    if (a.is_featured && !b.is_featured) return -1;
+    if (!a.is_featured && b.is_featured) return 1;
+    return 0;
+  });
+
   state.filteredJobs = results;
   
   // Update Results Badge
@@ -952,7 +969,9 @@ function renderJobCards() {
     if (state.viewMode === 'list') {
       // ── COMPACT LIST ROW ──
       const row = document.createElement('div');
-      row.className = 'job-card-hover bg-slate-900/90 border border-slate-800/90 hover:border-emerald-500/50 p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition cursor-pointer';
+      row.className = job.is_featured
+        ? 'job-card-hover bg-slate-900 border-2 border-amber-500/60 hover:border-amber-400 p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition cursor-pointer shadow-lg shadow-amber-500/10'
+        : 'job-card-hover bg-slate-900/90 border border-slate-800/90 hover:border-emerald-500/50 p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition cursor-pointer';
       row.onclick = () => openJobModal(job);
 
       row.innerHTML = `
@@ -962,6 +981,7 @@ function renderJobCards() {
           </div>
           <div class="min-w-0 flex-grow">
             <div class="flex items-center gap-2 flex-wrap mb-0.5">
+              ${job.is_featured ? '<span class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40">⭐ Featured</span>' : ''}
               <span class="text-xs font-bold text-slate-300 truncate max-w-[170px]">${escapeHtml(job.company || 'Company')}</span>
               ${isDirectAts ? '<span class="px-1.5 py-0.2 rounded text-[10px] font-black uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">⚡ Direct ATS</span>' : ''}
               ${isApplied ? '<span class="px-1.5 py-0.2 rounded text-[10px] font-black uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">✅ Applied</span>' : ''}
@@ -1028,7 +1048,9 @@ function renderJobCards() {
     } else {
       // ── RICH CARD VIEW ──
       const card = document.createElement('div');
-      card.className = 'job-card-hover bg-slate-900/90 border border-slate-800/90 hover:border-emerald-500/50 p-4 sm:p-5 rounded-2xl flex flex-col justify-between gap-4 transition cursor-pointer';
+      card.className = job.is_featured
+        ? 'job-card-hover bg-slate-900 border-2 border-amber-500/60 hover:border-amber-400 p-4 sm:p-5 rounded-2xl flex flex-col justify-between gap-4 transition cursor-pointer shadow-xl shadow-amber-500/10'
+        : 'job-card-hover bg-slate-900/90 border border-slate-800/90 hover:border-emerald-500/50 p-4 sm:p-5 rounded-2xl flex flex-col justify-between gap-4 transition cursor-pointer';
       card.onclick = () => openJobModal(job);
 
       card.innerHTML = `
@@ -1040,6 +1062,7 @@ function renderJobCards() {
               </div>
               <div class="min-w-0">
                 <div class="flex items-center gap-2 flex-wrap">
+                  ${job.is_featured ? '<span class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40">⭐ Featured</span>' : ''}
                   <span class="text-xs font-bold text-slate-300 truncate max-w-[160px]">${escapeHtml(job.company || 'Hiring Company')}</span>
                   ${isDirectAts ? '<span class="px-1.5 py-0.2 rounded text-[10px] font-black uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">⚡ Direct ATS</span>' : ''}
                   ${isApplied ? '<span class="px-1.5 py-0.2 rounded text-[10px] font-black uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">✅ Applied</span>' : ''}
@@ -1426,6 +1449,92 @@ function closeJobModal() {
   document.body.style.overflow = '';
 }
 
+// ── Alerts & Newsletter Modal Functions ─────────────────────────────────────────
+function openAlertsModal(defaultPlan = 'free') {
+  const modal = document.getElementById('alerts-modal');
+  if (!modal) return;
+  
+  const form = document.getElementById('alerts-form');
+  const success = document.getElementById('alerts-success');
+  if (form) form.classList.remove('hidden');
+  if (success) success.classList.add('hidden');
+
+  setAlertPlan(defaultPlan);
+  modal.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAlertsModal() {
+  const modal = document.getElementById('alerts-modal');
+  if (modal) modal.classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+function setAlertPlan(plan) {
+  const freeRadio = document.querySelector('input[name="alert-plan"][value="free"]');
+  const proRadio = document.querySelector('input[name="alert-plan"][value="vip_pro"]');
+  const freeCard = document.getElementById('plan-free-card');
+  const proCard = document.getElementById('plan-pro-card');
+  const submitBtn = document.getElementById('alerts-submit-btn');
+
+  if (plan === 'vip_pro') {
+    if (proRadio) proRadio.checked = true;
+    if (proCard) proCard.className = 'alert-plan-card active relative p-3 rounded-2xl border-2 border-amber-500 bg-amber-500/10 cursor-pointer transition flex flex-col justify-between';
+    if (freeCard) freeCard.className = 'alert-plan-card relative p-3 rounded-2xl border-2 border-slate-800 bg-slate-950/60 hover:border-slate-700 cursor-pointer transition flex flex-col justify-between';
+    if (submitBtn) {
+      submitBtn.innerHTML = '<span>Proceed to VIP Pro Instant Alerts ($5/mo)</span> <span>⚡</span>';
+      submitBtn.className = 'w-full py-3 px-4 rounded-xl font-extrabold text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-amber-400 to-amber-300 hover:from-amber-300 hover:to-amber-200 transition shadow-lg shadow-amber-500/20 cursor-pointer flex items-center justify-center gap-1.5';
+    }
+  } else {
+    if (freeRadio) freeRadio.checked = true;
+    if (freeCard) freeCard.className = 'alert-plan-card active relative p-3 rounded-2xl border-2 border-emerald-500 bg-emerald-500/10 cursor-pointer transition flex flex-col justify-between';
+    if (proCard) proCard.className = 'alert-plan-card relative p-3 rounded-2xl border-2 border-slate-800 bg-slate-950/60 hover:border-slate-700 cursor-pointer transition flex flex-col justify-between';
+    if (submitBtn) {
+      submitBtn.innerHTML = '<span>Subscribe to Free Weekly Digest</span>';
+      submitBtn.className = 'w-full py-3 px-4 rounded-xl font-extrabold text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 transition shadow-lg shadow-emerald-500/20 cursor-pointer';
+    }
+  }
+}
+
+// ── Recruiter Post a Job Modal Functions ────────────────────────────────────────
+function openPostJobModal() {
+  const modal = document.getElementById('post-job-modal');
+  if (!modal) return;
+  const form = document.getElementById('post-job-form');
+  const success = document.getElementById('post-job-success');
+  if (form) form.classList.remove('hidden');
+  if (success) success.classList.add('hidden');
+
+  modal.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePostJobModal() {
+  const modal = document.getElementById('post-job-modal');
+  if (modal) modal.classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+// ── Featured Jobs Local Persistence ──────────────────────────────────────────
+function getStoredFeaturedJobs() {
+  try {
+    const raw = localStorage.getItem('rjh_featured_jobs');
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function persistFeaturedJob(job) {
+  try {
+    const jobs = getStoredFeaturedJobs();
+    jobs.unshift(job);
+    localStorage.setItem('rjh_featured_jobs', JSON.stringify(jobs.slice(0, 50)));
+  } catch (e) {
+    console.error('Failed saving featured job', e);
+  }
+}
+
 // ── Search & Filter Event Handlers ─────────────────────────────────────────────
 function bindEventHandlers() {
   // 0. Search Target Radio Toggle (All Content vs Title Only - Synchronized)
@@ -1771,8 +1880,141 @@ function bindEventHandlers() {
   if (closeBtn) closeBtn.addEventListener('click', closeJobModal);
   if (backdrop) backdrop.addEventListener('click', closeJobModal);
   window.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeJobModal();
+    if (e.key === 'Escape') {
+      closeJobModal();
+      closeAlertsModal();
+      closePostJobModal();
+    }
   });
+
+  // 17. Candidate Alerts & Newsletter Modal Handlers
+  const navAlertsBtn = document.getElementById('nav-alerts-btn');
+  const heroAlertsBtn = document.getElementById('hero-alerts-btn');
+  const alertsCloseBtn = document.getElementById('alerts-modal-close-btn');
+  const alertsBackdrop = document.getElementById('alerts-modal-backdrop');
+  const alertsSuccessCloseBtn = document.getElementById('alerts-success-close-btn');
+  const alertsForm = document.getElementById('alerts-form');
+
+  if (navAlertsBtn) navAlertsBtn.addEventListener('click', () => openAlertsModal('free'));
+  if (heroAlertsBtn) heroAlertsBtn.addEventListener('click', () => openAlertsModal('free'));
+  if (alertsCloseBtn) alertsCloseBtn.addEventListener('click', closeAlertsModal);
+  if (alertsBackdrop) alertsBackdrop.addEventListener('click', closeAlertsModal);
+  if (alertsSuccessCloseBtn) alertsSuccessCloseBtn.addEventListener('click', closeAlertsModal);
+
+  const planFreeCard = document.getElementById('plan-free-card');
+  const planProCard = document.getElementById('plan-pro-card');
+  if (planFreeCard) planFreeCard.addEventListener('click', () => setAlertPlan('free'));
+  if (planProCard) planProCard.addEventListener('click', () => setAlertPlan('vip_pro'));
+  document.querySelectorAll('input[name="alert-plan"]').forEach(r => {
+    r.addEventListener('change', e => setAlertPlan(e.target.value));
+  });
+
+  if (alertsForm) {
+    alertsForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const email = (document.getElementById('alerts-email')?.value || '').trim();
+      const role = document.getElementById('alerts-role')?.value || 'all';
+      const scope = document.getElementById('alerts-scope')?.value || 'worldwide';
+      const keywords = (document.getElementById('alerts-keywords')?.value || '').trim();
+      const plan = document.querySelector('input[name="alert-plan"]:checked')?.value || 'free';
+
+      if (!email) return;
+
+      const subData = {
+        email,
+        roleCategory: role,
+        location: scope,
+        keywords,
+        plan,
+        subscribedAt: new Date().toISOString()
+      };
+
+      try {
+        const stored = JSON.parse(localStorage.getItem('rjh_alert_subscribers') || '[]');
+        stored.push(subData);
+        localStorage.setItem('rjh_alert_subscribers', JSON.stringify(stored));
+      } catch (err) {
+        console.error('Failed saving subscriber', err);
+      }
+
+      const form = document.getElementById('alerts-form');
+      const success = document.getElementById('alerts-success');
+      const titleEl = document.getElementById('alerts-success-title');
+      const descEl = document.getElementById('alerts-success-desc');
+
+      if (form) form.classList.add('hidden');
+      if (success) success.classList.remove('hidden');
+
+      if (plan === 'vip_pro') {
+        if (titleEl) titleEl.textContent = '⚡ VIP Pro Alerts Activated!';
+        if (descEl) descEl.textContent = `You're all set! Instant alerts for ${role.toUpperCase()} roles will be dispatched directly to ${email} as soon as company ATS feeds update.`;
+      } else {
+        if (titleEl) titleEl.textContent = "You're Subscribed to the Monday Digest!";
+        if (descEl) descEl.textContent = `Every Monday morning, we will deliver the top 20 verified remote jobs directly to ${email}.`;
+      }
+    });
+  }
+
+  // 18. Recruiter Post a Job Modal Handlers ($49)
+  const navPostJobBtn = document.getElementById('nav-post-job-btn');
+  const heroPostJobBtn = document.getElementById('hero-post-job-btn');
+  const postJobCloseBtn = document.getElementById('post-job-modal-close-btn');
+  const postJobBackdrop = document.getElementById('post-job-modal-backdrop');
+  const postJobSuccessCloseBtn = document.getElementById('post-job-success-close-btn');
+  const postJobForm = document.getElementById('post-job-form');
+
+  if (navPostJobBtn) navPostJobBtn.addEventListener('click', openPostJobModal);
+  if (heroPostJobBtn) heroPostJobBtn.addEventListener('click', openPostJobModal);
+  if (postJobCloseBtn) postJobCloseBtn.addEventListener('click', closePostJobModal);
+  if (postJobBackdrop) postJobBackdrop.addEventListener('click', closePostJobModal);
+  if (postJobSuccessCloseBtn) {
+    postJobSuccessCloseBtn.addEventListener('click', () => {
+      closePostJobModal();
+      document.getElementById('main-content')?.scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+
+  if (postJobForm) {
+    postJobForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const title = (document.getElementById('post-job-role-title')?.value || '').trim();
+      const company = (document.getElementById('post-job-company')?.value || '').trim();
+      const domain = document.getElementById('post-job-domain')?.value || 'engineer';
+      const scope = document.getElementById('post-job-scope')?.value || 'Worldwide';
+      const salary = (document.getElementById('post-job-salary')?.value || '').trim();
+      const applyUrl = (document.getElementById('post-job-apply-url')?.value || '').trim();
+      const email = (document.getElementById('post-job-email')?.value || '').trim();
+      const description = (document.getElementById('post-job-description')?.value || '').trim();
+
+      if (!title || !company || !applyUrl) return;
+
+      const featuredJob = {
+        job_id: 'featured_' + Date.now(),
+        title,
+        company,
+        role_category: domain,
+        remote_scope: scope,
+        salary,
+        direct_apply_url: applyUrl,
+        apply_url: applyUrl,
+        source: 'CompanyATS',
+        description: description || `Featured remote position at ${company}. Direct application via official portal.`,
+        posted_date: new Date().toISOString(),
+        collected_date: new Date().toISOString(),
+        is_featured: true,
+        contact_email: email
+      };
+
+      persistFeaturedJob(featuredJob);
+      state.allJobs.unshift(featuredJob);
+      applyFilters();
+
+      const form = document.getElementById('post-job-form');
+      const success = document.getElementById('post-job-success');
+      if (form) form.classList.add('hidden');
+      if (success) success.classList.remove('hidden');
+    });
+  }
 
   // 17. Refresh Button
   const refreshBtn = document.getElementById('refresh-btn');

@@ -151,6 +151,19 @@
             <span id="nav-applied-count" class="px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-500/20 text-emerald-300 font-bold">0</span>
           </button>
 
+          <!-- Email Alerts & Newsletter Button -->
+          <button id="nav-alerts-btn" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 transition cursor-pointer" title="Get Email Job Alerts & Newsletter">
+            <span>📬</span>
+            <span class="hidden sm:inline">Job Alerts</span>
+          </button>
+
+          <!-- Post a Job ($49) Button -->
+          <button id="nav-post-job-btn" type="button" class="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-extrabold text-slate-950 bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 hover:from-emerald-300 hover:to-teal-200 transition cursor-pointer shadow-md shadow-emerald-500/20 shrink-0" title="Feature Your Opening for $49">
+            <span>💼</span>
+            <span class="hidden xs:inline">Post a Job</span>
+            <span class="px-1 py-0.2 rounded text-[9px] font-black bg-slate-950/20 text-slate-950">$49</span>
+          </button>
+
           <!-- Telegram Channel Link -->
           <a href="https://t.me/RemoteJobsHub" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-sky-500/10 text-sky-400 border border-sky-500/20 hover:bg-sky-500/20 transition">
             <span>✈️ Alerts</span>
@@ -271,6 +284,47 @@
           <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('Go')">🐹 Go</button>
           <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('Java')">☕ Java</button>
           <button type="button" class="quick-tag px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer" onclick="setQuickSearch('Senior')">🎯 Senior</button>
+        </div>
+
+        <!-- Action Cards: Email Alerts & Post a Job -->
+        <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto text-left">
+          <!-- Newsletter & Alerts CTA -->
+          <div class="p-3.5 bg-gradient-to-r from-emerald-950/70 via-slate-900 to-slate-900 border border-emerald-500/30 hover:border-emerald-500/60 rounded-2xl flex items-center justify-between gap-3 shadow-lg transition">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-lg shrink-0">
+                📬
+              </div>
+              <div class="min-w-0">
+                <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                  <span>Job Alerts & Digest</span>
+                  <span class="px-1.5 py-0.2 rounded text-[9px] font-black uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Free & VIP</span>
+                </div>
+                <div class="text-[11px] text-slate-400 truncate mt-0.5">Direct-ATS alerts sent to your inbox</div>
+              </div>
+            </div>
+            <button type="button" id="hero-alerts-btn" class="shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 hover:bg-emerald-400 transition cursor-pointer shadow-sm">
+              Get Alerts
+            </button>
+          </div>
+
+          <!-- Post a Job CTA -->
+          <div class="p-3.5 bg-gradient-to-r from-teal-950/70 via-slate-900 to-slate-900 border border-teal-500/30 hover:border-teal-500/60 rounded-2xl flex items-center justify-between gap-3 shadow-lg transition">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-9 h-9 rounded-xl bg-teal-500/15 border border-teal-500/30 flex items-center justify-center text-lg shrink-0">
+                ⭐
+              </div>
+              <div class="min-w-0">
+                <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                  <span>Hiring Remote?</span>
+                  <span class="px-1.5 py-0.2 rounded text-[9px] font-black uppercase bg-amber-500/20 text-amber-300 border border-amber-500/30">$49 Pin</span>
+                </div>
+                <div class="text-[11px] text-slate-400 truncate mt-0.5">Feature your role to 14,000+ candidates</div>
+              </div>
+            </div>
+            <button type="button" id="hero-post-job-btn" class="shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold bg-gradient-to-r from-teal-400 to-cyan-300 text-slate-950 hover:from-teal-300 hover:to-cyan-200 transition cursor-pointer shadow-sm">
+              Post a Job
+            </button>
+          </div>
         </div>
       </div>
 
@@ -728,6 +782,268 @@
     </div>
   </div>
 
+  <!-- Candidate Job Alerts & Newsletter Modal -->
+  <div id="alerts-modal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="alerts-modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-center justify-center min-h-screen p-3 sm:p-4 text-center">
+      <div id="alerts-modal-backdrop" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md transition-opacity"></div>
+
+      <div class="relative inline-block w-full max-w-lg my-6 overflow-hidden text-left align-middle transition-all transform bg-slate-900 border-2 border-emerald-500/40 shadow-2xl rounded-3xl p-5 sm:p-7 z-10">
+        <!-- Header -->
+        <div class="flex items-start justify-between gap-4 border-b border-slate-800 pb-4">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-slate-950 text-xl font-black shrink-0">
+              📬
+            </div>
+            <div>
+              <h3 id="alerts-modal-title" class="text-lg sm:text-xl font-extrabold text-white">Curated Remote Job Alerts</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Direct ATS openings delivered straight to your email</p>
+            </div>
+          </div>
+          <button id="alerts-modal-close-btn" type="button" class="p-2 text-slate-400 hover:text-white bg-slate-800/80 rounded-xl transition cursor-pointer">
+            ✕
+          </button>
+        </div>
+
+        <!-- Plan Selection Tabs -->
+        <div class="grid grid-cols-2 gap-2.5 my-4">
+          <label id="plan-free-card" class="alert-plan-card active relative p-3 rounded-2xl border-2 border-emerald-500 bg-emerald-500/10 cursor-pointer transition flex flex-col justify-between">
+            <input type="radio" name="alert-plan" value="free" checked class="sr-only">
+            <div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-white">Weekly Digest</span>
+                <span class="text-[10px] font-black uppercase px-1.5 py-0.2 rounded bg-slate-800 text-emerald-400">FREE</span>
+              </div>
+              <div class="text-[11px] text-slate-300 mt-1 leading-snug">Top 20 curated remote jobs sent every Monday.</div>
+            </div>
+            <div class="text-[11px] font-bold text-emerald-400 mt-2">$0 / forever</div>
+          </label>
+
+          <label id="plan-pro-card" class="alert-plan-card relative p-3 rounded-2xl border-2 border-slate-800 bg-slate-950/60 hover:border-slate-700 cursor-pointer transition flex flex-col justify-between">
+            <input type="radio" name="alert-plan" value="vip_pro" class="sr-only">
+            <div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-white flex items-center gap-1"><span>⚡ VIP Pro</span></span>
+                <span class="text-[10px] font-black uppercase px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300">INSTANT</span>
+              </div>
+              <div class="text-[11px] text-slate-400 mt-1 leading-snug">Instant alerts as soon as jobs are scraped. Be the 1st applicant.</div>
+            </div>
+            <div class="text-[11px] font-bold text-amber-300 mt-2">$5 / month</div>
+          </label>
+        </div>
+
+        <!-- Form Fields -->
+        <form id="alerts-form" class="space-y-3" onsubmit="event.preventDefault();">
+          <div>
+            <label for="alerts-email" class="block text-xs font-bold text-slate-300 mb-1">Your Email Address <span class="text-rose-400">*</span></label>
+            <input type="email" id="alerts-email" required placeholder="you@example.com" class="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 rounded-xl px-3 py-2 text-xs sm:text-sm text-white placeholder-slate-500 outline-none font-medium">
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div>
+              <label for="alerts-role" class="block text-xs font-bold text-slate-300 mb-1">Target Profession / Role</label>
+              <select id="alerts-role" class="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500 rounded-xl px-2.5 py-2 text-xs text-slate-200 outline-none cursor-pointer">
+                <option value="all">🌐 All Professions</option>
+                <option value="engineer" selected>💻 Software Engineering</option>
+                <option value="qa">🧪 QA & SDET</option>
+                <option value="devops">☁️ DevOps & Cloud</option>
+                <option value="ai">🤖 AI & Machine Learning</option>
+                <option value="data">📊 Data & Analytics</option>
+                <option value="product">🚀 Product Management</option>
+                <option value="design">🎨 UI/UX & Design</option>
+                <option value="sales">📈 Sales & Account Execs</option>
+                <option value="marketing">📢 Marketing & Growth</option>
+              </select>
+            </div>
+            <div>
+              <label for="alerts-scope" class="block text-xs font-bold text-slate-300 mb-1">Location Scope</label>
+              <select id="alerts-scope" class="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500 rounded-xl px-2.5 py-2 text-xs text-slate-200 outline-none cursor-pointer">
+                <option value="worldwide" selected>🌐 Worldwide (Anywhere)</option>
+                <option value="americas">🇺🇸 Americas / US Remote</option>
+                <option value="europe">🇪🇺 Europe / EMEA Remote</option>
+                <option value="apac">🌏 APAC Remote</option>
+                <option value="all">🌍 All Locations</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label for="alerts-keywords" class="block text-xs font-bold text-slate-300 mb-1">Keywords <span class="text-slate-500 font-normal">(optional, e.g. React, Python, Senior)</span></label>
+            <input type="text" id="alerts-keywords" placeholder="e.g. React, Python, QA Automation, Go" class="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 outline-none">
+          </div>
+
+          <div class="pt-2">
+            <button type="submit" id="alerts-submit-btn" class="w-full py-3 px-4 rounded-xl font-extrabold text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 transition shadow-lg shadow-emerald-500/20 cursor-pointer">
+              <span>Subscribe to Free Weekly Digest</span>
+            </button>
+            <p class="text-[11px] text-slate-500 text-center mt-2">Zero spam. One-click unsubscribe anytime in every email.</p>
+          </div>
+        </form>
+
+        <!-- Success Confirmation State -->
+        <div id="alerts-success" class="hidden text-center py-6 space-y-3">
+          <div class="w-14 h-14 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-2xl mx-auto flex items-center justify-center text-3xl">
+            🎉
+          </div>
+          <h4 class="text-base font-bold text-white" id="alerts-success-title">You're Subscribed!</h4>
+          <p class="text-xs text-slate-400 max-w-sm mx-auto leading-relaxed" id="alerts-success-desc">
+            Your preferences have been saved. We will deliver verified direct-ATS openings straight to your inbox.
+          </p>
+          <button type="button" id="alerts-success-close-btn" class="px-5 py-2 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-white rounded-xl transition cursor-pointer">
+            Back to Job Board
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Recruiter Post a Job Modal ($49) -->
+  <div id="post-job-modal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="post-job-modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-center justify-center min-h-screen p-3 sm:p-4 text-center">
+      <div id="post-job-modal-backdrop" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md transition-opacity"></div>
+
+      <div class="relative inline-block w-full max-w-2xl my-6 overflow-hidden text-left align-middle transition-all transform bg-slate-900 border-2 border-teal-500/40 shadow-2xl rounded-3xl p-5 sm:p-8 z-10 max-h-[92vh] overflow-y-auto">
+        <!-- Header -->
+        <div class="flex items-start justify-between gap-4 border-b border-slate-800 pb-4">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-teal-400 to-cyan-400 flex items-center justify-center text-slate-950 text-2xl font-black shrink-0">
+              💼
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 id="post-job-modal-title" class="text-lg sm:text-xl font-extrabold text-white">Post a Featured Remote Job</h3>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase bg-amber-500/20 text-amber-300 border border-amber-500/30">$49 / 30 Days</span>
+              </div>
+              <p class="text-xs text-slate-400 mt-0.5">Reach 14,000+ candidates • Direct applicant referrals to your official ATS</p>
+            </div>
+          </div>
+          <button id="post-job-modal-close-btn" type="button" class="p-2 text-slate-400 hover:text-white bg-slate-800/80 rounded-xl transition cursor-pointer">
+            ✕
+          </button>
+        </div>
+
+        <!-- Featured Benefits Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 my-4">
+          <div class="p-2.5 rounded-xl bg-slate-950/70 border border-slate-800 text-center">
+            <div class="text-base">📌</div>
+            <div class="text-[11px] font-bold text-white mt-1">Pinned to Top</div>
+            <div class="text-[10px] text-slate-400">30-day top visibility</div>
+          </div>
+          <div class="p-2.5 rounded-xl bg-slate-950/70 border border-slate-800 text-center">
+            <div class="text-base">⭐</div>
+            <div class="text-[11px] font-bold text-amber-300 mt-1">Featured Glow</div>
+            <div class="text-[10px] text-slate-400">High-contrast badge</div>
+          </div>
+          <div class="p-2.5 rounded-xl bg-slate-950/70 border border-slate-800 text-center">
+            <div class="text-base">✈️</div>
+            <div class="text-[11px] font-bold text-sky-400 mt-1">Telegram Blast</div>
+            <div class="text-[10px] text-slate-400">Sent to alert channel</div>
+          </div>
+          <div class="p-2.5 rounded-xl bg-slate-950/70 border border-slate-800 text-center">
+            <div class="text-base">⚡</div>
+            <div class="text-[11px] font-bold text-emerald-400 mt-1">Direct ATS</div>
+            <div class="text-[10px] text-slate-400">100% direct apply links</div>
+          </div>
+        </div>
+
+        <!-- Form Fields -->
+        <form id="post-job-form" class="space-y-3.5" onsubmit="event.preventDefault();">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label for="post-job-role-title" class="block text-xs font-bold text-slate-300 mb-1">Job Title <span class="text-rose-400">*</span></label>
+              <input type="text" id="post-job-role-title" required placeholder="e.g. Senior Full Stack Engineer" class="w-full bg-slate-950 border border-slate-800 focus:border-teal-400 rounded-xl px-3 py-2 text-xs sm:text-sm text-white placeholder-slate-500 outline-none">
+            </div>
+            <div>
+              <label for="post-job-company" class="block text-xs font-bold text-slate-300 mb-1">Company Name <span class="text-rose-400">*</span></label>
+              <input type="text" id="post-job-company" required placeholder="e.g. Acme Technologies" class="w-full bg-slate-950 border border-slate-800 focus:border-teal-400 rounded-xl px-3 py-2 text-xs sm:text-sm text-white placeholder-slate-500 outline-none">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label for="post-job-domain" class="block text-xs font-bold text-slate-300 mb-1">Domain</label>
+              <select id="post-job-domain" class="w-full bg-slate-950 border border-slate-800 focus:border-teal-400 rounded-xl px-2.5 py-2 text-xs text-slate-200 outline-none">
+                <option value="engineer" selected>💻 Engineering</option>
+                <option value="qa">🧪 QA & Testing</option>
+                <option value="devops">☁️ DevOps & Cloud</option>
+                <option value="ai">🤖 AI & ML</option>
+                <option value="data">📊 Data</option>
+                <option value="product">🚀 Product</option>
+                <option value="design">🎨 Design</option>
+                <option value="sales">📈 Sales</option>
+                <option value="marketing">📢 Marketing</option>
+                <option value="other">💼 Other</option>
+              </select>
+            </div>
+            <div>
+              <label for="post-job-scope" class="block text-xs font-bold text-slate-300 mb-1">Remote Scope</label>
+              <select id="post-job-scope" class="w-full bg-slate-950 border border-slate-800 focus:border-teal-400 rounded-xl px-2.5 py-2 text-xs text-slate-200 outline-none">
+                <option value="Worldwide" selected>🌐 Worldwide</option>
+                <option value="Americas / US">🇺🇸 Americas / US</option>
+                <option value="Europe / EMEA">🇪🇺 Europe / EMEA</option>
+                <option value="APAC">🌏 APAC</option>
+              </select>
+            </div>
+            <div>
+              <label for="post-job-salary" class="block text-xs font-bold text-slate-300 mb-1">Salary Range</label>
+              <input type="text" id="post-job-salary" placeholder="e.g. $120k - $150k USD" class="w-full bg-slate-950 border border-slate-800 focus:border-teal-400 rounded-xl px-3 py-2 text-xs sm:text-sm text-white placeholder-slate-500 outline-none">
+            </div>
+          </div>
+
+          <div>
+            <label for="post-job-apply-url" class="block text-xs font-bold text-slate-300 mb-1">Official Application URL (ATS) <span class="text-rose-400">*</span></label>
+            <input type="url" id="post-job-apply-url" required placeholder="https://boards.greenhouse.io/... or https://jobs.lever.co/..." class="w-full bg-slate-950 border border-slate-800 focus:border-teal-400 rounded-xl px-3 py-2 text-xs sm:text-sm text-white placeholder-slate-500 outline-none">
+          </div>
+
+          <div>
+            <label for="post-job-email" class="block text-xs font-bold text-slate-300 mb-1">Recruiter / Billing Email <span class="text-rose-400">*</span></label>
+            <input type="email" id="post-job-email" required placeholder="recruiter@company.com" class="w-full bg-slate-950 border border-slate-800 focus:border-teal-400 rounded-xl px-3 py-2 text-xs sm:text-sm text-white placeholder-slate-500 outline-none">
+          </div>
+
+          <div>
+            <label for="post-job-description" class="block text-xs font-bold text-slate-300 mb-1">Short Job Summary</label>
+            <textarea id="post-job-description" rows="3" placeholder="Brief overview of the role, key responsibilities, and qualifications..." class="w-full bg-slate-950 border border-slate-800 focus:border-teal-400 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 outline-none resize-none"></textarea>
+          </div>
+
+          <!-- Checkout Summary -->
+          <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between">
+            <div>
+              <div class="text-xs font-bold text-white">30-Day Featured Top Placement</div>
+              <div class="text-[11px] text-slate-400">Includes top pin + Telegram & email broadcast</div>
+            </div>
+            <div class="text-right">
+              <span class="text-lg font-black text-emerald-400">$49</span>
+              <span class="text-[10px] text-slate-500"> one-time</span>
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <button type="submit" id="post-job-submit-btn" class="w-full py-3.5 px-4 rounded-xl font-black text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-300 hover:from-emerald-300 hover:to-teal-200 transition shadow-xl shadow-teal-500/20 cursor-pointer flex items-center justify-center gap-2">
+              <span>Publish & Feature Job ($49)</span>
+              <span>➔</span>
+            </button>
+            <p class="text-[11px] text-slate-500 text-center mt-2">Instant publication on RemoteJobsHub • Guaranteed 30-day top pinned visibility.</p>
+          </div>
+        </form>
+
+        <!-- Post Job Success Screen -->
+        <div id="post-job-success" class="hidden text-center py-6 space-y-3">
+          <div class="w-14 h-14 bg-teal-500/20 text-teal-300 border border-teal-500/30 rounded-2xl mx-auto flex items-center justify-center text-3xl">
+            🚀
+          </div>
+          <h4 class="text-base font-bold text-white">Job Published & Featured!</h4>
+          <p class="text-xs text-slate-400 max-w-sm mx-auto leading-relaxed">
+            Your listing has been pinned to the top of RemoteJobsHub and will be delivered to our alert subscribers.
+          </p>
+          <button type="button" id="post-job-success-close-btn" class="px-5 py-2 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-white rounded-xl transition cursor-pointer">
+            View Live Listing
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer class="bg-slate-950 border-t border-slate-800/80 mt-16 py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
@@ -781,7 +1097,7 @@
   </div>
 
   <!-- App Script Dependencies -->
-  <script src="jobs_latest.js?v=20261109_search_v2"></script>
-  <script src="app.js?v=20261109_search_v2"></script>
+  <script src="jobs_latest.js?v=20261109_monetization_v1"></script>
+  <script src="app.js?v=20261109_monetization_v1"></script>
 </body>
 </html>
