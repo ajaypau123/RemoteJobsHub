@@ -31,6 +31,23 @@ const state = {
   searchTarget: 'all', // 'all' | 'title'
 };
 
+// ── Role Category Job Counters & Classification Patterns ───────────────────
+const ROLE_PATTERNS = {
+  engineer: /\b(engineer|developer|architect|fullstack|frontend|backend|software|coder|programmer)\b/i,
+  sales: /\b(account\s+executive|sales|bdr|sdr|business\s+development|commercial|revenue|partnership|partnerships|account\s+manager)\b/i,
+  ai: /\b(ai|artificial\s+intelligence|machine\s+learning|ml|llm|data\s+scientist|nlp|deep\s+learning|computer\s+vision)\b/i,
+  marketing: /\b(marketing|growth|seo|sem|content|social\s+media|copywriter|brand|communications|pr)\b/i,
+  finance_hr: /\b(finance|accounting|accountant|payroll|tax|legal|compliance|counsel|recruiter|recruiting|talent|hr|people)\b/i,
+  devops: /\b(devops|sre|reliability|cloud|infrastructure|platform|kubernetes|aws|sysadmin)\b/i,
+  operations: /\b(operations|operations\s+manager|coo|chief\s+of\s+staff|bizops|process|procurement|logistics)\b/i,
+  support: /\b(customer\s+success|support|customer\s+support|csm|client\s+success|help\s+desk|customer\s+experience|cx)\b/i,
+  data: /\b(data\s+engineer|bi|analyst|analytics|database|etl|pipeline|sql)\b/i,
+  product: /\b(product\s+manager|product\s+management|product\s+owner|head\s+of\s+product|director\s+of\s+product|vp\s+of\s+product|cpo)\b/i,
+  design: /\b(designer|ui|ux|product\s+designer|graphic|creative|visual|art\s+director)\b/i,
+  mobile: /\b(ios|android|mobile|flutter|react\s+native|swift|kotlin)\b/i,
+  qa: /\b(qa|quality\s+assurance|tester|testing|sdet|test\s+engineer|automation)\b/i,
+};
+
 // ── Local Storage: Saved & Applied Jobs ───────────────────────────────────────
 function getSavedJobIds() {
   try {
@@ -476,12 +493,6 @@ function init() {
   }
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
-} else {
-  init();
-}
-
 function hydrateArchiveJobs() {
   if (isArchiveHydrated) return;
   isArchiveHydrated = true;
@@ -562,22 +573,6 @@ function loadJobsData() {
 }
 
 // ── Role Category Job Counters ─────────────────────────────────────────────
-const ROLE_PATTERNS = {
-  engineer: /\b(engineer|developer|architect|fullstack|frontend|backend|software|coder|programmer)\b/i,
-  sales: /\b(account\s+executive|sales|bdr|sdr|business\s+development|commercial|revenue|partnership|partnerships|account\s+manager)\b/i,
-  ai: /\b(ai|artificial\s+intelligence|machine\s+learning|ml|llm|data\s+scientist|nlp|deep\s+learning|computer\s+vision)\b/i,
-  marketing: /\b(marketing|growth|seo|sem|content|social\s+media|copywriter|brand|communications|pr)\b/i,
-  finance_hr: /\b(finance|accounting|accountant|payroll|tax|legal|compliance|counsel|recruiter|recruiting|talent|hr|people)\b/i,
-  devops: /\b(devops|sre|reliability|cloud|infrastructure|platform|kubernetes|aws|sysadmin)\b/i,
-  operations: /\b(operations|operations\s+manager|coo|chief\s+of\s+staff|bizops|process|procurement|logistics)\b/i,
-  support: /\b(customer\s+success|support|customer\s+support|csm|client\s+success|help\s+desk|customer\s+experience|cx)\b/i,
-  data: /\b(data\s+engineer|bi|analyst|analytics|database|etl|pipeline|sql)\b/i,
-  product: /\b(product\s+manager|product\s+management|product\s+owner|head\s+of\s+product|director\s+of\s+product|vp\s+of\s+product|cpo)\b/i,
-  design: /\b(designer|ui|ux|product\s+designer|graphic|creative|visual|art\s+director)\b/i,
-  mobile: /\b(ios|android|mobile|flutter|react\s+native|swift|kotlin)\b/i,
-  qa: /\b(qa|quality\s+assurance|tester|testing|sdet|test\s+engineer|automation)\b/i,
-};
-
 function updateRoleCategoryBadges() {
   const counts = { all: state.allJobs.length };
   for (const key of Object.keys(ROLE_PATTERNS)) {
@@ -1036,6 +1031,7 @@ function renderJobCards() {
     const applyLink = job.direct_apply_url || job.apply_url || '#';
     const isDirectAts = !!job.direct_apply_url || job.source === 'CompanyATS';
     const relDate = formatRelativeDate(job.posted_date || job.collected_date);
+    const logoUrl = getCompanyLogoUrl(job.company, applyLink);
 
     // Format Scope Badge (JetBrains Mono)
     let scopeBadge = '';
@@ -1059,8 +1055,6 @@ function renderJobCards() {
         ? 'job-card-hover bg-[#0d1527] border border-amber-500/40 hover:border-amber-400/60 p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition cursor-pointer shadow-lg shadow-amber-500/5'
         : 'job-card-hover bg-[#0d1527] border border-white/[0.08] hover:border-cyan-500/40 hover:bg-[#111c34] p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition cursor-pointer';
       row.onclick = () => openJobModal(job);
-
-      const logoUrl = getCompanyLogoUrl(job.company, applyLink);
 
       row.innerHTML = `
         <div class="flex items-center gap-3 min-w-0 flex-grow">
@@ -2463,3 +2457,11 @@ window.closeAlertsModal = closeAlertsModal;
 window.setAlertPlan = setAlertPlan;
 window.openPostJobModal = openPostJobModal;
 window.closePostJobModal = closePostJobModal;
+window.state = state;
+
+// ── Application Bootstrap ─────────────────────────────────────────────────────
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}

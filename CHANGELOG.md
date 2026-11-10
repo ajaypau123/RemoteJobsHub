@@ -43,6 +43,13 @@ This document tracks all **UI, API, backend, and monetization changes** implemen
 
 ## 📅 Detailed Chronological Release History
 
+### [v2.6.1] — November 10, 2026: Fix Job Card Feed Rendering (logoUrl Scoping & TDZ Hoisting)
+- **Resolved Fatal Render Loop Abort**:
+  - Hoisted `const logoUrl = getCompanyLogoUrl(...)` to the outer card loop in `dashboard/app.js` so default `'card'` view mode inherits the variable cleanly, eliminating the uncaught `ReferenceError: logoUrl is not defined`.
+  - Hoisted `const ROLE_PATTERNS` to top-level configuration next to `state` management, preventing Temporal Dead Zone (TDZ) access during early `init()` execution.
+  - Moved the `init()` application bootstrap execution to the absolute bottom of `dashboard/app.js` after all functions and global exports are declared.
+  - Bumped script cache query version to `?v=20261110_fix_jobs_render` in `dashboard/index.html` to guarantee immediate browser cache invalidation.
+
 ### [v2.6.0] — November 10, 2026: Midnight Navy & Electric Cyan High-End Modern Aesthetic
 - **Option 2 Theme Redesign**:
   - Replaced pitch-black obsidian (`#09090b`/`#121215`) with Stripe/Mercury-inspired Deep Midnight Blue-Black (`#070b14`).
