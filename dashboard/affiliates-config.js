@@ -26,7 +26,7 @@ window.MONETIZATION_CONFIG = {
   // Set enabled: true once you configure your payment provider or recruiter contact link
   // ============================================================
   employerPayment: {
-    enabled: false,
+    enabled: true,
     priceInr: 1999,
     durationDays: 30,
     title: "Post a Featured Job",
@@ -81,7 +81,7 @@ window.MONETIZATION_CONFIG = {
   // Set enabled: true once you plug in your webhook or payment link
   // ============================================================
   jobAlerts: {
-    enabled: false,
+    enabled: true,
     title: "Instant Tech Job Alerts",
     headline: "Never Miss a Job Drop Again",
     subtitle: "Get verified direct ATS roles matching your skills sent straight to your inbox.",

@@ -43,6 +43,18 @@ This document tracks all **UI, API, backend, and monetization changes** implemen
 
 ## 📅 Detailed Chronological Release History
 
+### [v2.4.0] — November 10, 2026: Job Seeker & Provider Popups + Hero Headline Display Fix
+- **Hero Headline Rendering Fix**:
+  - Implemented fail-safe text coloring with `text-emerald-400` as the solid fallback along with explicit WebKit gradient clipping (`[-webkit-background-clip:text] [-webkit-text-fill-color:transparent]`). Even on browsers without hardware gradient acceleration, the text renders in bright vibrant emerald without clipping or becoming invisible.
+  - Ensured `block` formatting and generous line-height (`leading-normal sm:leading-snug`) so titles never overlap.
+- **Job Seeker Interactive Alert Prompts**:
+  - **Persistent Floating Launcher**: Added an Obsidian glassmorphism floating button in the bottom-left corner with an active pulsing indicator (`🔔 Instant Job Alerts • Free & VIP`) that launches the 3-tier Job Alert modal on click.
+  - **In-Feed Sponsor / Drop Card**: Embedded a high-converting candidate alert card directly into the job stream after the 5th job to capture active searchers.
+- **Job Provider (Recruiter) Feature Enhancements**:
+  - Upgraded the header button to a prominent `💼 Post a Job ($49)` CTA with vector Briefcase line icon and emerald highlight.
+  - Added a dedicated Employer Callout Banner above the faceted filters (`Hiring remote tech talent? Reach 16,000+ candidates • Guaranteed 30-day top pinned placement`).
+  - Enabled `employerPayment` and `jobAlerts` monetization flags in `affiliates-config.js`.
+
 ### [v2.3.0] — November 10, 2026: Modern Linear & Vercel Developer UI Makeover
 - **Elite Dark Mode Obsidian Palette:**
   - Transitioned the entire dashboard canvas from generic slate (`#020617`/`#0f172a`) to obsidian charcoal (`#09090b` for background, `#121215` for cards/surfaces, and `#18181d` for inputs/modals).

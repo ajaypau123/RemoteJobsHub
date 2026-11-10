@@ -939,7 +939,7 @@ function renderJobCards() {
 
   const fragment = document.createDocumentFragment();
 
-  chunk.forEach(job => {
+  chunk.forEach((job, index) => {
     const isSaved = state.savedJobIds.has(job.job_id);
     const isApplied = isJobApplied(job.job_id);
     const gradient = getGradient(job.company);
@@ -1145,6 +1145,34 @@ function renderJobCards() {
       `;
 
       fragment.appendChild(card);
+    }
+
+    // In-Feed Job Seeker Alert Trigger Card (after the 5th job)
+    if (index === 4 && state.trackerTab === 'all') {
+      const alertCard = document.createElement('div');
+      alertCard.className = state.viewMode === 'list'
+        ? 'p-4 rounded-xl bg-gradient-to-r from-emerald-950/25 via-[#141419] to-[#121215] border border-emerald-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-md my-1'
+        : 'col-span-1 md:col-span-2 p-5 rounded-2xl bg-gradient-to-r from-emerald-950/25 via-[#141419] to-[#121215] border border-emerald-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-lg my-1';
+      
+      alertCard.innerHTML = `
+        <div class="flex items-start sm:items-center gap-3 min-w-0">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+          </div>
+          <div class="min-w-0">
+            <div class="flex items-center gap-2 flex-wrap mb-0.5">
+              <span class="text-sm font-bold text-white tracking-tight">Never miss a direct-ATS opening</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-semibold">Free & VIP</span>
+            </div>
+            <p class="text-xs text-zinc-400">Get verified roles delivered to your inbox the moment they are indexed, before positions get saturated.</p>
+          </div>
+        </div>
+        <button type="button" onclick="openAlertsModal('vip3mo')" class="px-4 py-2 rounded-xl text-xs font-semibold text-black bg-emerald-400 hover:bg-emerald-300 transition cursor-pointer flex items-center gap-1.5 shrink-0 whitespace-nowrap shadow-sm active:scale-95">
+          <span>Activate Alerts</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </button>
+      `;
+      fragment.appendChild(alertCard);
     }
   });
 
@@ -1934,6 +1962,7 @@ function bindEventHandlers() {
   // 17. Candidate Alerts & Newsletter Modal Handlers
   const navAlertsBtn = document.getElementById('nav-alerts-btn');
   const heroAlertsBtn = document.getElementById('hero-alerts-btn');
+  const floatingAlertsBtn = document.getElementById('floating-alerts-btn');
   const alertsCloseBtn = document.getElementById('alerts-modal-close-btn');
   const alertsBackdrop = document.getElementById('alerts-modal-backdrop');
   const alertsSuccessCloseBtn = document.getElementById('alerts-success-close-btn');
@@ -1941,6 +1970,7 @@ function bindEventHandlers() {
 
   if (navAlertsBtn) navAlertsBtn.addEventListener('click', () => openAlertsModal('vip3mo'));
   if (heroAlertsBtn) heroAlertsBtn.addEventListener('click', () => openAlertsModal('vip3mo'));
+  if (floatingAlertsBtn) floatingAlertsBtn.addEventListener('click', () => openAlertsModal('vip3mo'));
   if (alertsCloseBtn) alertsCloseBtn.addEventListener('click', closeAlertsModal);
   if (alertsBackdrop) alertsBackdrop.addEventListener('click', closeAlertsModal);
   if (alertsSuccessCloseBtn) alertsSuccessCloseBtn.addEventListener('click', closeAlertsModal);
@@ -2050,6 +2080,7 @@ function bindEventHandlers() {
   // 18. Recruiter Post a Job Modal Handlers ($49)
   const navPostJobBtn = document.getElementById('nav-post-job-btn');
   const heroPostJobBtn = document.getElementById('hero-post-job-btn');
+  const toolbarPostJobBtn = document.getElementById('toolbar-post-job-btn');
   const postJobCloseBtn = document.getElementById('post-job-modal-close-btn');
   const postJobBackdrop = document.getElementById('post-job-modal-backdrop');
   const postJobSuccessCloseBtn = document.getElementById('post-job-success-close-btn');
@@ -2057,6 +2088,7 @@ function bindEventHandlers() {
 
   if (navPostJobBtn) navPostJobBtn.addEventListener('click', openPostJobModal);
   if (heroPostJobBtn) heroPostJobBtn.addEventListener('click', openPostJobModal);
+  if (toolbarPostJobBtn) toolbarPostJobBtn.addEventListener('click', openPostJobModal);
   if (postJobCloseBtn) postJobCloseBtn.addEventListener('click', closePostJobModal);
   if (postJobBackdrop) postJobBackdrop.addEventListener('click', closePostJobModal);
   if (postJobSuccessCloseBtn) {
