@@ -47,6 +47,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 
+  <!-- Open-Source Animation Engines (Anime.js & GSAP) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+
   <!-- Tailwind CSS CDN for instant, pristine rendering -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -94,13 +98,30 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     
-    /* Subtle custom card transition */
+    /* Hardware-accelerated smooth card transitions */
     .job-card-hover {
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s ease;
+      will-change: transform, opacity;
     }
     .job-card-hover:hover {
       transform: translateY(-2px);
-      box-shadow: 0 12px 30px -10px rgba(16, 185, 129, 0.08);
+      box-shadow: 0 12px 30px -10px rgba(16, 185, 129, 0.12);
+    }
+
+    /* Modern Dark Select Option Styling */
+    select option {
+      background-color: #121215;
+      color: #f4f4f5;
+      padding: 8px 12px;
+    }
+
+    /* Modal Backdrop Blur Animation */
+    .modal-backdrop-animate {
+      animation: backdropFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes backdropFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
   </style>
 </head>
@@ -1147,8 +1168,8 @@
   </div>
 
   <!-- App Script Dependencies -->
-  <script src="affiliates-config.js?v=20261110_zero_overlap_popups"></script>
-  <script src="jobs_latest.js?v=20261110_zero_overlap_popups"></script>
-  <script src="app.js?v=20261110_zero_overlap_popups"></script>
+  <script src="affiliates-config.js?v=20261110_gsap_animejs"></script>
+  <script src="jobs_latest.js?v=20261110_gsap_animejs"></script>
+  <script src="app.js?v=20261110_gsap_animejs"></script>
 </body>
 </html>

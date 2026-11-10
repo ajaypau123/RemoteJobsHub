@@ -261,6 +261,43 @@ function getInitials(name) {
   return name.slice(0, 2).toUpperCase();
 }
 
+function getCompanyDomain(companyName, applyUrl) {
+  if (!companyName) return 'google.com';
+  // Try extracting direct company domain from applyUrl if not a generic ATS host
+  if (applyUrl && applyUrl.includes('://')) {
+    try {
+      const parsed = new URL(applyUrl);
+      const host = parsed.hostname.toLowerCase();
+      const parts = host.split('.');
+      if (parts.length >= 2) {
+        const rootDomain = parts.slice(-2).join('.');
+        const atsHosts = ['greenhouse.io', 'lever.co', 'ashbyhq.com', 'workday.com', 'smartrecruiters.com', 'workable.com', 'breezy.hr', 'himalayas.app', 'remotive.com', 'remoteok.com'];
+        if (!atsHosts.includes(rootDomain)) {
+          return host.replace(/^www\./, '').replace(/^careers?\./, '').replace(/^jobs?\./, '');
+        }
+        // If it is Greenhouse, Lever, Ashby, path often contains company slug (e.g. boards.greenhouse.io/stripe)
+        const pathSegments = parsed.pathname.split('/').filter(Boolean);
+        if (pathSegments.length > 0) {
+          const candidate = pathSegments[0].toLowerCase().replace(/[^a-z0-9]/g, '');
+          if (candidate.length >= 2 && !['job', 'jobs', 'detail', 'view', 'apply', 'posting'].includes(candidate)) {
+            return `${candidate}.com`;
+          }
+        }
+      }
+    } catch (e) {}
+  }
+  // Sanitize company name into domain fallback
+  const clean = companyName.toLowerCase().trim()
+    .replace(/\s+(inc|llc|ltd|corp|co|gmbh|technologies|technology|software|international)\.?$/i, '')
+    .replace(/[^a-z0-9]/g, '');
+  return clean ? `${clean}.com` : 'remote.com';
+}
+
+function getCompanyLogoUrl(companyName, applyUrl) {
+  const domain = getCompanyDomain(companyName, applyUrl);
+  return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=128`;
+}
+
 function escapeHtml(str) {
   if (!str) return '';
   return str
@@ -621,6 +658,38 @@ function onJobsLoaded() {
   updateRoleCategoryBadges();
   populateCompanyDropdown();
   applyFilters();
+
+  // ── High-Performance Live Number Ticker & Hero Entrance ──
+  if (window.anime && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const countObj = { val: 0 };
+    anime({
+      targets: countObj,
+      val: count,
+      round: 1,
+      easing: 'easeOutExpo',
+      duration: 1400,
+      update: function() {
+        const formatted = countObj.val.toLocaleString();
+        if (headerCount) headerCount.textContent = `${formatted} verified remote jobs`;
+        const tabAllCount = document.getElementById('tab-all-count');
+        if (tabAllCount) tabAllCount.textContent = formatted;
+        const totalCountEl = document.getElementById('total-count');
+        if (totalCountEl) totalCountEl.textContent = formatted;
+        const resultsBadge = document.getElementById('results-count-badge');
+        if (resultsBadge) resultsBadge.textContent = `${formatted} jobs`;
+      }
+    });
+
+    // Staggered subtle reveal for navbar, hero, and main feed
+    anime({
+      targets: ['header', 'section.relative.overflow-hidden', '#main-content'],
+      opacity: [0, 1],
+      translateY: [8, 0],
+      delay: anime.stagger(90),
+      easing: 'easeOutQuad',
+      duration: 400
+    });
+  }
 
   // Progressive background hydration: stream archive without blocking user interactions
   if (window.HAS_ARCHIVE_DATA || state.allJobs.length <= 600) {
@@ -991,10 +1060,21 @@ function renderJobCards() {
         : 'job-card-hover bg-[#121215] border border-white/[0.08] hover:border-emerald-500/40 hover:bg-[#16161b] p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition cursor-pointer';
       row.onclick = () => openJobModal(job);
 
+      const logoUrl = getCompanyLogoUrl(job.company, applyLink);
+
       row.innerHTML = `
         <div class="flex items-center gap-3 min-w-0 flex-grow">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr ${gradient} flex items-center justify-center text-white font-bold text-sm shrink-0">
-            ${initials}
+          <div class="relative w-10 h-10 shrink-0">
+            <img 
+              src="${logoUrl}" 
+              alt="${escapeHtml(job.company || '')}" 
+              loading="lazy" 
+              class="w-10 h-10 rounded-xl object-contain bg-white/[0.04] p-1.5 border border-white/[0.08]"
+              onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';"
+            />
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr ${gradient} hidden items-center justify-center text-white font-bold text-sm shrink-0">
+              ${initials}
+            </div>
           </div>
           <div class="min-w-0 flex-grow">
             <div class="flex items-center gap-2 flex-wrap mb-0.5">
@@ -1075,8 +1155,17 @@ function renderJobCards() {
         <div>
           <div class="flex items-start justify-between gap-3 mb-2">
             <div class="flex items-center gap-3 min-w-0">
-              <div class="w-11 h-11 rounded-xl bg-gradient-to-tr ${gradient} flex items-center justify-center text-white font-bold text-sm shadow-sm shrink-0">
-                ${initials}
+              <div class="relative w-11 h-11 shrink-0">
+                <img 
+                  src="${logoUrl}" 
+                  alt="${escapeHtml(job.company || '')}" 
+                  loading="lazy" 
+                  class="w-11 h-11 rounded-xl object-contain bg-white/[0.04] p-1.5 border border-white/[0.08]"
+                  onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';"
+                />
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-tr ${gradient} hidden items-center justify-center text-white font-bold text-sm shadow-sm shrink-0">
+                  ${initials}
+                </div>
               </div>
               <div class="min-w-0">
                 <div class="flex items-center gap-2 flex-wrap">
@@ -1191,6 +1280,20 @@ function renderJobCards() {
 
   container.appendChild(fragment);
   renderPaginationControls(totalPages);
+
+  // ── Hardware-Accelerated Staggered Card Cascade (Anime.js) ──
+  if (window.anime && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    requestAnimationFrame(() => {
+      anime({
+        targets: '#job-grid > div',
+        translateY: [14, 0],
+        opacity: [0, 1],
+        delay: anime.stagger(22, { start: 10 }),
+        easing: 'easeOutCubic',
+        duration: 320
+      });
+    });
+  }
 }
 
 function renderPaginationControls(totalPages) {
@@ -1289,8 +1392,15 @@ function openJobModal(job) {
 
   title.textContent = job.title;
   company.textContent = job.company;
-  avatar.textContent = getInitials(job.company);
-  avatar.className = `w-12 h-12 rounded-2xl bg-gradient-to-tr ${getGradient(job.company)} flex items-center justify-center text-white font-black text-xl shrink-0`;
+  const link = job.direct_apply_url || job.apply_url || '#';
+  const logoUrl = getCompanyLogoUrl(job.company, link);
+  avatar.className = `w-12 h-12 rounded-2xl bg-white/[0.04] border border-white/[0.08] p-1.5 shrink-0 flex items-center justify-center relative overflow-hidden`;
+  avatar.innerHTML = `
+    <img src="${logoUrl}" alt="${escapeHtml(job.company || '')}" class="w-full h-full object-contain" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';" />
+    <div class="w-full h-full bg-gradient-to-tr ${getGradient(job.company)} hidden items-center justify-center text-white font-bold text-base rounded-xl">
+      ${getInitials(job.company)}
+    </div>
+  `;
 
   // Bookmark Button in Modal
   const isSaved = state.savedJobIds.has(job.job_id);
@@ -1330,7 +1440,6 @@ function openJobModal(job) {
     };
   }
 
-  const link = job.direct_apply_url || job.apply_url || '#';
   applyBtn.href = link;
   applyBtn.onclick = (e) => handleExternalApply(job.job_id, job.company, e);
 
@@ -1499,6 +1608,18 @@ function openJobModal(job) {
 
   modal.classList.remove('hidden');
   document.body.style.overflow = 'hidden';
+
+  const modalBox = modal.querySelector('.relative.w-full');
+  if (window.anime && modalBox && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    anime({
+      targets: modalBox,
+      scale: [0.94, 1],
+      opacity: [0, 1],
+      translateY: [16, 0],
+      easing: 'easeOutElastic(1, .85)',
+      duration: 420
+    });
+  }
 }
 
 function openJobModalById(jobId, e) {
@@ -1539,6 +1660,18 @@ function openAlertsModal(defaultPlan = 'vip3mo') {
   setAlertPlan(defaultPlan);
   modal.classList.remove('hidden');
   document.body.style.overflow = 'hidden';
+
+  const modalBox = modal.querySelector('.relative.w-full');
+  if (window.anime && modalBox && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    anime({
+      targets: modalBox,
+      scale: [0.94, 1],
+      opacity: [0, 1],
+      translateY: [16, 0],
+      easing: 'easeOutElastic(1, .85)',
+      duration: 420
+    });
+  }
 }
 
 function closeAlertsModal() {
@@ -1598,6 +1731,18 @@ function openPostJobModal() {
 
   modal.classList.remove('hidden');
   document.body.style.overflow = 'hidden';
+
+  const modalBox = modal.querySelector('.relative.w-full');
+  if (window.anime && modalBox && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    anime({
+      targets: modalBox,
+      scale: [0.94, 1],
+      opacity: [0, 1],
+      translateY: [16, 0],
+      easing: 'easeOutElastic(1, .85)',
+      duration: 420
+    });
+  }
 }
 
 function closePostJobModal() {

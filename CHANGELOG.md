@@ -43,6 +43,21 @@ This document tracks all **UI, API, backend, and monetization changes** implemen
 
 ## 📅 Detailed Chronological Release History
 
+### [v2.5.0] — November 10, 2026: Impeccable GSAP & Anime.js Modern UI Makeover + Real Company Logos
+- **Open-Source Animation Engines (Anime.js & GSAP)**:
+  - Added Anime.js v3.2.2 and GSAP v3.12.5 via Cloudflare CDN with `defer` loading for 100% free, zero-cost, high-speed micro-interactions.
+  - Added hardware acceleration (`will-change: transform, opacity`) and GPU-composited CSS transitions.
+  - Implemented `prefers-reduced-motion` detection to automatically respect battery-saving and accessibility modes.
+- **Hardware-Accelerated Staggered Card Feed Cascade**:
+  - Cards cascade into view smoothly (`anime.stagger(22ms)`) on initial load, search filtering, category selection, and pagination.
+- **Live Numbers Count-Up Ticker**:
+  - Live animated number ticker counting from 0 up to 16,134+ on initial page load with `easeOutExpo` curve across navbar, hero, and tracker badges.
+- **Authentic Company Brand Logos**:
+  - Integrated Google's free global favicon service (`https://www.google.com/s2/favicons?domain=...&sz=128`) with company domain resolution.
+  - Added `loading="lazy"` and instant automatic fallback to initials gradient badge on error.
+- **Elastic Spring Physics on Popups & Modals**:
+  - "Post a Job ($49)", "Instant Job Alerts", and Job Detail drawer now open with fluid elastic spring physics (`scale: [0.94, 1.0]`, `translateY: [16, 0]`).
+
 ### [v2.4.0] — November 10, 2026: Job Seeker & Provider Popups + Hero Headline Display Fix
 - **Hero Headline Rendering Fix**:
   - Implemented fail-safe text coloring with `text-emerald-400` as the solid fallback along with explicit WebKit gradient clipping (`[-webkit-background-clip:text] [-webkit-text-fill-color:transparent]`). Even on browsers without hardware gradient acceleration, the text renders in bright vibrant emerald without clipping or becoming invisible.
