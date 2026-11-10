@@ -1,6 +1,9 @@
 # RemoteJobsHub — Global Remote Tech Job Aggregator
 
-A Python CLI tool that collects job listings from approved free APIs, normalizes them to a common schema, validates and deduplicates records, and exports a timestamped CSV file.
+A high-performance, automated platform that collects job listings from official company ATS portals, normalizes them, validates and deduplicates records, and deploys a high-converting candidate dashboard.
+
+- 📜 **[Engineering & Product Changelog (CHANGELOG.md)](CHANGELOG.md)** — Track all implemented UI, backend, and monetization features vs. pending items.
+- 📘 **[Google Sheets Webhook Setup Guide (docs/google_sheets_setup.md)](docs/google_sheets_setup.md)** — Free serverless database setup.
 
 ---
 
