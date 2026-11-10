@@ -17,7 +17,7 @@ This document tracks all **UI, API, backend, and monetization changes** implemen
 
 | Feature / Module | Category | Status | Details / Location |
 | :--- | :--- | :--- | :--- |
-| **Linear / Vercel Modern Dark UI** | UI Aesthetic | ✅ **DONE** | Obsidian Charcoal (`#09090b`/`#121215`), 1px micro-borders, Electric Emerald accents |
+| **Midnight Navy & Cyan Palette** | UI Aesthetic | ✅ **DONE** | Deep Midnight `#070b14`, Slate Navy `#0d1527` cards, `#111c34` hovers, Electric Cyan accents, Amber salaries/CTA |
 | **Monochrome Vector SVG Icons** | UI / Icons | ✅ **DONE** | Replaced all OS emojis with sharp 16-20px Lucide-style inline SVGs across all cards & modals |
 | **JetBrains Mono Metadata Tags** | Typography | ✅ **DONE** | Monospace typography for salaries, scopes, dates, ATS provider, and skill pills |
 | **Global `Cmd+K` / `Ctrl+K` Palette** | UX / Shortcut | ✅ **DONE** | Keyboard-first search jump and smooth focus navigation with `Escape` modal dismissal |
@@ -42,6 +42,16 @@ This document tracks all **UI, API, backend, and monetization changes** implemen
 ---
 
 ## 📅 Detailed Chronological Release History
+
+### [v2.6.0] — November 10, 2026: Midnight Navy & Electric Cyan High-End Modern Aesthetic
+- **Option 2 Theme Redesign**:
+  - Replaced pitch-black obsidian (`#09090b`/`#121215`) with Stripe/Mercury-inspired Deep Midnight Blue-Black (`#070b14`).
+  - Elevated surfaces and card containers to Midnight Slate Navy (`#0d1527`) with 1px subtle borders (`border-white/[0.08]`).
+  - Added subtle `#111c34` card hover lift with Electric Cyan micro-glow (`rgba(6, 182, 212, 0.16)`).
+  - Swapped generic green accents with Electric Cyan (`#06b6d4`), Sky Blue (`#38bdf8`), and Royal Blue (`#2563eb`) gradients for primary CTAs, active filters, and hero typography.
+  - Reserved Emerald strictly for authentic trust indicators (`Direct ATS` verified tags and `Applied` tracking badges).
+  - Reserved Warm Amber/Gold (`#f59e0b`) strictly for salaries, featured badges, and the high-converting "Post a Job ($49)" recruiter button.
+  - Updated both static templates (`dashboard/index.html`) and dynamic JavaScript renderers (`dashboard/app.js`) including list rows, rich cards, pagination controls, in-feed alert triggers, category badges, and quick filter chips.
 
 ### [v2.5.0] — November 10, 2026: Impeccable GSAP & Anime.js Modern UI Makeover + Real Company Logos
 - **Open-Source Animation Engines (Anime.js & GSAP)**:

@@ -424,12 +424,12 @@ function renderTopCompanyChips() {
 
   const isAll = state.company === 'all';
   container.innerHTML =
-    '<span class="text-[11px] font-medium text-zinc-400 shrink-0 mr-1 flex items-center gap-1.5 font-mono">' +
-    '<svg class="w-3.5 h-3.5 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>' +
+    '<span class="text-[11px] font-medium text-slate-400 shrink-0 mr-1 flex items-center gap-1.5 font-mono">' +
+    '<svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>' +
     '<span>Top Employers:</span>' +
     '</span>' +
     '<button type="button" onclick="selectCompany(\'all\')" class="company-chip px-2.5 py-1 rounded-lg text-xs font-medium font-mono ' +
-    (isAll ? 'bg-emerald-400 text-black font-semibold' : 'bg-[#121215] text-zinc-300 hover:text-white border border-white/[0.08] hover:border-white/[0.15]') +
+    (isAll ? 'bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 font-bold shadow-sm shadow-cyan-500/20' : 'bg-[#0d1527] text-slate-300 hover:text-white border border-white/[0.08] hover:border-cyan-500/30') +
     ' transition shrink-0 cursor-pointer">All</button>';
 
   topCompanies.forEach(([comp, count]) => {
@@ -437,10 +437,10 @@ function renderTopCompanyChips() {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'company-chip px-2.5 py-1 rounded-lg text-xs font-mono ' +
-      (isSelected ? 'bg-emerald-400 text-black font-semibold' : 'bg-[#121215] text-zinc-300 hover:text-emerald-400 border border-white/[0.08] hover:border-white/[0.15]') +
+      (isSelected ? 'bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 font-bold shadow-sm shadow-cyan-500/20' : 'bg-[#0d1527] text-slate-300 hover:text-cyan-300 border border-white/[0.08] hover:border-cyan-500/30') +
       ' transition shrink-0 cursor-pointer flex items-center gap-1.5';
     btn.innerHTML = '<span>' + escapeHtml(comp) + '</span><span class="' +
-      (isSelected ? 'text-black/80 font-bold' : 'text-emerald-400 font-medium') + '">(' + count + ')</span>';
+      (isSelected ? 'text-slate-950/80 font-bold' : 'text-cyan-400 font-medium') + '">(' + count + ')</span>';
     btn.onclick = () => selectCompany(comp);
     container.appendChild(btn);
   });
@@ -708,11 +708,11 @@ function syncViewModeUI() {
 
   if (cardBtn && listBtn) {
     if (state.viewMode === 'card') {
-      cardBtn.className = 'view-mode-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-400 text-black transition flex items-center gap-1.5 cursor-pointer shadow-sm';
-      listBtn.className = 'view-mode-btn px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-400 hover:text-white transition flex items-center gap-1.5 cursor-pointer';
+      cardBtn.className = 'view-mode-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 transition flex items-center gap-1.5 cursor-pointer shadow-sm shadow-cyan-500/20';
+      listBtn.className = 'view-mode-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition flex items-center gap-1.5 cursor-pointer';
     } else {
-      listBtn.className = 'view-mode-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-400 text-black transition flex items-center gap-1.5 cursor-pointer shadow-sm';
-      cardBtn.className = 'view-mode-btn px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-400 hover:text-white transition flex items-center gap-1.5 cursor-pointer';
+      listBtn.className = 'view-mode-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 transition flex items-center gap-1.5 cursor-pointer shadow-sm shadow-cyan-500/20';
+      cardBtn.className = 'view-mode-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition flex items-center gap-1.5 cursor-pointer';
     }
   }
 }
@@ -738,16 +738,16 @@ function setTrackerTab(tab) {
     const el = document.getElementById(t.id);
     if (!el) return;
     if (t.tab === tab) {
-      el.className = 'tracker-nav-tab active px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-400 text-black transition cursor-pointer flex items-center gap-2 whitespace-nowrap shadow-sm';
+      el.className = 'tracker-nav-tab active px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 transition cursor-pointer flex items-center gap-2 whitespace-nowrap shadow-sm shadow-cyan-500/20';
       const badge = el.querySelector('span:last-child');
-      if (badge) badge.className = 'px-1.5 py-0.2 rounded text-[10px] font-mono bg-black/20 text-black font-bold';
+      if (badge) badge.className = 'px-1.5 py-0.2 rounded text-[10px] font-mono bg-black/20 text-slate-950 font-bold';
     } else {
-      el.className = 'tracker-nav-tab px-3.5 py-1.5 rounded-lg text-xs font-medium text-zinc-400 hover:text-white bg-[#121215] border border-white/[0.08] hover:border-white/[0.15] transition cursor-pointer flex items-center gap-2 whitespace-nowrap';
+      el.className = 'tracker-nav-tab px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white bg-[#0d1527] border border-white/[0.08] hover:border-cyan-500/30 transition cursor-pointer flex items-center gap-2 whitespace-nowrap';
       const badge = el.querySelector('span:last-child');
       if (badge) {
         if (t.tab === 'saved') badge.className = 'px-1.5 py-0.2 rounded text-[10px] font-mono bg-amber-500/15 text-amber-300 font-medium border border-amber-500/20';
         else if (t.tab === 'applied') badge.className = 'px-1.5 py-0.2 rounded text-[10px] font-mono bg-emerald-500/15 text-emerald-300 font-medium border border-emerald-500/20';
-        else badge.className = 'px-1.5 py-0.2 rounded text-[10px] font-mono bg-white/[0.04] text-zinc-400 font-medium';
+        else badge.className = 'px-1.5 py-0.2 rounded text-[10px] font-mono bg-white/[0.04] text-slate-400 font-medium';
       }
     }
   });
@@ -983,15 +983,15 @@ function renderJobCards() {
 
     container.className = 'min-h-[300px] flex items-center justify-center';
     container.innerHTML = `
-      <div class="p-10 sm:p-14 text-center bg-[#121215] border border-white/[0.08] rounded-2xl max-w-lg mx-auto shadow-2xl">
-        <div class="w-12 h-12 rounded-xl bg-white/[0.04] border border-white/[0.08] text-zinc-400 mx-auto flex items-center justify-center mb-4">
+      <div class="p-10 sm:p-14 text-center bg-[#0d1527] border border-white/[0.08] rounded-2xl max-w-lg mx-auto shadow-2xl">
+        <div class="w-12 h-12 rounded-xl bg-white/[0.04] border border-white/[0.08] text-slate-400 mx-auto flex items-center justify-center mb-4">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35"/></svg>
         </div>
         <h3 class="text-base sm:text-lg font-bold text-white mb-2 tracking-tight">${emptyTitle}</h3>
-        <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed mb-6 font-normal">
+        <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6 font-normal">
           ${emptyMsg}
         </p>
-        <button onclick="resetAllFilters()" class="px-4 py-2.5 text-xs font-semibold bg-emerald-400 hover:bg-emerald-300 text-black rounded-xl transition cursor-pointer active:scale-95 flex items-center gap-2 mx-auto">
+        <button onclick="resetAllFilters()" class="px-4 py-2.5 text-xs font-bold bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 rounded-xl transition cursor-pointer active:scale-95 flex items-center gap-2 mx-auto shadow-md shadow-cyan-500/20">
           <span>Show All Remote Openings</span>
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
         </button>
@@ -1041,7 +1041,7 @@ function renderJobCards() {
     let scopeBadge = '';
     const scope = (job.remote_scope || '').toLowerCase();
     if (scope === 'worldwide') {
-      scopeBadge = '<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Worldwide</span>';
+      scopeBadge = '<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">Worldwide</span>';
     } else if (scope.includes('americas')) {
       scopeBadge = '<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-500/10 text-blue-400 border border-blue-500/20">Americas / US</span>';
     } else if (scope.includes('europe') || scope.includes('emea')) {
@@ -1049,15 +1049,15 @@ function renderJobCards() {
     } else if (scope.includes('apac')) {
       scopeBadge = '<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-amber-500/10 text-amber-400 border border-amber-500/20">APAC</span>';
     } else {
-      scopeBadge = '<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-white/[0.04] border border-white/[0.06] text-zinc-300">' + escapeHtml(job.location || 'Remote') + '</span>';
+      scopeBadge = '<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-white/[0.04] border border-white/[0.06] text-slate-300">' + escapeHtml(job.location || 'Remote') + '</span>';
     }
 
     if (state.viewMode === 'list') {
       // ── COMPACT LIST ROW ──
       const row = document.createElement('div');
       row.className = job.is_featured
-        ? 'job-card-hover bg-[#141419] border border-amber-500/40 hover:border-amber-400/60 p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition cursor-pointer shadow-lg shadow-amber-500/5'
-        : 'job-card-hover bg-[#121215] border border-white/[0.08] hover:border-emerald-500/40 hover:bg-[#16161b] p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition cursor-pointer';
+        ? 'job-card-hover bg-[#0d1527] border border-amber-500/40 hover:border-amber-400/60 p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition cursor-pointer shadow-lg shadow-amber-500/5'
+        : 'job-card-hover bg-[#0d1527] border border-white/[0.08] hover:border-cyan-500/40 hover:bg-[#111c34] p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition cursor-pointer';
       row.onclick = () => openJobModal(job);
 
       const logoUrl = getCompanyLogoUrl(job.company, applyLink);
@@ -1079,19 +1079,19 @@ function renderJobCards() {
           <div class="min-w-0 flex-grow">
             <div class="flex items-center gap-2 flex-wrap mb-0.5">
               ${job.is_featured ? '<span class="px-2 py-0.5 rounded text-[10px] font-mono uppercase tracking-wider bg-amber-500/15 text-amber-300 border border-amber-500/30">Featured</span>' : ''}
-              <span class="text-xs font-semibold text-zinc-300 truncate max-w-[170px]">${escapeHtml(job.company || 'Company')}</span>
+              <span class="text-xs font-semibold text-slate-300 truncate max-w-[170px]">${escapeHtml(job.company || 'Company')}</span>
               ${isDirectAts ? '<span class="px-1.5 py-0.2 rounded text-[10px] font-mono uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Direct ATS</span>' : ''}
               ${isApplied ? '<span class="px-1.5 py-0.2 rounded text-[10px] font-mono uppercase bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">Applied</span>' : ''}
-              ${relDate ? `<span class="text-[11px] font-mono text-zinc-500">•</span><span class="text-[11px] font-mono text-emerald-400/90">${relDate}</span>` : ''}
+              ${relDate ? `<span class="text-[11px] font-mono text-slate-500">•</span><span class="text-[11px] font-mono text-cyan-400/90">${relDate}</span>` : ''}
             </div>
-            <h3 class="text-sm sm:text-base font-semibold text-white hover:text-emerald-400 transition truncate tracking-tight">
+            <h3 class="text-sm sm:text-base font-semibold text-white hover:text-cyan-300 transition truncate tracking-tight">
               ${escapeHtml(job.title)}
             </h3>
           </div>
         </div>
 
         <div class="flex items-center gap-1.5 flex-wrap shrink-0">
-          ${job.experience_required ? `<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">${escapeHtml(job.experience_required)}</span>` : ''}
+          ${job.experience_required ? `<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">${escapeHtml(job.experience_required)}</span>` : ''}
           ${scopeBadge}
           ${job.salary ? `<span class="px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-amber-500/10 text-amber-300 border border-amber-500/20">${escapeHtml(job.salary)}</span>` : ''}
         </div>
@@ -1101,7 +1101,7 @@ function renderJobCards() {
           <button 
             type="button" 
             onclick="toggleSaveJob('${job.job_id}', event)" 
-            class="p-2 rounded-lg text-xs transition cursor-pointer ${isSaved ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30' : 'bg-white/[0.04] hover:bg-white/[0.08] text-zinc-400 hover:text-white border border-white/[0.06]'}"
+            class="p-2 rounded-lg text-xs transition cursor-pointer ${isSaved ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30' : 'bg-white/[0.04] hover:bg-white/[0.08] text-slate-400 hover:text-white border border-white/[0.06]'}"
             title="${isSaved ? 'Saved' : 'Save'}"
           >
             <svg class="w-3.5 h-3.5" fill="${isSaved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
@@ -1111,7 +1111,7 @@ function renderJobCards() {
           <button 
             type="button" 
             onclick="toggleApplyJob('${job.job_id}', event)" 
-            class="px-2.5 py-1.5 rounded-lg text-xs font-mono font-medium transition cursor-pointer flex items-center gap-1 ${isApplied ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30' : 'bg-white/[0.04] hover:bg-white/[0.08] text-zinc-400 hover:text-white border border-white/[0.06]'}"
+            class="px-2.5 py-1.5 rounded-lg text-xs font-mono font-medium transition cursor-pointer flex items-center gap-1 ${isApplied ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30' : 'bg-white/[0.04] hover:bg-white/[0.08] text-slate-400 hover:text-white border border-white/[0.06]'}"
             title="${isApplied ? 'Marked as Applied' : 'Track Application'}"
           >
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
@@ -1122,7 +1122,7 @@ function renderJobCards() {
           <button 
             type="button" 
             onclick="openJobModalById('${job.job_id}', event)" 
-            class="p-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] transition cursor-pointer"
+            class="p-2 rounded-lg text-xs font-medium text-slate-400 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] transition cursor-pointer"
             title="View Details"
           >
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
@@ -1134,7 +1134,7 @@ function renderJobCards() {
             target="_blank" 
             rel="noopener noreferrer" 
             onclick="handleExternalApply('${job.job_id}', event)"
-            class="px-3 py-1.5 text-xs font-semibold text-black bg-emerald-400 hover:bg-emerald-300 rounded-lg shadow-sm active:scale-95 transition flex items-center gap-1 cursor-pointer whitespace-nowrap"
+            class="px-3 py-1.5 text-xs font-bold text-slate-950 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 rounded-lg shadow-sm shadow-cyan-500/20 active:scale-95 transition flex items-center gap-1 cursor-pointer whitespace-nowrap"
           >
             <span>Apply</span>
             <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
@@ -1147,8 +1147,8 @@ function renderJobCards() {
       // ── RICH CARD VIEW ──
       const card = document.createElement('div');
       card.className = job.is_featured
-        ? 'job-card-hover bg-[#141419] border border-amber-500/40 hover:border-amber-400/60 p-4 sm:p-5 rounded-2xl flex flex-col justify-between gap-4 transition cursor-pointer shadow-lg shadow-amber-500/5'
-        : 'job-card-hover bg-[#121215] border border-white/[0.08] hover:border-emerald-500/40 hover:bg-[#16161b] p-4 sm:p-5 rounded-2xl flex flex-col justify-between gap-4 transition cursor-pointer';
+        ? 'job-card-hover bg-[#0d1527] border border-amber-500/40 hover:border-amber-400/60 p-4 sm:p-5 rounded-2xl flex flex-col justify-between gap-4 transition cursor-pointer shadow-lg shadow-amber-500/5'
+        : 'job-card-hover bg-[#0d1527] border border-white/[0.08] hover:border-cyan-500/40 hover:bg-[#111c34] p-4 sm:p-5 rounded-2xl flex flex-col justify-between gap-4 transition cursor-pointer';
       card.onclick = () => openJobModal(job);
 
       card.innerHTML = `
@@ -1170,13 +1170,13 @@ function renderJobCards() {
               <div class="min-w-0">
                 <div class="flex items-center gap-2 flex-wrap">
                   ${job.is_featured ? '<span class="px-2 py-0.5 rounded text-[10px] font-mono uppercase tracking-wider bg-amber-500/15 text-amber-300 border border-amber-500/30">Featured</span>' : ''}
-                  <span class="text-xs font-semibold text-zinc-300 truncate max-w-[160px]">${escapeHtml(job.company || 'Hiring Company')}</span>
+                  <span class="text-xs font-semibold text-slate-300 truncate max-w-[160px]">${escapeHtml(job.company || 'Hiring Company')}</span>
                   ${isDirectAts ? '<span class="px-1.5 py-0.2 rounded text-[10px] font-mono uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Direct ATS</span>' : ''}
                   ${isApplied ? '<span class="px-1.5 py-0.2 rounded text-[10px] font-mono uppercase bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">Applied</span>' : ''}
                 </div>
-                <div class="flex items-center gap-1.5 text-[11px] font-mono text-zinc-500 mt-0.5">
+                <div class="flex items-center gap-1.5 text-[11px] font-mono text-slate-500 mt-0.5">
                   <span>${escapeHtml(job.source || 'RemoteFeed')}</span>
-                  ${relDate ? `<span>•</span><span class="text-emerald-400/90 font-medium">${relDate}</span>` : ''}
+                  ${relDate ? `<span>•</span><span class="text-cyan-400/90 font-medium">${relDate}</span>` : ''}
                 </div>
               </div>
             </div>
@@ -1184,7 +1184,7 @@ function renderJobCards() {
             <button 
               type="button" 
               onclick="toggleSaveJob('${job.job_id}', event)" 
-              class="p-2 rounded-lg text-xs transition cursor-pointer shrink-0 ${isSaved ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30' : 'bg-white/[0.04] hover:bg-white/[0.08] text-zinc-400 hover:text-white border border-white/[0.06]'}"
+              class="p-2 rounded-lg text-xs transition cursor-pointer shrink-0 ${isSaved ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30' : 'bg-white/[0.04] hover:bg-white/[0.08] text-slate-400 hover:text-white border border-white/[0.06]'}"
               title="${isSaved ? 'Remove Bookmark' : 'Save Job'}"
             >
               <svg class="w-4 h-4" fill="${isSaved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
@@ -1192,18 +1192,18 @@ function renderJobCards() {
           </div>
 
           <!-- Job Title -->
-          <h3 class="text-base font-semibold text-white hover:text-emerald-400 transition line-clamp-2 leading-snug my-2 tracking-tight">
+          <h3 class="text-base font-semibold text-white hover:text-cyan-300 transition line-clamp-2 leading-snug my-2 tracking-tight">
             ${escapeHtml(job.title)}
           </h3>
 
           <!-- Scope & Tech Stack Tags -->
           <div class="flex items-center gap-1.5 flex-wrap mt-3">
             ${scopeBadge}
-            ${job.experience_required ? `<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">${escapeHtml(job.experience_required)}</span>` : ''}
-            ${job.seniority_level ? `<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-white/[0.04] border border-white/[0.06] text-zinc-300">${escapeHtml(job.seniority_level)}</span>` : ''}
+            ${job.experience_required ? `<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">${escapeHtml(job.experience_required)}</span>` : ''}
+            ${job.seniority_level ? `<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-white/[0.04] border border-white/[0.06] text-slate-300">${escapeHtml(job.seniority_level)}</span>` : ''}
             ${job.salary ? `<span class="px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-amber-500/10 text-amber-300 border border-amber-500/20">${escapeHtml(job.salary)}</span>` : ''}
-            ${job.employment_type ? `<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-white/[0.04] border border-white/[0.06] text-zinc-300">${escapeHtml(job.employment_type)}</span>` : ''}
-            ${tags.map(t => `<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-white/[0.04] border border-white/[0.06] text-zinc-400">${t}</span>`).join('')}
+            ${job.employment_type ? `<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-white/[0.04] border border-white/[0.06] text-slate-300">${escapeHtml(job.employment_type)}</span>` : ''}
+            ${tags.map(t => `<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-white/[0.04] border border-white/[0.06] text-slate-400">${t}</span>`).join('')}
           </div>
         </div>
 
@@ -1212,7 +1212,7 @@ function renderJobCards() {
           <button 
             type="button" 
             onclick="toggleApplyJob('${job.job_id}', event)" 
-            class="px-3 py-1.5 text-xs font-mono font-medium rounded-lg transition cursor-pointer flex items-center gap-1.5 ${isApplied ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30' : 'bg-white/[0.04] hover:bg-white/[0.08] text-zinc-400 hover:text-white border border-white/[0.06]'}"
+            class="px-3 py-1.5 text-xs font-mono font-medium rounded-lg transition cursor-pointer flex items-center gap-1.5 ${isApplied ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30' : 'bg-white/[0.04] hover:bg-white/[0.08] text-slate-400 hover:text-white border border-white/[0.06]'}"
             title="${isApplied ? 'Application tracked' : 'Track this application'}"
           >
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
@@ -1224,11 +1224,11 @@ function renderJobCards() {
             <button 
               type="button" 
               onclick="openJobModalById('${job.job_id}', event)" 
-              class="px-3 py-1.5 text-xs font-medium text-zinc-300 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] rounded-lg transition flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
+              class="px-3 py-1.5 text-xs font-medium text-slate-300 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] rounded-lg transition flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
               title="View full job details"
             >
               <span>Details</span>
-              <svg class="w-3 h-3 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
             </button>
 
             <!-- Direct Apply CTA -->
@@ -1237,7 +1237,7 @@ function renderJobCards() {
               target="_blank" 
               rel="noopener noreferrer" 
               onclick="handleExternalApply('${job.job_id}', event)"
-              class="px-3.5 py-1.5 text-xs font-semibold text-black bg-emerald-400 hover:bg-emerald-300 rounded-lg shadow-sm active:scale-95 transition flex items-center gap-1 cursor-pointer whitespace-nowrap"
+              class="px-3.5 py-1.5 text-xs font-bold text-slate-950 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 rounded-lg shadow-sm shadow-cyan-500/20 active:scale-95 transition flex items-center gap-1 cursor-pointer whitespace-nowrap"
             >
               <span>Apply</span>
               <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
@@ -1253,12 +1253,12 @@ function renderJobCards() {
     if (index === 4 && state.trackerTab === 'all') {
       const alertCard = document.createElement('div');
       alertCard.className = state.viewMode === 'list'
-        ? 'p-4 rounded-xl bg-gradient-to-r from-emerald-950/25 via-[#141419] to-[#121215] border border-emerald-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-md my-1'
-        : 'col-span-1 md:col-span-2 p-5 rounded-2xl bg-gradient-to-r from-emerald-950/25 via-[#141419] to-[#121215] border border-emerald-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-lg my-1';
+        ? 'p-4 rounded-xl bg-gradient-to-r from-cyan-950/30 via-[#0d1527] to-[#0d1527] border border-cyan-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-md my-1'
+        : 'col-span-1 md:col-span-2 p-5 rounded-2xl bg-gradient-to-r from-cyan-950/30 via-[#0d1527] to-[#0d1527] border border-cyan-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-lg my-1';
       
       alertCard.innerHTML = `
         <div class="flex items-start sm:items-center gap-3 min-w-0">
-          <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 flex items-center justify-center shrink-0">
+          <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/25 text-cyan-400 flex items-center justify-center shrink-0">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
           </div>
           <div class="min-w-0">
@@ -1266,10 +1266,10 @@ function renderJobCards() {
               <span class="text-sm font-bold text-white tracking-tight">Never miss a direct-ATS opening</span>
               <span class="px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-semibold">Free & VIP</span>
             </div>
-            <p class="text-xs text-zinc-400">Get verified roles delivered to your inbox the moment they are indexed, before positions get saturated.</p>
+            <p class="text-xs text-slate-400">Get verified roles delivered to your inbox the moment they are indexed, before positions get saturated.</p>
           </div>
         </div>
-        <button type="button" onclick="openAlertsModal('vip3mo')" class="px-4 py-2 rounded-xl text-xs font-semibold text-black bg-emerald-400 hover:bg-emerald-300 transition cursor-pointer flex items-center gap-1.5 shrink-0 whitespace-nowrap shadow-sm active:scale-95">
+        <button type="button" onclick="openAlertsModal('vip3mo')" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-950 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 transition cursor-pointer flex items-center gap-1.5 shrink-0 whitespace-nowrap shadow-sm shadow-cyan-500/20 active:scale-95">
           <span>Activate Alerts</span>
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
         </button>
@@ -1311,8 +1311,8 @@ function renderPaginationControls(totalPages) {
   prevBtn.disabled = current === 1;
   prevBtn.className = `px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition flex items-center gap-1 ${
     current === 1 
-      ? 'bg-[#121215] text-zinc-600 border border-white/[0.04] cursor-not-allowed' 
-      : 'bg-[#121215] text-zinc-300 hover:text-white hover:bg-white/[0.06] border border-white/[0.08] cursor-pointer shadow-sm active:scale-95'
+      ? 'bg-[#0d1527] text-slate-600 border border-white/[0.04] cursor-not-allowed' 
+      : 'bg-[#0d1527] text-slate-300 hover:text-white hover:bg-[#111c34] border border-white/[0.08] cursor-pointer shadow-sm active:scale-95'
   }`;
   prevBtn.innerHTML = '‹ Prev';
   prevBtn.onclick = () => goToPage(current - 1);
@@ -1342,7 +1342,7 @@ function renderPaginationControls(totalPages) {
   pages.forEach(p => {
     if (p === '...') {
       const dots = document.createElement('span');
-      dots.className = 'px-1.5 py-1 text-zinc-600 text-xs font-mono';
+      dots.className = 'px-1.5 py-1 text-slate-600 text-xs font-mono';
       dots.textContent = '...';
       container.appendChild(dots);
     } else {
@@ -1351,8 +1351,8 @@ function renderPaginationControls(totalPages) {
       const isActive = p === current;
       pageBtn.className = `min-w-[34px] px-2.5 py-1.5 rounded-lg text-xs font-mono font-medium transition cursor-pointer ${
         isActive 
-          ? 'bg-emerald-400 text-black font-semibold shadow-sm' 
-          : 'bg-[#121215] text-zinc-400 hover:text-white hover:bg-white/[0.06] border border-white/[0.08]'
+          ? 'bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 font-bold shadow-sm shadow-cyan-500/20' 
+          : 'bg-[#0d1527] text-slate-400 hover:text-white hover:bg-[#111c34] border border-white/[0.08]'
       }`;
       pageBtn.textContent = p;
       pageBtn.onclick = () => goToPage(p);
@@ -1366,8 +1366,8 @@ function renderPaginationControls(totalPages) {
   nextBtn.disabled = current === totalPages;
   nextBtn.className = `px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition flex items-center gap-1 ${
     current === totalPages 
-      ? 'bg-[#121215] text-zinc-600 border border-white/[0.04] cursor-not-allowed' 
-      : 'bg-[#121215] text-zinc-300 hover:text-white hover:bg-white/[0.06] border border-white/[0.08] cursor-pointer shadow-sm active:scale-95'
+      ? 'bg-[#0d1527] text-slate-600 border border-white/[0.04] cursor-not-allowed' 
+      : 'bg-[#0d1527] text-slate-300 hover:text-white hover:bg-[#111c34] border border-white/[0.08] cursor-pointer shadow-sm active:scale-95'
   }`;
   nextBtn.innerHTML = 'Next ›';
   nextBtn.onclick = () => goToPage(current + 1);
@@ -1424,7 +1424,7 @@ function openJobModal(job) {
     trackBtn.className = `px-3.5 py-2 text-xs font-mono font-medium rounded-xl transition cursor-pointer ${
       isApplied 
         ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30' 
-        : 'bg-[#18181d] hover:bg-white/[0.06] text-zinc-300 hover:text-white border border-white/[0.08]'
+        : 'bg-[#111c34] hover:bg-white/[0.06] text-slate-300 hover:text-white border border-white/[0.08]'
     }`;
     trackBtn.onclick = () => {
       toggleApplyJob(job.job_id);
@@ -1435,7 +1435,7 @@ function openJobModal(job) {
       trackBtn.className = `px-3.5 py-2 text-xs font-mono font-medium rounded-xl transition cursor-pointer ${
         appliedNow 
           ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30' 
-          : 'bg-[#18181d] hover:bg-white/[0.06] text-zinc-300 hover:text-white border border-white/[0.08]'
+          : 'bg-[#111c34] hover:bg-white/[0.06] text-slate-300 hover:text-white border border-white/[0.08]'
       }`;
     };
   }
@@ -1504,8 +1504,8 @@ function openJobModal(job) {
   const salaryText = job.salary ? escapeHtml(job.salary) : 'Competitive / Unstated';
 
   const techChipsHtml = techList.length > 0
-    ? techList.map(t => `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-mono bg-white/[0.04] text-zinc-300 border border-white/[0.08]">${escapeHtml(t)}</span>`).join(' ')
-    : '<span class="text-xs text-zinc-400 italic">General engineering & cross-functional skills. See description below for complete context.</span>';
+    ? techList.map(t => `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-mono bg-white/[0.04] text-slate-300 border border-white/[0.08]">${escapeHtml(t)}</span>`).join(' ')
+    : '<span class="text-xs text-slate-400 italic">General engineering & cross-functional skills. See description below for complete context.</span>';
 
   // Description format
   const cleanDesc = (job.description || 'No description provided. Please click Apply to view complete job details on the hiring company website.')
@@ -1517,74 +1517,74 @@ function openJobModal(job) {
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 font-mono">
       
       <!-- Experience Required -->
-      <div class="p-3.5 rounded-xl bg-[#18181d] border border-white/[0.08] flex items-start gap-3">
-        <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+      <div class="p-3.5 rounded-xl bg-[#111c34] border border-white/[0.08] flex items-start gap-3">
+        <div class="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         </div>
         <div class="min-w-0">
-          <div class="text-[10px] uppercase tracking-wider text-zinc-500">Experience</div>
+          <div class="text-[10px] uppercase tracking-wider text-slate-500">Experience</div>
           <div class="text-sm font-semibold text-white mt-0.5 truncate">${expText}</div>
-          <div class="text-[10px] text-zinc-400 mt-0.5 font-sans">${expSub}</div>
+          <div class="text-[10px] text-slate-400 mt-0.5 font-sans">${expSub}</div>
         </div>
       </div>
 
       <!-- Seniority Tier -->
-      <div class="p-3.5 rounded-xl bg-[#18181d] border border-white/[0.08] flex items-start gap-3">
-        <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+      <div class="p-3.5 rounded-xl bg-[#111c34] border border-white/[0.08] flex items-start gap-3">
+        <div class="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center shrink-0">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
         </div>
         <div class="min-w-0">
-          <div class="text-[10px] uppercase tracking-wider text-zinc-500">Seniority</div>
+          <div class="text-[10px] uppercase tracking-wider text-slate-500">Seniority</div>
           <div class="text-sm font-semibold text-white mt-0.5 truncate">${escapeHtml(seniorityText)}</div>
-          <div class="text-[10px] text-zinc-400 mt-0.5 font-sans">Ownership expectations</div>
+          <div class="text-[10px] text-slate-400 mt-0.5 font-sans">Ownership expectations</div>
         </div>
       </div>
 
       <!-- Remote Work Scope -->
-      <div class="p-3.5 rounded-xl bg-[#18181d] border border-white/[0.08] flex items-start gap-3">
-        <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+      <div class="p-3.5 rounded-xl bg-[#111c34] border border-white/[0.08] flex items-start gap-3">
+        <div class="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
         </div>
         <div class="min-w-0">
-          <div class="text-[10px] uppercase tracking-wider text-zinc-500">Scope</div>
+          <div class="text-[10px] uppercase tracking-wider text-slate-500">Scope</div>
           <div class="text-sm font-semibold text-white mt-0.5 truncate">${scopeText}</div>
-          <div class="text-[10px] text-zinc-400 mt-0.5 font-sans truncate">${escapeHtml(job.location || 'Anywhere')}</div>
+          <div class="text-[10px] text-slate-400 mt-0.5 font-sans truncate">${escapeHtml(job.location || 'Anywhere')}</div>
         </div>
       </div>
 
       <!-- Compensation -->
-      <div class="p-3.5 rounded-xl bg-[#18181d] border border-white/[0.08] flex items-start gap-3">
-        <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+      <div class="p-3.5 rounded-xl bg-[#111c34] border border-white/[0.08] flex items-start gap-3">
+        <div class="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-300 flex items-center justify-center shrink-0">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         </div>
         <div class="min-w-0">
-          <div class="text-[10px] uppercase tracking-wider text-zinc-500">Compensation</div>
-          <div class="text-sm font-semibold text-emerald-400 mt-0.5 truncate">${salaryText}</div>
-          <div class="text-[10px] text-zinc-400 mt-0.5 font-sans truncate">${job.employment_type || 'Full-time'}</div>
+          <div class="text-[10px] uppercase tracking-wider text-slate-500">Compensation</div>
+          <div class="text-sm font-semibold text-amber-300 mt-0.5 truncate">${salaryText}</div>
+          <div class="text-[10px] text-slate-400 mt-0.5 font-sans truncate">${job.employment_type || 'Full-time'}</div>
         </div>
       </div>
 
     </div>
 
     <!-- Why This Level & Role Expectations Callout Banner -->
-    <div class="p-4 rounded-xl bg-white/[0.02] border border-white/[0.08] mb-4">
-      <div class="flex items-center gap-2 mb-1.5 text-xs font-mono uppercase tracking-wider text-emerald-400 font-medium">
+    <div class="p-4 rounded-xl bg-[#111c34]/70 border border-white/[0.08] mb-4">
+      <div class="flex items-center gap-2 mb-1.5 text-xs font-mono uppercase tracking-wider text-cyan-400 font-medium">
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         <span>Role Expectations & Ownership</span>
       </div>
-      <p class="text-xs sm:text-sm text-zinc-300 leading-relaxed font-normal">
+      <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
         ${escapeHtml(seniorityRationale)}
       </p>
     </div>
 
     <!-- Verified Tech Stack & Skills -->
-    <div class="p-4 rounded-xl bg-[#18181d] border border-white/[0.08] mb-4">
+    <div class="p-4 rounded-xl bg-[#111c34] border border-white/[0.08] mb-4">
       <div class="flex items-center justify-between mb-3">
-        <div class="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-zinc-400 font-medium">
-          <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+        <div class="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-slate-400 font-medium">
+          <svg class="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
           <span>Verified Tech Stack</span>
         </div>
-        <span class="text-[11px] font-mono text-zinc-500">${techList.length} skills</span>
+        <span class="text-[11px] font-mono text-slate-500">${techList.length} skills</span>
       </div>
       <div class="flex flex-wrap gap-1.5">
         ${techChipsHtml}
@@ -1594,8 +1594,8 @@ function openJobModal(job) {
     <!-- Role Overview & Full Description -->
     <div class="pt-2">
       <div class="flex items-center justify-between mb-2.5">
-        <div class="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-zinc-400 font-medium">
-          <svg class="w-3.5 h-3.5 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        <div class="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-slate-400 font-medium">
+          <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
           <span>Job Description & Requirements</span>
         </div>
         <span class="text-[11px] font-mono text-zinc-500">Official Posting</span>
@@ -1712,10 +1712,10 @@ function setAlertPlan(plan) {
     }
   } else {
     if (freeRadio) freeRadio.checked = true;
-    if (freeCard) freeCard.className = 'alert-plan-card active relative p-3 rounded-xl border border-emerald-500/50 bg-emerald-500/10 cursor-pointer transition flex flex-col justify-between shadow-sm';
+    if (freeCard) freeCard.className = 'alert-plan-card active relative p-3 rounded-xl border border-cyan-500/50 bg-cyan-500/10 cursor-pointer transition flex flex-col justify-between shadow-sm';
     if (submitBtn) {
       submitBtn.innerHTML = '<span>Subscribe to Free Weekly Digest</span>';
-      submitBtn.className = 'w-full py-2.5 px-4 rounded-xl font-bold font-mono text-xs sm:text-sm text-black bg-emerald-400 hover:bg-emerald-300 transition cursor-pointer flex items-center justify-center';
+      submitBtn.className = 'w-full py-2.5 px-4 rounded-xl font-bold font-mono text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 transition cursor-pointer flex items-center justify-center';
     }
   }
 }
@@ -1831,11 +1831,11 @@ function bindEventHandlers() {
         const isMatch = (p.dataset.category || 'all') === state.category;
         const b = p.querySelector('.role-count-badge');
         if (isMatch) {
-          p.className = 'role-pill active shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-emerald-400 text-black shadow-sm cursor-pointer flex items-center gap-2';
-          if (b) b.className = 'role-count-badge px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-black/20 text-black';
+          p.className = 'role-pill active shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-sm shadow-cyan-500/20 cursor-pointer flex items-center gap-2';
+          if (b) b.className = 'role-count-badge px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-black/30 text-cyan-200';
         } else {
-          p.className = 'role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium transition bg-[#121215] text-zinc-400 hover:text-zinc-200 hover:bg-[#18181d] border border-white/[0.08] cursor-pointer flex items-center gap-2';
-          if (b) b.className = 'role-count-badge px-1.5 py-0.5 rounded text-[10px] font-mono bg-white/[0.04] text-zinc-500';
+          p.className = 'role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium transition bg-[#0d1527] text-slate-400 hover:text-cyan-300 hover:bg-[#111c34] border border-white/[0.08] cursor-pointer flex items-center gap-2';
+          if (b) b.className = 'role-count-badge px-1.5 py-0.5 rounded text-[10px] font-mono bg-white/[0.04] text-slate-400';
         }
       });
       state.currentPage = 1;
@@ -1846,13 +1846,13 @@ function bindEventHandlers() {
   rolePills.forEach(pill => {
     pill.addEventListener('click', () => {
       rolePills.forEach(p => {
-        p.className = 'role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium transition bg-[#121215] text-zinc-400 hover:text-zinc-200 hover:bg-[#18181d] border border-white/[0.08] cursor-pointer flex items-center gap-2';
+        p.className = 'role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium transition bg-[#0d1527] text-slate-400 hover:text-cyan-300 hover:bg-[#111c34] border border-white/[0.08] cursor-pointer flex items-center gap-2';
         const b = p.querySelector('.role-count-badge');
-        if (b) b.className = 'role-count-badge px-1.5 py-0.5 rounded text-[10px] font-mono bg-white/[0.04] text-zinc-500';
+        if (b) b.className = 'role-count-badge px-1.5 py-0.5 rounded text-[10px] font-mono bg-white/[0.04] text-slate-400';
       });
-      pill.className = 'role-pill active shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-emerald-400 text-black shadow-sm cursor-pointer flex items-center gap-2';
+      pill.className = 'role-pill active shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-sm shadow-cyan-500/20 cursor-pointer flex items-center gap-2';
       const activeBadge = pill.querySelector('.role-count-badge');
-      if (activeBadge) activeBadge.className = 'role-count-badge px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-black/20 text-black';
+      if (activeBadge) activeBadge.className = 'role-count-badge px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-black/30 text-cyan-200';
 
       state.category = pill.dataset.category || 'all';
       if (roleSelect) roleSelect.value = state.category;
@@ -1877,10 +1877,10 @@ function bindEventHandlers() {
       scopeTabs.forEach(t => {
         const other = document.getElementById(t.id);
         if (other) {
-          other.className = 'scope-tab px-3 py-1 rounded-lg text-xs font-mono text-zinc-400 hover:text-white bg-[#121215] border border-white/[0.08] hover:border-white/[0.15] transition cursor-pointer';
+          other.className = 'scope-tab px-3 py-1 rounded-lg text-xs font-mono text-slate-400 hover:text-white bg-[#0d1527] border border-white/[0.08] hover:border-cyan-500/30 transition cursor-pointer';
         }
       });
-      el.className = 'scope-tab active px-3 py-1 rounded-lg text-xs font-mono font-semibold bg-emerald-400 text-black transition cursor-pointer';
+      el.className = 'scope-tab active px-3 py-1 rounded-lg text-xs font-mono font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 transition cursor-pointer shadow-sm shadow-cyan-500/20';
       state.scope = tab.scope;
       state.currentPage = 1;
       applyFilters();
@@ -2078,12 +2078,12 @@ function bindEventHandlers() {
         advRow.classList.remove('hidden');
         if (toggleText) toggleText.textContent = 'Fewer Filters';
         if (toggleIcon) toggleIcon.textContent = '▲';
-        toggleAdvBtn.classList.add('bg-white/[0.08]', 'text-emerald-400');
+        toggleAdvBtn.classList.add('bg-white/[0.08]', 'text-cyan-400');
       } else {
         advRow.classList.add('hidden');
         if (toggleText) toggleText.textContent = 'More Filters';
         if (toggleIcon) toggleIcon.textContent = '⚙';
-        toggleAdvBtn.classList.remove('bg-white/[0.08]', 'text-emerald-400');
+        toggleAdvBtn.classList.remove('bg-white/[0.08]', 'text-cyan-400');
       }
     });
   }
@@ -2406,11 +2406,11 @@ function resetAllFilters() {
   rolePills.forEach((p, idx) => {
     const b = p.querySelector('.role-count-badge');
     if (idx === 0) {
-      p.className = 'role-pill active shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-emerald-400 text-black shadow-sm cursor-pointer flex items-center gap-2';
-      if (b) b.className = 'role-count-badge px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-black/20 text-black';
+      p.className = 'role-pill active shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-sm shadow-cyan-500/20 cursor-pointer flex items-center gap-2';
+      if (b) b.className = 'role-count-badge px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-black/30 text-cyan-200';
     } else {
-      p.className = 'role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium transition bg-[#121215] text-zinc-400 hover:text-zinc-200 hover:bg-[#18181d] border border-white/[0.08] cursor-pointer flex items-center gap-2';
-      if (b) b.className = 'role-count-badge px-1.5 py-0.5 rounded text-[10px] font-mono bg-white/[0.04] text-zinc-500';
+      p.className = 'role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium transition bg-[#0d1527] text-slate-400 hover:text-cyan-300 hover:bg-[#111c34] border border-white/[0.08] cursor-pointer flex items-center gap-2';
+      if (b) b.className = 'role-count-badge px-1.5 py-0.5 rounded text-[10px] font-mono bg-white/[0.04] text-slate-400';
     }
   });
 
@@ -2420,9 +2420,9 @@ function resetAllFilters() {
     const el = document.getElementById(id);
     if (!el) return;
     if (idx === 0) {
-      el.className = 'scope-tab active px-3 py-1 rounded-lg text-xs font-mono font-semibold bg-emerald-400 text-black transition cursor-pointer';
+      el.className = 'scope-tab active px-3 py-1 rounded-lg text-xs font-mono font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 transition cursor-pointer shadow-sm shadow-cyan-500/20';
     } else {
-      el.className = 'scope-tab px-3 py-1 rounded-lg text-xs font-mono text-zinc-400 hover:text-white bg-[#121215] border border-white/[0.08] hover:border-white/[0.15] transition cursor-pointer';
+      el.className = 'scope-tab px-3 py-1 rounded-lg text-xs font-mono text-slate-400 hover:text-white bg-[#0d1527] border border-white/[0.08] hover:border-cyan-500/30 transition cursor-pointer';
     }
   });
 
@@ -2434,8 +2434,8 @@ function showEmptyState(msg) {
   const container = document.getElementById('job-grid');
   if (container) {
     container.innerHTML = `
-      <div class="p-12 text-center bg-[#121215] border border-white/[0.08] rounded-2xl max-w-lg mx-auto shadow-2xl">
-        <div class="w-12 h-12 rounded-xl bg-white/[0.04] border border-white/[0.08] text-zinc-400 mx-auto flex items-center justify-center mb-3">
+      <div class="p-12 text-center bg-[#0d1527] border border-white/[0.08] rounded-2xl max-w-lg mx-auto shadow-2xl">
+        <div class="w-12 h-12 rounded-xl bg-white/[0.04] border border-white/[0.08] text-slate-400 mx-auto flex items-center justify-center mb-3">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35"/></svg>
         </div>
         <h3 class="text-base sm:text-lg font-bold text-white mb-1 tracking-tight">${escapeHtml(msg)}</h3>
