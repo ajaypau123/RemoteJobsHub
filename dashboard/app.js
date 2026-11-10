@@ -509,6 +509,10 @@ function hydrateArchiveJobs() {
           if (headerCount) {
             headerCount.textContent = state.allJobs.length.toLocaleString() + ' verified remote jobs';
           }
+          const totalCountEl = document.getElementById('total-count');
+          if (totalCountEl && state.filteredJobs.length === state.allJobs.length) {
+            totalCountEl.textContent = state.allJobs.length.toLocaleString();
+          }
           updateTrackerCounters();
           updateRoleCategoryBadges();
           populateCompanyDropdown();

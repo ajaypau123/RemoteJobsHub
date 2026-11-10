@@ -431,33 +431,28 @@ def run(
                     reverse=True,
                 )
 
-                # Two-tier payload splitting:
-                # 1. jobs_recent.json: latest ~500 active jobs (~180 KB) for instant sub-200ms page load
-                # 2. jobs_archive.json: historical active jobs fetched lazily in the background
-                recent_jobs = dash_jobs[:500]
-                archive_jobs = dash_jobs[500:]
-
+                # Export full active jobs dataset to dashboard
                 dash_json = os.path.join(dashboard_dir, "jobs_latest.json")
                 with open(dash_json, "w", encoding="utf-8") as f:
                     json.dump(dash_jobs, f, indent=2, ensure_ascii=False)
 
                 recent_json = os.path.join(dashboard_dir, "jobs_recent.json")
                 with open(recent_json, "w", encoding="utf-8") as f:
-                    json.dump(recent_jobs, f, indent=2, ensure_ascii=False)
+                    json.dump(dash_jobs[:500], f, indent=2, ensure_ascii=False)
 
                 archive_json = os.path.join(dashboard_dir, "jobs_archive.json")
                 with open(archive_json, "w", encoding="utf-8") as f:
-                    json.dump(archive_jobs, f, indent=2, ensure_ascii=False)
+                    json.dump(dash_jobs[500:], f, indent=2, ensure_ascii=False)
 
                 dash_js = os.path.join(dashboard_dir, "jobs_latest.js")
-                # Bundle the fast recent jobs in jobs_latest.js so initial bundle is tiny (<200 KB)
+                # Bundle the full active jobs feed in jobs_latest.js so the dashboard immediately shows all verified jobs without requiring lazy fetch
                 clean_js = (
-                    json.dumps(recent_jobs, ensure_ascii=False)
+                    json.dumps(dash_jobs, ensure_ascii=False)
                     .replace("\u2028", "\\u2028")
                     .replace("\u2029", "\\u2029")
                 )
                 with open(dash_js, "w", encoding="utf-8") as f:
-                    f.write(f"window.JOBS_DATA = {clean_js};\nwindow.HAS_ARCHIVE_DATA = true;\n")
+                    f.write(f"window.JOBS_DATA = {clean_js};\nwindow.HAS_ARCHIVE_DATA = false;\nwindow.TOTAL_JOBS_COUNT = {len(dash_jobs)};\n")
 
     # ── 6. Terminal summary ───────────────────────────────────────────────────
     _print_summary(
