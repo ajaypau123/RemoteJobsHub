@@ -424,6 +424,19 @@ function init() {
   bindEventHandlers();
   updateTrackerCounters();
   syncViewModeUI();
+
+  // Auto-prompt Job Alert popup once per session after 4 seconds to introduce candidates to alerts
+  if (!sessionStorage.getItem('rjh_alerts_prompted')) {
+    setTimeout(() => {
+      const jobModal = document.getElementById('job-modal');
+      const postModal = document.getElementById('post-job-modal');
+      const alertsModal = document.getElementById('alerts-modal');
+      if (jobModal?.classList.contains('hidden') && postModal?.classList.contains('hidden') && alertsModal?.classList.contains('hidden')) {
+        sessionStorage.setItem('rjh_alerts_prompted', 'true');
+        openAlertsModal('vip3mo');
+      }
+    }, 4000);
+  }
 }
 
 if (document.readyState === 'loading') {
@@ -2300,3 +2313,8 @@ window.openJobModalById = openJobModalById;
 window.selectCompany = selectCompany;
 window.updateDirectAtsPanelVisibility = updateDirectAtsPanelVisibility;
 window.closeJobModal = closeJobModal;
+window.openAlertsModal = openAlertsModal;
+window.closeAlertsModal = closeAlertsModal;
+window.setAlertPlan = setAlertPlan;
+window.openPostJobModal = openPostJobModal;
+window.closePostJobModal = closePostJobModal;
