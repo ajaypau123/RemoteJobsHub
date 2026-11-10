@@ -105,33 +105,36 @@
   </style>
 </head>
 
-<body class="h-full flex flex-col bg-slate-950 text-slate-100 antialiased selection:bg-emerald-500 selection:text-slate-950">
+<body class="h-full flex flex-col bg-[#09090b] text-zinc-100 antialiased selection:bg-emerald-500/20 selection:text-emerald-300">
+
+  <!-- Subtle Ambient Glow -->
+  <div class="fixed inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(16,185,129,0.1),rgba(255,255,255,0))] pointer-events-none -z-10"></div>
 
   <!-- Header / Navigation Bar -->
-  <header class="bg-slate-950/80 backdrop-blur-xl border-b border-slate-800/80 sticky top-0 z-40 transition-all">
+  <header class="bg-[#09090b]/80 backdrop-blur-xl border-b border-white/[0.08] sticky top-0 z-40 transition-all">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16 sm:h-20">
         
         <!-- Logo & Branding -->
         <a href="#" class="flex items-center space-x-3 group">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 via-teal-500 to-cyan-500 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform shrink-0">
-            🌐
+          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-zinc-950 font-black text-xl shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform shrink-0">
+            <svg class="w-5 h-5 text-zinc-950" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20M2 12h20"/></svg>
           </div>
           <div>
             <div class="flex items-center gap-2">
               <span class="text-xl sm:text-2xl font-extrabold tracking-tight text-white">Remote<span class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">JobsHub</span></span>
-              <span class="px-2 py-0.5 text-[10px] font-black uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full">
+              <span class="px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full">
                 100% Remote
               </span>
             </div>
-            <span class="text-[11px] text-slate-400 font-medium hidden sm:block">Direct ATS Portals • Zero Middlemen</span>
+            <span class="text-[11px] text-zinc-400 font-medium hidden sm:block">Direct Company ATS Portals • Zero Middlemen</span>
           </div>
         </a>
 
         <!-- Live Pulse & Header CTAs -->
         <div class="flex items-center space-x-2 sm:space-x-3">
           <!-- Live Count Badge -->
-          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-950/60 text-emerald-300 border border-emerald-500/30">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-mono font-medium bg-[#121215] text-emerald-300 border border-emerald-500/30">
             <span class="relative flex h-2 w-2">
               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -140,44 +143,48 @@
           </div>
 
           <!-- Saved Jobs Tracker -->
-          <button id="tracker-saved-nav-btn" type="button" class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition cursor-pointer">
-            <span>⭐ Saved</span>
-            <span id="nav-saved-count" class="px-1.5 py-0.2 rounded-full text-[10px] bg-amber-500/20 text-amber-300 font-bold">0</span>
+          <button id="tracker-saved-nav-btn" type="button" class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#121215] hover:bg-zinc-800 text-zinc-300 border border-white/[0.08] transition cursor-pointer">
+            <svg class="w-3.5 h-3.5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <span>Saved</span>
+            <span id="nav-saved-count" class="px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-amber-500/20 text-amber-300 font-bold">0</span>
           </button>
 
           <!-- Applied Jobs Tracker Nav -->
-          <button id="tracker-applied-nav-btn" type="button" class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition cursor-pointer">
-            <span>✅ Applied</span>
-            <span id="nav-applied-count" class="px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-500/20 text-emerald-300 font-bold">0</span>
+          <button id="tracker-applied-nav-btn" type="button" class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#121215] hover:bg-zinc-800 text-zinc-300 border border-white/[0.08] transition cursor-pointer">
+            <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span>Applied</span>
+            <span id="nav-applied-count" class="px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-emerald-500/20 text-emerald-300 font-bold">0</span>
           </button>
 
           <!-- Email Alerts & Newsletter Button -->
-          <button id="nav-alerts-btn" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 transition cursor-pointer" title="Get Email Job Alerts & Newsletter">
-            <span>📬</span>
+          <button id="nav-alerts-btn" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 transition cursor-pointer" title="Get Email Job Alerts">
+            <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
             <span class="hidden sm:inline">Job Alerts</span>
           </button>
 
           <!-- Post a Job ($49) Button -->
-          <button id="nav-post-job-btn" type="button" class="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-extrabold text-slate-950 bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 hover:from-emerald-300 hover:to-teal-200 transition cursor-pointer shadow-md shadow-emerald-500/20 shrink-0" title="Feature Your Opening for $49">
-            <span>💼</span>
+          <button id="nav-post-job-btn" type="button" class="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-extrabold text-zinc-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 transition cursor-pointer shadow-md shadow-emerald-500/20 shrink-0" title="Feature Your Opening for $49">
+            <svg class="w-3.5 h-3.5 text-zinc-950" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
             <span class="hidden xs:inline">Post a Job</span>
-            <span class="px-1 py-0.2 rounded text-[9px] font-black bg-slate-950/20 text-slate-950">$49</span>
+            <span class="px-1 py-0.2 rounded text-[9px] font-mono font-bold bg-zinc-950/25 text-zinc-950">$49</span>
           </button>
 
           <!-- Telegram Channel Link -->
-          <a href="https://t.me/RemoteJobsHub" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-sky-500/10 text-sky-400 border border-sky-500/20 hover:bg-sky-500/20 transition">
-            <span>✈️ Alerts</span>
+          <a href="https://t.me/RemoteJobsHub" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/20 hover:bg-sky-500/20 transition">
+            <svg class="w-3.5 h-3.5 text-sky-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+            <span>Alerts</span>
           </a>
 
-          <!-- Search Quick Jump Nav -->
-          <button id="nav-search-btn" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-200 hover:text-emerald-400 border border-slate-800 hover:border-emerald-500/40 transition cursor-pointer" title="Search by Profession or Skill">
+          <!-- Search Quick Jump Nav with ⌘K Badge -->
+          <button id="nav-search-btn" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#121215] hover:bg-zinc-800 text-zinc-200 hover:text-emerald-400 border border-white/[0.08] hover:border-emerald-500/40 transition cursor-pointer" title="Quick Search (Ctrl+K)">
             <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
             <span>Search</span>
+            <kbd class="hidden md:inline px-1.5 py-0.2 text-[9px] font-mono bg-zinc-800/80 text-zinc-400 border border-zinc-700/60 rounded">⌘K</kbd>
           </button>
 
           <!-- Refresh Button -->
-          <button id="refresh-btn" type="button" aria-label="Refresh job listings" class="p-2 text-slate-400 hover:text-white hover:bg-slate-900 rounded-xl transition border border-slate-800/80" title="Refresh Listings">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <button id="refresh-btn" type="button" aria-label="Refresh job listings" class="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-xl transition border border-white/[0.08]" title="Refresh Listings">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
             </svg>
           </button>
@@ -188,14 +195,12 @@
   </header>
 
   <!-- Hero Section -->
-  <section class="relative overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800/80 py-12 sm:py-16 px-4 sm:px-6 lg:px-8 text-center">
-    <!-- Ambient glow center blur -->
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-gradient-to-tr from-emerald-500/15 via-teal-500/10 to-cyan-500/10 blur-[120px] pointer-events-none -z-10"></div>
-
+  <section class="relative overflow-hidden border-b border-white/[0.08] py-12 sm:py-16 px-4 sm:px-6 lg:px-8 text-center">
     <div class="max-w-4xl mx-auto">
       <!-- Top Pill -->
-      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-6">
-        <span>⚡ Direct ATS Career Portals • No Consultancies • Verified Remote</span>
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-mono font-medium bg-[#121215] text-emerald-400 border border-emerald-500/20 mb-6 shadow-sm">
+        <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>Direct Company ATS Portals • No Consultancies • Verified Remote</span>
       </div>
 
       <!-- Main Headline -->
@@ -206,111 +211,125 @@
         </span>
       </h1>
 
-      <p class="mt-4 text-sm sm:text-base text-slate-400 max-w-2xl mx-auto leading-relaxed">
-        Curated software engineering, QA, DevOps, AI, and tech positions worldwide. Direct application links to official company Greenhouse, Lever, Ashby, and Workday portals.
+      <p class="mt-4 text-sm sm:text-base text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+        Curated engineering, product, AI, and tech positions worldwide. Direct application links to official company Greenhouse, Lever, Ashby, and Workday portals.
       </p>
 
-      <!-- High-Converting Hero Promotion Card (Alerts, Newsletter & Featured Post) -->
+      <!-- High-Converting Hero Promotion Card (Alerts & Featured Post) -->
       <div class="mt-8 max-w-3xl mx-auto">
-        <div class="p-5 sm:p-7 bg-gradient-to-r from-emerald-950/80 via-slate-900 to-teal-950/80 border-2 border-emerald-500/40 rounded-3xl shadow-2xl shadow-emerald-500/10 text-left relative overflow-hidden">
-          <!-- Ambient subtle glow -->
+        <div class="p-5 sm:p-7 bg-[#121215]/90 border border-white/[0.08] hover:border-emerald-500/30 rounded-3xl shadow-2xl text-left relative overflow-hidden transition-colors">
           <div class="absolute -right-10 -bottom-10 w-44 h-44 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
           <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative z-10">
             <div class="space-y-2 max-w-lg">
               <div class="flex items-center gap-2 flex-wrap">
-                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">
                   ⚡ Instant Direct-ATS Alerts
                 </span>
-                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider bg-amber-500/10 text-amber-300 border border-amber-500/30">
                   Monday Digest
                 </span>
-                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-teal-500/20 text-teal-300 border border-teal-500/30">
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider bg-teal-500/10 text-teal-300 border border-teal-500/30">
                   Post a Job $49
                 </span>
               </div>
               <h2 class="text-lg sm:text-2xl font-extrabold text-white tracking-tight leading-snug">
                 Verified Remote Jobs Sent Directly to Your Inbox
               </h2>
-              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                Be the 1st applicant before jobs get saturated. Join thousands of engineers getting our free Monday digest or upgrade to <strong>⚡ VIP Pro Instant Alerts ($5/mo)</strong>.
+              <p class="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                Be the 1st applicant before jobs get saturated. Join thousands getting our free Monday digest or upgrade to <strong>⚡ 3-Month Sprint Pass ($10)</strong>.
               </p>
             </div>
 
             <div class="flex flex-col sm:flex-row md:flex-col gap-2.5 shrink-0 w-full md:w-auto">
-              <button type="button" id="hero-alerts-btn" class="px-6 py-3 rounded-xl font-extrabold text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-300 hover:from-emerald-300 hover:to-teal-200 transition shadow-lg shadow-emerald-500/20 active:scale-95 cursor-pointer flex items-center justify-center gap-2">
-                <span>⚡ Get Instant Alerts</span>
+              <button type="button" id="hero-alerts-btn" class="px-6 py-3 rounded-xl font-extrabold text-xs sm:text-sm text-zinc-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 transition shadow-lg shadow-emerald-500/20 active:scale-95 cursor-pointer flex items-center justify-center gap-2">
+                <span>Get Instant Alerts</span>
                 <span>➔</span>
               </button>
-              <button type="button" id="hero-post-job-btn" class="px-5 py-2.5 rounded-xl font-bold text-xs text-slate-200 hover:text-white bg-slate-950/80 hover:bg-slate-800 border border-slate-700 hover:border-teal-500/50 transition active:scale-95 cursor-pointer flex items-center justify-center gap-1.5">
-                <span>💼 Post a Featured Job ($49)</span>
+              <button type="button" id="hero-post-job-btn" class="px-5 py-2.5 rounded-xl font-bold text-xs text-zinc-300 hover:text-white bg-[#09090b] hover:bg-zinc-800 border border-white/[0.08] hover:border-teal-500/50 transition active:scale-95 cursor-pointer flex items-center justify-center gap-1.5">
+                <span>Post a Featured Job ($49)</span>
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Category Filter Pills -->
-      <nav class="mt-8 flex items-center overflow-x-auto no-scrollbar pb-2 sm:pb-0 sm:flex-wrap justify-start sm:justify-center gap-2 px-1" aria-label="Role categories">
-        <button class="role-pill active shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20 cursor-pointer flex items-center gap-2" data-category="all">
-          <span>🌐 All Roles</span>
-          <span class="role-count-badge px-1.5 py-0.5 rounded-full text-[10px] font-black bg-slate-950/20 text-slate-950">0</span>
+      <!-- Category Filter Pills (15 Tech Disciplines with Crisp Monochrome SVGs) -->
+      <nav class="mt-8 flex items-center overflow-x-auto no-scrollbar pb-2 sm:pb-0 sm:flex-wrap justify-start sm:justify-center gap-1.5 px-1" aria-label="Role categories">
+        <button class="role-pill active shrink-0 whitespace-nowrap px-3 py-1.5 rounded-xl text-xs font-semibold transition bg-emerald-500 text-zinc-950 shadow-md shadow-emerald-500/20 cursor-pointer flex items-center gap-1.5" data-category="all">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20M2 12h20"/></svg>
+          <span>All Roles</span>
+          <span class="role-count-badge px-1.5 py-0.2 rounded-md text-[10px] font-mono font-bold bg-zinc-950/20 text-zinc-950">0</span>
         </button>
-        <button class="role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer flex items-center gap-2" data-category="engineer">
-          <span>💻 Engineering</span>
-          <span class="role-count-badge px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400">0</span>
+        <button class="role-pill shrink-0 whitespace-nowrap px-3 py-1.5 rounded-xl text-xs font-medium transition bg-[#121215] text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800 border border-white/[0.08] cursor-pointer flex items-center gap-1.5" data-category="engineer">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></svg>
+          <span>Engineering</span>
+          <span class="role-count-badge px-1.5 py-0.2 rounded-md text-[10px] font-mono bg-zinc-850 text-zinc-400">0</span>
         </button>
-        <button class="role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer flex items-center gap-2" data-category="sales">
-          <span>📈 Sales & BD</span>
-          <span class="role-count-badge px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400">0</span>
+        <button class="role-pill shrink-0 whitespace-nowrap px-3 py-1.5 rounded-xl text-xs font-medium transition bg-[#121215] text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800 border border-white/[0.08] cursor-pointer flex items-center gap-1.5" data-category="sales">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m22 7-8.5 8.5-5-5L2 17M16 7h6v6"/></svg>
+          <span>Sales & BD</span>
+          <span class="role-count-badge px-1.5 py-0.2 rounded-md text-[10px] font-mono bg-zinc-850 text-zinc-400">0</span>
         </button>
-        <button class="role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer flex items-center gap-2" data-category="ai">
-          <span>🤖 AI & ML</span>
-          <span class="role-count-badge px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400">0</span>
+        <button class="role-pill shrink-0 whitespace-nowrap px-3 py-1.5 rounded-xl text-xs font-medium transition bg-[#121215] text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800 border border-white/[0.08] cursor-pointer flex items-center gap-1.5" data-category="ai">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg>
+          <span>AI & ML</span>
+          <span class="role-count-badge px-1.5 py-0.2 rounded-md text-[10px] font-mono bg-zinc-850 text-zinc-400">0</span>
         </button>
-        <button class="role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer flex items-center gap-2" data-category="marketing">
-          <span>📢 Marketing</span>
-          <span class="role-count-badge px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400">0</span>
+        <button class="role-pill shrink-0 whitespace-nowrap px-3 py-1.5 rounded-xl text-xs font-medium transition bg-[#121215] text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800 border border-white/[0.08] cursor-pointer flex items-center gap-1.5" data-category="marketing">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m3 11 18-5v12L3 13v-2zm8 6v5"/></svg>
+          <span>Marketing</span>
+          <span class="role-count-badge px-1.5 py-0.2 rounded-md text-[10px] font-mono bg-zinc-850 text-zinc-400">0</span>
         </button>
-        <button class="role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer flex items-center gap-2" data-category="finance_hr">
-          <span>👥 HR & Finance</span>
-          <span class="role-count-badge px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400">0</span>
+        <button class="role-pill shrink-0 whitespace-nowrap px-3 py-1.5 rounded-xl text-xs font-medium transition bg-[#121215] text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800 border border-white/[0.08] cursor-pointer flex items-center gap-1.5" data-category="finance_hr">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm10 10v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>HR & Finance</span>
+          <span class="role-count-badge px-1.5 py-0.2 rounded-md text-[10px] font-mono bg-zinc-850 text-zinc-400">0</span>
         </button>
-        <button class="role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer flex items-center gap-2" data-category="devops">
-          <span>☁️ DevOps</span>
-          <span class="role-count-badge px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400">0</span>
+        <button class="role-pill shrink-0 whitespace-nowrap px-3 py-1.5 rounded-xl text-xs font-medium transition bg-[#121215] text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800 border border-white/[0.08] cursor-pointer flex items-center gap-1.5" data-category="devops">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 17l6-6-6-6m8 14h8"/></svg>
+          <span>DevOps</span>
+          <span class="role-count-badge px-1.5 py-0.2 rounded-md text-[10px] font-mono bg-zinc-850 text-zinc-400">0</span>
         </button>
-        <button class="role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer flex items-center gap-2" data-category="operations">
-          <span>⚙️ Operations</span>
-          <span class="role-count-badge px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400">0</span>
+        <button class="role-pill shrink-0 whitespace-nowrap px-3 py-1.5 rounded-xl text-xs font-medium transition bg-[#121215] text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800 border border-white/[0.08] cursor-pointer flex items-center gap-1.5" data-category="operations">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 21v-7m0-4V3m8 18v-9m0-4V3m8 18v-5m0-4V3M1 14h6m2-6h6m2 8h6"/></svg>
+          <span>Operations</span>
+          <span class="role-count-badge px-1.5 py-0.2 rounded-md text-[10px] font-mono bg-zinc-850 text-zinc-400">0</span>
         </button>
-        <button class="role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer flex items-center gap-2" data-category="support">
-          <span>🎧 Support</span>
-          <span class="role-count-badge px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400">0</span>
+        <button class="role-pill shrink-0 whitespace-nowrap px-3 py-1.5 rounded-xl text-xs font-medium transition bg-[#121215] text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800 border border-white/[0.08] cursor-pointer flex items-center gap-1.5" data-category="support">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 18v-6a9 9 0 0 1 18 0v6M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+          <span>Support</span>
+          <span class="role-count-badge px-1.5 py-0.2 rounded-md text-[10px] font-mono bg-zinc-850 text-zinc-400">0</span>
         </button>
-        <button class="role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer flex items-center gap-2" data-category="data">
-          <span>📊 Data</span>
-          <span class="role-count-badge px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400">0</span>
+        <button class="role-pill shrink-0 whitespace-nowrap px-3 py-1.5 rounded-xl text-xs font-medium transition bg-[#121215] text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800 border border-white/[0.08] cursor-pointer flex items-center gap-1.5" data-category="data">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20V10m6 10V4M6 20v-4"/></svg>
+          <span>Data</span>
+          <span class="role-count-badge px-1.5 py-0.2 rounded-md text-[10px] font-mono bg-zinc-850 text-zinc-400">0</span>
         </button>
-        <button class="role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer flex items-center gap-2" data-category="product">
-          <span>🚀 Product</span>
-          <span class="role-count-badge px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400">0</span>
+        <button class="role-pill shrink-0 whitespace-nowrap px-3 py-1.5 rounded-xl text-xs font-medium transition bg-[#121215] text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800 border border-white/[0.08] cursor-pointer flex items-center gap-1.5" data-category="product">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15 9 22 12 15 15 12 22 9 15 2 12 9 9 12 2"/></svg>
+          <span>Product</span>
+          <span class="role-count-badge px-1.5 py-0.2 rounded-md text-[10px] font-mono bg-zinc-850 text-zinc-400">0</span>
         </button>
-        <button class="role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer flex items-center gap-2" data-category="design">
-          <span>🎨 Design</span>
-          <span class="role-count-badge px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400">0</span>
+        <button class="role-pill shrink-0 whitespace-nowrap px-3 py-1.5 rounded-xl text-xs font-medium transition bg-[#121215] text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800 border border-white/[0.08] cursor-pointer flex items-center gap-1.5" data-category="design">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.9 0 1.6-.7 1.6-1.6 0-.4-.2-.8-.4-1.1-.3-.3-.4-.7-.4-1.1 0-.9.7-1.6 1.6-1.6H16c3.3 0 6-2.7 6-6 0-4.4-4.5-8.6-10-8.6z"/></svg>
+          <span>Design</span>
+          <span class="role-count-badge px-1.5 py-0.2 rounded-md text-[10px] font-mono bg-zinc-850 text-zinc-400">0</span>
         </button>
-        <button class="role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer flex items-center gap-2" data-category="mobile">
-          <span>📱 Mobile</span>
-          <span class="role-count-badge px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400">0</span>
+        <button class="role-pill shrink-0 whitespace-nowrap px-3 py-1.5 rounded-xl text-xs font-medium transition bg-[#121215] text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800 border border-white/[0.08] cursor-pointer flex items-center gap-1.5" data-category="mobile">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+          <span>Mobile</span>
+          <span class="role-count-badge px-1.5 py-0.2 rounded-md text-[10px] font-mono bg-zinc-850 text-zinc-400">0</span>
         </button>
-        <button class="role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer flex items-center gap-2" data-category="qa">
-          <span>🧪 QA</span>
-          <span class="role-count-badge px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400">0</span>
+        <button class="role-pill shrink-0 whitespace-nowrap px-3 py-1.5 rounded-xl text-xs font-medium transition bg-[#121215] text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800 border border-white/[0.08] cursor-pointer flex items-center gap-1.5" data-category="qa">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zm-2-10 2 2 4-4"/></svg>
+          <span>QA</span>
+          <span class="role-count-badge px-1.5 py-0.2 rounded-md text-[10px] font-mono bg-zinc-850 text-zinc-400">0</span>
         </button>
-        <button class="role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer flex items-center gap-2" data-category="other">
-          <span>💼 Other Roles</span>
-          <span class="role-count-badge px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400">0</span>
+        <button class="role-pill shrink-0 whitespace-nowrap px-3 py-1.5 rounded-xl text-xs font-medium transition bg-[#121215] text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800 border border-white/[0.08] cursor-pointer flex items-center gap-1.5" data-category="other">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          <span>Other</span>
+          <span class="role-count-badge px-1.5 py-0.2 rounded-md text-[10px] font-mono bg-zinc-850 text-zinc-400">0</span>
         </button>
       </nav>
 
@@ -321,34 +340,37 @@
   <main id="main-content" class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
     
     <!-- Personal Job Tracker & View Switcher Bar -->
-    <div class="mb-6 p-3 sm:p-4 bg-slate-900/90 border border-slate-800 rounded-2xl shadow-lg flex flex-col md:flex-row items-center justify-between gap-3">
+    <div class="mb-6 p-3 sm:p-4 bg-[#121215] border border-white/[0.08] rounded-2xl shadow-lg flex flex-col md:flex-row items-center justify-between gap-3">
       <!-- Tracker Navigation Tabs -->
       <div class="flex items-center gap-2 overflow-x-auto no-scrollbar w-full md:w-auto pb-1 md:pb-0">
-        <button id="tab-all-jobs-btn" type="button" class="tracker-nav-tab active px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 transition cursor-pointer flex items-center gap-2 whitespace-nowrap shadow-md shadow-emerald-500/20">
-          <span>🌐 All Openings</span>
-          <span id="tab-all-count" class="px-1.5 py-0.2 rounded-full text-[10px] bg-slate-950/20 text-slate-950 font-black">0</span>
+        <button id="tab-all-jobs-btn" type="button" class="tracker-nav-tab active px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-500 text-zinc-950 transition cursor-pointer flex items-center gap-2 whitespace-nowrap shadow-sm">
+          <svg class="w-3.5 h-3.5 text-zinc-950" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20M2 12h20"/></svg>
+          <span>All Openings</span>
+          <span id="tab-all-count" class="px-1.5 py-0.2 rounded-md text-[10px] font-mono bg-zinc-950/20 text-zinc-950 font-bold">0</span>
         </button>
-        <button id="tab-saved-jobs-btn" type="button" class="tracker-nav-tab px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white bg-slate-950 border border-slate-800 transition cursor-pointer flex items-center gap-2 whitespace-nowrap">
-          <span>⭐ Saved Jobs</span>
-          <span id="tab-saved-count" class="px-1.5 py-0.2 rounded-full text-[10px] bg-amber-500/20 text-amber-300 font-bold">0</span>
+        <button id="tab-saved-jobs-btn" type="button" class="tracker-nav-tab px-3.5 py-2 rounded-xl text-xs font-medium text-zinc-300 hover:text-white bg-[#09090b] border border-white/[0.08] transition cursor-pointer flex items-center gap-2 whitespace-nowrap">
+          <svg class="w-3.5 h-3.5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <span>Saved</span>
+          <span id="tab-saved-count" class="px-1.5 py-0.2 rounded-md text-[10px] font-mono bg-amber-500/20 text-amber-300 font-bold">0</span>
         </button>
-        <button id="tab-applied-jobs-btn" type="button" class="tracker-nav-tab px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white bg-slate-950 border border-slate-800 transition cursor-pointer flex items-center gap-2 whitespace-nowrap">
-          <span>✅ Applied Tracker</span>
-          <span id="tab-applied-count" class="px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-500/20 text-emerald-300 font-bold">0</span>
+        <button id="tab-applied-jobs-btn" type="button" class="tracker-nav-tab px-3.5 py-2 rounded-xl text-xs font-medium text-zinc-300 hover:text-white bg-[#09090b] border border-white/[0.08] transition cursor-pointer flex items-center gap-2 whitespace-nowrap">
+          <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <span>Applied Tracker</span>
+          <span id="tab-applied-count" class="px-1.5 py-0.2 rounded-md text-[10px] font-mono bg-emerald-500/20 text-emerald-300 font-bold">0</span>
         </button>
       </div>
 
       <!-- Right: View Mode Switcher (Cards vs Compact List) -->
-      <div class="flex items-center justify-between md:justify-end gap-2.5 w-full md:w-auto border-t md:border-t-0 border-slate-800 pt-2 md:pt-0">
-        <span class="text-xs text-slate-400 font-medium">Layout:</span>
-        <div class="flex items-center bg-slate-950 p-1 rounded-xl border border-slate-800">
-          <button id="view-card-btn" type="button" class="view-mode-btn active px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition flex items-center gap-1.5 cursor-pointer" title="Card Grid Layout">
+      <div class="flex items-center justify-between md:justify-end gap-2.5 w-full md:w-auto border-t md:border-t-0 border-white/[0.08] pt-2 md:pt-0">
+        <span class="text-xs text-zinc-400 font-medium">Layout:</span>
+        <div class="flex items-center bg-[#09090b] p-1 rounded-xl border border-white/[0.08]">
+          <button id="view-card-btn" type="button" class="view-mode-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-zinc-950 transition flex items-center gap-1.5 cursor-pointer" title="Card Grid Layout">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
             </svg>
             <span>Cards</span>
           </button>
-          <button id="view-list-btn" type="button" class="view-mode-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5 cursor-pointer" title="Compact List Layout">
+          <button id="view-list-btn" type="button" class="view-mode-btn px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-400 hover:text-white transition flex items-center gap-1.5 cursor-pointer" title="Compact List Layout">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
             </svg>
@@ -359,164 +381,169 @@
     </div>
     
     <!-- Faceted Filter Toolbar -->
-    <div class="bg-slate-900/90 border border-slate-800 p-4 sm:p-5 rounded-2xl shadow-xl mb-6">
+    <div class="bg-[#121215] border border-white/[0.08] p-4 sm:p-5 rounded-2xl shadow-xl mb-6">
       
       <!-- Top Row: Available Positions Header, Quick Scope Pills & Reset Button -->
-      <div class="flex flex-wrap items-center justify-between pb-4 border-b border-slate-800 gap-3">
+      <div class="flex flex-wrap items-center justify-between pb-4 border-b border-white/[0.08] gap-3">
         <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
           <h2 class="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-2">
             <span>Available Positions</span>
           </h2>
-          <span id="results-count-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <span id="results-count-badge" class="px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
             0 jobs
           </span>
 
-          <!-- Quick Scope Pills matching user preferences -->
-          <button id="scope-all-btn" type="button" class="scope-tab active px-3 py-1 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 transition cursor-pointer">
-            🌍 All Jobs
+          <!-- Quick Scope Pills -->
+          <button id="scope-all-btn" type="button" class="scope-tab active px-3 py-1 rounded-xl text-xs font-semibold bg-emerald-500 text-zinc-950 transition cursor-pointer">
+            All Jobs
           </button>
-          <button id="scope-worldwide-btn" type="button" class="scope-tab px-3 py-1 rounded-xl text-xs font-semibold text-slate-300 hover:text-white bg-slate-950 border border-slate-800 transition cursor-pointer">
-            🌐 All Worldwide
+          <button id="scope-worldwide-btn" type="button" class="scope-tab px-3 py-1 rounded-xl text-xs font-medium text-zinc-300 hover:text-white bg-[#09090b] border border-white/[0.08] transition cursor-pointer">
+            Worldwide
           </button>
-          <button id="scope-americas-btn" type="button" class="scope-tab hidden sm:inline-flex px-3 py-1 rounded-xl text-xs font-semibold text-slate-400 hover:text-white bg-slate-950 border border-slate-800 transition cursor-pointer">
-            🇺🇸 Americas
+          <button id="scope-americas-btn" type="button" class="scope-tab hidden sm:inline-flex px-3 py-1 rounded-xl text-xs font-medium text-zinc-400 hover:text-white bg-[#09090b] border border-white/[0.08] transition cursor-pointer">
+            Americas
           </button>
-          <button id="scope-europe-btn" type="button" class="scope-tab hidden sm:inline-flex px-3 py-1 rounded-xl text-xs font-semibold text-slate-400 hover:text-white bg-slate-950 border border-slate-800 transition cursor-pointer">
-            🇪🇺 Europe
+          <button id="scope-europe-btn" type="button" class="scope-tab hidden sm:inline-flex px-3 py-1 rounded-xl text-xs font-medium text-zinc-400 hover:text-white bg-[#09090b] border border-white/[0.08] transition cursor-pointer">
+            Europe
           </button>
-          <button id="scope-apac-btn" type="button" class="scope-tab hidden sm:inline-flex px-3 py-1 rounded-xl text-xs font-semibold text-slate-400 hover:text-white bg-slate-950 border border-slate-800 transition cursor-pointer">
-            🌏 APAC
+          <button id="scope-apac-btn" type="button" class="scope-tab hidden sm:inline-flex px-3 py-1 rounded-xl text-xs font-medium text-zinc-400 hover:text-white bg-[#09090b] border border-white/[0.08] transition cursor-pointer">
+            APAC
           </button>
 
           <!-- Tracker Quick Pills -->
-          <button id="quick-saved-btn" type="button" class="px-3 py-1 rounded-xl text-xs font-semibold text-slate-300 hover:text-white bg-slate-950 border border-slate-800 transition cursor-pointer flex items-center gap-1.5">
-            <span>⭐ Saved</span>
-            <span id="quick-saved-count" class="px-1.5 py-0.2 rounded-full text-[10px] bg-amber-500/20 text-amber-300 font-bold">0</span>
+          <button id="quick-saved-btn" type="button" class="px-3 py-1 rounded-xl text-xs font-medium text-zinc-300 hover:text-white bg-[#09090b] border border-white/[0.08] transition cursor-pointer flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <span>Saved</span>
+            <span id="quick-saved-count" class="px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-amber-500/20 text-amber-300 font-bold">0</span>
           </button>
-          <button id="quick-applied-btn" type="button" class="px-3 py-1 rounded-xl text-xs font-semibold text-slate-300 hover:text-white bg-slate-950 border border-slate-800 transition cursor-pointer flex items-center gap-1.5">
-            <span>✓ Applied</span>
-            <span id="quick-applied-count" class="px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-500/20 text-emerald-300 font-bold">0</span>
+          <button id="quick-applied-btn" type="button" class="px-3 py-1 rounded-xl text-xs font-medium text-zinc-300 hover:text-white bg-[#09090b] border border-white/[0.08] transition cursor-pointer flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span>Applied</span>
+            <span id="quick-applied-count" class="px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-emerald-500/20 text-emerald-300 font-bold">0</span>
           </button>
         </div>
 
         <!-- Reset Button -->
-        <button id="toggle-advanced-filters-btn" type="button" class="px-3.5 py-1.5 text-xs font-semibold text-slate-300 hover:text-white bg-slate-950 border border-slate-800 rounded-xl transition cursor-pointer flex items-center gap-1.5 shadow-sm active:scale-95">
-          <span id="toggle-filter-icon">⚙️</span>
+        <button id="toggle-advanced-filters-btn" type="button" class="px-3.5 py-1.5 text-xs font-medium text-zinc-300 hover:text-white bg-[#09090b] border border-white/[0.08] hover:border-zinc-700 rounded-xl transition cursor-pointer flex items-center gap-1.5 shadow-sm active:scale-95">
+          <svg class="w-3.5 h-3.5 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 21v-7m0-4V3m8 18v-9m0-4V3m8 18v-5m0-4V3M1 14h6m2-6h6m2 8h6"/></svg>
           <span id="toggle-filter-text">More Filters</span>
         </button>
-        <button id="reset-filters-btn" type="button" class="px-3.5 py-1.5 text-xs font-bold text-emerald-400 hover:text-slate-950 bg-emerald-500/10 hover:bg-emerald-400 border border-emerald-500/30 rounded-xl transition cursor-pointer flex items-center gap-1.5 shadow-sm active:scale-95">
+        <button id="reset-filters-btn" type="button" class="px-3.5 py-1.5 text-xs font-semibold text-emerald-400 hover:text-zinc-950 bg-emerald-500/10 hover:bg-emerald-400 border border-emerald-500/30 rounded-xl transition cursor-pointer flex items-center gap-1.5 shadow-sm active:scale-95">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-          <span>Reset All Filters</span>
+          <span>Reset</span>
         </button>
       </div>
 
-      <!-- Primary Search Bar in Filter Section -->
-      <div class="pt-4 pb-2 border-b border-slate-800/80">
+      <!-- Primary Search Bar in Filter Section with ⌘K Command Palette Badge -->
+      <div class="pt-4 pb-2 border-b border-white/[0.08]">
         <form id="search-form" class="flex flex-col sm:flex-row gap-2.5 items-stretch sm:items-center" onsubmit="event.preventDefault();">
-          <div class="relative flex-grow flex items-center bg-slate-950 rounded-xl border-2 border-slate-700/80 hover:border-emerald-500/60 focus-within:border-emerald-400 focus-within:ring-2 focus-within:ring-emerald-500/20 transition shadow-inner">
+          <div class="relative flex-grow flex items-center bg-[#09090b] rounded-xl border border-white/[0.12] hover:border-emerald-500/60 focus-within:border-emerald-400 focus-within:ring-2 focus-within:ring-emerald-500/20 transition shadow-inner">
             <div class="pl-3.5 pr-2 pointer-events-none text-emerald-400">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
               </svg>
             </div>
             <input 
               type="search" 
               id="search-input" 
-              placeholder="🔍 Search profession, job title, or skill (e.g. React, QA, Python, DevOps, Manager)..." 
-              class="w-full py-2.5 bg-transparent text-white placeholder-slate-400 text-xs sm:text-sm outline-none font-medium"
+              placeholder="Search profession, job title, or skill (e.g. React, Python, QA, DevOps)..." 
+              class="w-full py-2.5 bg-transparent text-white placeholder-zinc-500 text-xs sm:text-sm outline-none font-medium"
               autocomplete="off"
             >
-            <button 
-              type="button" 
-              id="clear-search-btn" 
-              class="hidden px-3 py-1.5 text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition mr-1.5 cursor-pointer"
-            >
-              Clear
-            </button>
+            <div class="flex items-center gap-1.5 pr-2">
+              <kbd class="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono bg-zinc-850 text-zinc-400 border border-zinc-700/60 rounded shadow-sm">⌘K</kbd>
+              <button 
+                type="button" 
+                id="clear-search-btn" 
+                class="hidden px-2.5 py-1 text-xs font-medium text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition cursor-pointer"
+              >
+                Clear
+              </button>
+            </div>
           </div>
 
           <!-- Target selector in filter section -->
-          <div class="flex items-center gap-2 shrink-0 text-xs bg-slate-950 px-3.5 py-2.5 rounded-xl border border-slate-800 text-slate-300">
-            <span class="text-slate-400 text-[11px] font-bold">Search in:</span>
+          <div class="flex items-center gap-2 shrink-0 text-xs bg-[#09090b] px-3.5 py-2.5 rounded-xl border border-white/[0.08] text-zinc-300">
+            <span class="text-zinc-500 text-[11px] font-medium font-mono">Scope:</span>
             <label class="inline-flex items-center gap-1 cursor-pointer hover:text-white">
-              <input type="radio" name="search-target" id="search-target-all" value="all" checked class="w-3.5 h-3.5 text-emerald-500 bg-slate-900 border-slate-700 cursor-pointer">
+              <input type="radio" name="search-target" id="search-target-all" value="all" checked class="w-3.5 h-3.5 text-emerald-500 bg-zinc-900 border-zinc-700 cursor-pointer">
               <span>All Content</span>
             </label>
-            <span class="text-slate-700">|</span>
+            <span class="text-zinc-700">|</span>
             <label class="inline-flex items-center gap-1 cursor-pointer hover:text-emerald-400">
-              <input type="radio" name="search-target" id="search-target-title" value="title" class="w-3.5 h-3.5 text-emerald-500 bg-slate-900 border-slate-700 cursor-pointer">
-              <span class="font-bold text-emerald-400">🎯 Title Only</span>
+              <input type="radio" name="search-target" id="search-target-title" value="title" class="w-3.5 h-3.5 text-emerald-500 bg-zinc-900 border-zinc-700 cursor-pointer">
+              <span class="font-bold text-emerald-400">Title Only</span>
             </label>
           </div>
         </form>
 
-        <!-- Quick Popular Searches -->
-        <div class="flex overflow-x-auto no-scrollbar sm:flex-wrap items-center gap-1.5 mt-2.5 text-xs text-slate-400 font-medium px-1">
-          <span class="text-slate-500 font-semibold mr-1 shrink-0 text-[11px]">Popular:</span>
-          <button type="button" class="quick-tag px-2 py-0.5 rounded-lg bg-slate-950 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer text-[11px]" onclick="setQuickSearch('Worldwide')">🌐 Worldwide</button>
-          <button type="button" class="quick-tag px-2 py-0.5 rounded-lg bg-slate-950 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer text-[11px]" onclick="setQuickSearch('React')">⚛️ React</button>
-          <button type="button" class="quick-tag px-2 py-0.5 rounded-lg bg-slate-950 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer text-[11px]" onclick="setQuickSearch('Python')">🐍 Python</button>
-          <button type="button" class="quick-tag px-2 py-0.5 rounded-lg bg-slate-950 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer text-[11px]" onclick="setQuickSearch('QA Automation')">🧪 QA</button>
-          <button type="button" class="quick-tag px-2 py-0.5 rounded-lg bg-slate-950 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer text-[11px]" onclick="setQuickSearch('DevOps')">☁️ DevOps</button>
-          <button type="button" class="quick-tag px-2 py-0.5 rounded-lg bg-slate-950 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer text-[11px]" onclick="setQuickSearch('AI / LLM')">🤖 AI</button>
-          <button type="button" class="quick-tag px-2 py-0.5 rounded-lg bg-slate-950 hover:bg-slate-800 hover:text-emerald-400 text-slate-300 border border-slate-800 transition cursor-pointer text-[11px]" onclick="setQuickSearch('Senior')">🎯 Senior</button>
+        <!-- Quick Popular Searches with Minimalist Tags -->
+        <div class="flex overflow-x-auto no-scrollbar sm:flex-wrap items-center gap-1.5 mt-2.5 text-xs text-zinc-400 font-medium px-1">
+          <span class="text-zinc-500 text-[11px] font-mono mr-1 shrink-0">Popular:</span>
+          <button type="button" class="quick-tag font-mono px-2 py-0.5 rounded-md bg-[#09090b] hover:bg-zinc-800 hover:text-emerald-400 text-zinc-400 border border-white/[0.08] transition cursor-pointer text-[11px]" onclick="setQuickSearch('Worldwide')">Worldwide</button>
+          <button type="button" class="quick-tag font-mono px-2 py-0.5 rounded-md bg-[#09090b] hover:bg-zinc-800 hover:text-emerald-400 text-zinc-400 border border-white/[0.08] transition cursor-pointer text-[11px]" onclick="setQuickSearch('React')">React</button>
+          <button type="button" class="quick-tag font-mono px-2 py-0.5 rounded-md bg-[#09090b] hover:bg-zinc-800 hover:text-emerald-400 text-zinc-400 border border-white/[0.08] transition cursor-pointer text-[11px]" onclick="setQuickSearch('Python')">Python</button>
+          <button type="button" class="quick-tag font-mono px-2 py-0.5 rounded-md bg-[#09090b] hover:bg-zinc-800 hover:text-emerald-400 text-zinc-400 border border-white/[0.08] transition cursor-pointer text-[11px]" onclick="setQuickSearch('QA Automation')">QA</button>
+          <button type="button" class="quick-tag font-mono px-2 py-0.5 rounded-md bg-[#09090b] hover:bg-zinc-800 hover:text-emerald-400 text-zinc-400 border border-white/[0.08] transition cursor-pointer text-[11px]" onclick="setQuickSearch('DevOps')">DevOps</button>
+          <button type="button" class="quick-tag font-mono px-2 py-0.5 rounded-md bg-[#09090b] hover:bg-zinc-800 hover:text-emerald-400 text-zinc-400 border border-white/[0.08] transition cursor-pointer text-[11px]" onclick="setQuickSearch('AI')">AI/ML</button>
+          <button type="button" class="quick-tag font-mono px-2 py-0.5 rounded-md bg-[#09090b] hover:bg-zinc-800 hover:text-emerald-400 text-zinc-400 border border-white/[0.08] transition cursor-pointer text-[11px]" onclick="setQuickSearch('Senior')">Senior</button>
         </div>
       </div>
 
       <!-- Filter Controls: Row 1 -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-4">
-        <!-- 🎯 Job Role -->
+        <!-- Job Role -->
         <div>
           <div class="flex items-center justify-between mb-1">
-            <label for="role-select" class="text-[11px] font-bold text-slate-400 flex items-center gap-1">
-              <span>🎯 Job Role</span>
+            <label for="role-select" class="text-[11px] font-mono font-medium text-zinc-400 flex items-center gap-1">
+              <span>Role Domain</span>
             </label>
-            <span class="text-[10px] font-bold text-emerald-400/80 bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.2 rounded">Essential</span>
+            <span class="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.2 rounded">Essential</span>
           </div>
-          <select id="role-select" class="w-full text-xs sm:text-sm bg-slate-950 border border-slate-800 hover:border-slate-700 focus:border-emerald-500 rounded-xl px-3 py-2 text-slate-200 outline-none transition font-medium cursor-pointer">
+          <select id="role-select" class="w-full text-xs sm:text-sm bg-[#09090b] border border-white/[0.08] hover:border-zinc-700 focus:border-emerald-500 rounded-xl px-3 py-2 text-zinc-200 outline-none transition font-medium cursor-pointer">
             <option value="all">All Roles & Domains</option>
-            <option value="engineer">💻 Software Engineering</option>
-            <option value="sales">📈 Sales & Account Execs</option>
-            <option value="ai">🤖 AI & Machine Learning</option>
-            <option value="marketing">📢 Marketing & Growth</option>
-            <option value="finance_hr">👥 People, HR & Finance</option>
-            <option value="devops">☁️ DevOps & Cloud</option>
-            <option value="operations">⚙️ Operations & BizOps</option>
-            <option value="support">🎧 Customer Success & Support</option>
-            <option value="data">📊 Data & Analytics</option>
-            <option value="product">🚀 Product Management</option>
-            <option value="design">🎨 Product & Design</option>
-            <option value="mobile">📱 Mobile Apps</option>
-            <option value="qa">🧪 QA & Testing</option>
-            <option value="other">💼 Other Remote Positions</option>
+            <option value="engineer">Software Engineering</option>
+            <option value="sales">Sales & Account Execs</option>
+            <option value="ai">AI & Machine Learning</option>
+            <option value="marketing">Marketing & Growth</option>
+            <option value="finance_hr">People, HR & Finance</option>
+            <option value="devops">DevOps & Cloud Infrastructure</option>
+            <option value="operations">Operations & BizOps</option>
+            <option value="support">Customer Success & Support</option>
+            <option value="data">Data & Analytics</option>
+            <option value="product">Product Management</option>
+            <option value="design">Product & UI/UX Design</option>
+            <option value="mobile">Mobile Apps (iOS & Android)</option>
+            <option value="qa">QA & Test Automation</option>
+            <option value="other">Other Remote Positions</option>
           </select>
         </div>
 
-        <!-- 🎓 Experience Level -->
+        <!-- Experience Level -->
         <div>
           <div class="flex items-center justify-between mb-1">
-            <label for="exp-select" class="text-[11px] font-bold text-slate-400">
-              🎓 Experience Level
+            <label for="exp-select" class="text-[11px] font-mono font-medium text-zinc-400">
+              Experience Level
             </label>
           </div>
-          <select id="exp-select" class="w-full text-xs sm:text-sm bg-slate-950 border border-slate-800 hover:border-slate-700 focus:border-emerald-500 rounded-xl px-3 py-2 text-slate-200 outline-none transition font-medium cursor-pointer">
+          <select id="exp-select" class="w-full text-xs sm:text-sm bg-[#09090b] border border-white/[0.08] hover:border-zinc-700 focus:border-emerald-500 rounded-xl px-3 py-2 text-zinc-200 outline-none transition font-medium cursor-pointer">
             <option value="all">All Experience Levels</option>
-            <option value="junior">⚡ Junior / Entry Level (~0-2 yrs)</option>
-            <option value="mid">🚀 Mid-Level (~2-5 yrs)</option>
-            <option value="senior">🎯 Senior Level (~5+ yrs)</option>
-            <option value="lead">👑 Lead / Staff / Principal (~8+ yrs)</option>
+            <option value="junior">Junior / Entry Level (~0-2 yrs)</option>
+            <option value="mid">Mid-Level (~2-5 yrs)</option>
+            <option value="senior">Senior Level (~5+ yrs)</option>
+            <option value="lead">Lead / Staff / Principal (~8+ yrs)</option>
           </select>
         </div>
 
-        <!-- 🏢 Company -->
+        <!-- Company -->
         <div>
           <div class="flex items-center justify-between mb-1">
-            <label for="company-select" class="text-[11px] font-bold text-slate-400">
-              🏢 Company
+            <label for="company-select" class="text-[11px] font-mono font-medium text-zinc-400">
+              Company
             </label>
-            <span id="company-count-badge" class="text-[10px] font-semibold text-slate-400">500+ available</span>
+            <span id="company-count-badge" class="text-[10px] font-mono text-zinc-500">500+ available</span>
           </div>
-          <select id="company-select" class="w-full text-xs sm:text-sm bg-slate-950 border border-slate-800 hover:border-slate-700 focus:border-emerald-500 rounded-xl px-3 py-2 text-slate-200 outline-none transition font-medium cursor-pointer">
+          <select id="company-select" class="w-full text-xs sm:text-sm bg-[#09090b] border border-white/[0.08] hover:border-zinc-700 focus:border-emerald-500 rounded-xl px-3 py-2 text-zinc-200 outline-none transition font-medium cursor-pointer">
             <option value="all">All Companies</option>
           </select>
         </div>
@@ -524,12 +551,12 @@
 
       <!-- Advanced Filter Controls: Row 2 (Collapsible on Mobile) -->
       <div id="advanced-filters-row" class="hidden sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3 transition-all duration-300">
-        <!-- 💼 Seniority Level -->
+        <!-- Seniority Level -->
         <div>
-          <label for="seniority-select" class="block text-[11px] font-bold text-slate-400 mb-1">
-            💼 Seniority Level
+          <label for="seniority-select" class="block text-[11px] font-mono font-medium text-zinc-400 mb-1">
+            Seniority
           </label>
-          <select id="seniority-select" class="w-full text-xs sm:text-sm bg-slate-950 border border-slate-800 hover:border-slate-700 focus:border-emerald-500 rounded-xl px-3 py-2 text-slate-200 outline-none transition font-medium cursor-pointer">
+          <select id="seniority-select" class="w-full text-xs sm:text-sm bg-[#09090b] border border-white/[0.08] hover:border-zinc-700 focus:border-emerald-500 rounded-xl px-3 py-2 text-zinc-200 outline-none transition font-medium cursor-pointer">
             <option value="all">All Seniority Levels</option>
             <option value="junior">Entry / Junior</option>
             <option value="mid">Mid-Level</option>
@@ -538,85 +565,85 @@
           </select>
         </div>
 
-        <!-- ⏰ Employment Type -->
+        <!-- Employment Type -->
         <div>
-          <label for="employment-select" class="block text-[11px] font-bold text-slate-400 mb-1">
-            ⏰ Employment Type
+          <label for="employment-select" class="block text-[11px] font-mono font-medium text-zinc-400 mb-1">
+            Employment Type
           </label>
-          <select id="employment-select" class="w-full text-xs sm:text-sm bg-slate-950 border border-slate-800 hover:border-slate-700 focus:border-emerald-500 rounded-xl px-3 py-2 text-slate-200 outline-none transition font-medium cursor-pointer">
+          <select id="employment-select" class="w-full text-xs sm:text-sm bg-[#09090b] border border-white/[0.08] hover:border-zinc-700 focus:border-emerald-500 rounded-xl px-3 py-2 text-zinc-200 outline-none transition font-medium cursor-pointer">
             <option value="all">All Employment Types</option>
-            <option value="full-time">💼 Full-time</option>
-            <option value="contract">📝 Contract / Freelance</option>
-            <option value="internship">🎓 Internship / Graduate</option>
-            <option value="part-time">⏱️ Part-time</option>
+            <option value="full-time">Full-time</option>
+            <option value="contract">Contract / Freelance</option>
+            <option value="internship">Internship / Graduate</option>
+            <option value="part-time">Part-time</option>
           </select>
         </div>
 
-        <!-- 📡 ATS / Source Platform -->
+        <!-- ATS / Source Platform -->
         <div>
-          <label for="source-select" class="block text-[11px] font-bold text-slate-400 mb-1">
-            📡 ATS / Source Platform
+          <label for="source-select" class="block text-[11px] font-mono font-medium text-zinc-400 mb-1">
+            Source / ATS Platform
           </label>
-          <select id="source-select" class="w-full text-xs sm:text-sm bg-slate-950 border border-slate-800 hover:border-slate-700 focus:border-emerald-500 rounded-xl px-3 py-2 text-slate-200 outline-none transition font-medium cursor-pointer">
+          <select id="source-select" class="w-full text-xs sm:text-sm bg-[#09090b] border border-white/[0.08] hover:border-zinc-700 focus:border-emerald-500 rounded-xl px-3 py-2 text-zinc-200 outline-none transition font-medium cursor-pointer font-mono text-[11px]">
             <option value="all">All Sources & ATS</option>
-            <option value="ashby">🏢 Ashby ATS (1,600+ jobs)</option>
-            <option value="greenhouse">🌿 Greenhouse ATS (1,500+ jobs)</option>
-            <option value="lever">⚓ Lever ATS (200+ jobs)</option>
-            <option value="workday">💼 Workday Portals</option>
-            <option value="CompanyATS">⚡ Direct Company ATS (Any)</option>
-            <option value="Himalayas">🏔️ Himalayas</option>
-            <option value="WeWorkRemotely">🌐 WeWorkRemotely</option>
-            <option value="Remotive">💻 Remotive</option>
-            <option value="RemoteOK">⚡ RemoteOK</option>
-            <option value="Jobicy">🎯 Jobicy</option>
+            <option value="ashby">Ashby ATS</option>
+            <option value="greenhouse">Greenhouse ATS</option>
+            <option value="lever">Lever ATS</option>
+            <option value="workday">Workday Portals</option>
+            <option value="CompanyATS">Direct Company ATS (Any)</option>
+            <option value="Himalayas">Himalayas</option>
+            <option value="WeWorkRemotely">WeWorkRemotely</option>
+            <option value="Remotive">Remotive</option>
+            <option value="RemoteOK">RemoteOK</option>
+            <option value="Jobicy">Jobicy</option>
           </select>
         </div>
 
-        <!-- ⚡ Date Posted -->
+        <!-- Date Posted -->
         <div>
-          <label for="date-posted-select" class="block text-[11px] font-bold text-slate-400 mb-1">
-            ⚡ Date Posted
+          <label for="date-posted-select" class="block text-[11px] font-mono font-medium text-zinc-400 mb-1">
+            Date Posted
           </label>
-          <select id="date-posted-select" class="w-full text-xs sm:text-sm bg-slate-950 border border-slate-800 hover:border-slate-700 focus:border-emerald-500 rounded-xl px-3 py-2 text-slate-200 outline-none transition font-medium cursor-pointer">
-            <option value="all">🌐 All Active Openings</option>
-            <option value="24h">⚡ Past 24 Hours / Today</option>
-            <option value="3d">🕒 Past 3 Days</option>
-            <option value="7d">📅 Past 7 Days (This Week)</option>
-            <option value="14d">🗓️ Past 14 Days</option>
-            <option value="30d">🗓️ Past 30 Days</option>
+          <select id="date-posted-select" class="w-full text-xs sm:text-sm bg-[#09090b] border border-white/[0.08] hover:border-zinc-700 focus:border-emerald-500 rounded-xl px-3 py-2 text-zinc-200 outline-none transition font-medium cursor-pointer">
+            <option value="all">All Active Openings</option>
+            <option value="24h">Past 24 Hours / Today</option>
+            <option value="3d">Past 3 Days</option>
+            <option value="7d">Past 7 Days (This Week)</option>
+            <option value="14d">Past 14 Days</option>
+            <option value="30d">Past 30 Days</option>
           </select>
         </div>
       </div>
 
       <!-- Quick Toggles & Sorting: Row 3 -->
-      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pt-4 mt-2 border-t border-slate-800/80">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pt-4 mt-2 border-t border-white/[0.08]">
         <!-- Left Checkboxes -->
         <div class="flex flex-wrap items-center gap-2 sm:gap-3">
-          <label class="flex items-center gap-2 px-3 py-2 bg-slate-950 border border-slate-800 hover:border-emerald-500/50 rounded-xl cursor-pointer transition select-none">
-            <input type="checkbox" id="direct-ats-checkbox" class="w-4 h-4 text-emerald-500 rounded bg-slate-900 border-slate-700 focus:ring-emerald-500">
-            <span class="text-xs font-bold text-emerald-400 whitespace-nowrap">🎯 Direct ATS Apply Only</span>
+          <label class="flex items-center gap-2 px-3 py-1.5 bg-[#09090b] border border-white/[0.08] hover:border-emerald-500/50 rounded-xl cursor-pointer transition select-none">
+            <input type="checkbox" id="direct-ats-checkbox" class="w-3.5 h-3.5 text-emerald-500 rounded bg-zinc-900 border-zinc-700 focus:ring-emerald-500">
+            <span class="text-xs font-semibold text-emerald-400 whitespace-nowrap">Direct ATS Only</span>
           </label>
-          <label class="flex items-center gap-2 px-3 py-2 bg-slate-950 border border-slate-800 hover:border-emerald-500/50 rounded-xl cursor-pointer transition select-none">
-            <input type="checkbox" id="worldwide-checkbox" class="w-4 h-4 text-emerald-500 rounded bg-slate-900 border-slate-700 focus:ring-emerald-500">
-            <span class="text-xs font-semibold text-slate-300 whitespace-nowrap">🌐 Worldwide Remote</span>
+          <label class="flex items-center gap-2 px-3 py-1.5 bg-[#09090b] border border-white/[0.08] hover:border-emerald-500/50 rounded-xl cursor-pointer transition select-none">
+            <input type="checkbox" id="worldwide-checkbox" class="w-3.5 h-3.5 text-emerald-500 rounded bg-zinc-900 border-zinc-700 focus:ring-emerald-500">
+            <span class="text-xs font-medium text-zinc-300 whitespace-nowrap">Worldwide Remote</span>
           </label>
-          <label class="flex items-center gap-2 px-3 py-2 bg-slate-950 border border-slate-800 hover:border-emerald-500/50 rounded-xl cursor-pointer transition select-none">
-            <input type="checkbox" id="salary-checkbox" class="w-4 h-4 text-emerald-500 rounded bg-slate-900 border-slate-700 focus:ring-emerald-500">
-            <span class="text-xs font-semibold text-slate-300 whitespace-nowrap">💰 Salary Disclosed</span>
+          <label class="flex items-center gap-2 px-3 py-1.5 bg-[#09090b] border border-white/[0.08] hover:border-emerald-500/50 rounded-xl cursor-pointer transition select-none">
+            <input type="checkbox" id="salary-checkbox" class="w-3.5 h-3.5 text-emerald-500 rounded bg-zinc-900 border-zinc-700 focus:ring-emerald-500">
+            <span class="text-xs font-medium text-zinc-300 whitespace-nowrap">Salary Disclosed</span>
           </label>
         </div>
 
         <!-- Right: Sort By Dropdown -->
         <div class="flex items-center gap-2 shrink-0">
-          <label for="sort-select" class="text-xs font-semibold text-slate-400 whitespace-nowrap">
-            Sort by:
+          <label for="sort-select" class="text-xs font-mono font-medium text-zinc-400 whitespace-nowrap">
+            Sort:
           </label>
-          <select id="sort-select" class="text-xs sm:text-sm bg-slate-950 border border-slate-800 hover:border-slate-700 focus:border-emerald-500 rounded-xl px-3 py-2 text-slate-200 outline-none transition font-medium cursor-pointer">
-            <option value="newest">⚡ Newest First</option>
-            <option value="salary-high">💰 Salary: High-to-Low</option>
-            <option value="volume">🏢 Hiring Volume (Most Jobs)</option>
-            <option value="company">🏢 Company (A-Z)</option>
-            <option value="title">💼 Title (A-Z)</option>
+          <select id="sort-select" class="text-xs sm:text-sm bg-[#09090b] border border-white/[0.08] hover:border-zinc-700 focus:border-emerald-500 rounded-xl px-3 py-1.5 text-zinc-200 outline-none transition font-medium cursor-pointer">
+            <option value="newest">Newest First</option>
+            <option value="salary-high">Salary: High-to-Low</option>
+            <option value="volume">Hiring Volume</option>
+            <option value="company">Company (A-Z)</option>
+            <option value="title">Title (A-Z)</option>
           </select>
         </div>
       </div>
@@ -663,72 +690,72 @@
   <!-- Job Detail Slide-Over Modal -->
   <div id="job-modal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
     <div class="flex items-end sm:items-center justify-center min-h-screen p-0 sm:p-4 text-center">
-      <div id="modal-backdrop" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md transition-opacity" aria-hidden="true"></div>
+      <div id="modal-backdrop" class="fixed inset-0 bg-[#09090b]/80 backdrop-blur-md transition-opacity" aria-hidden="true"></div>
 
-      <div class="relative inline-block w-full max-w-3xl my-0 sm:my-8 overflow-hidden text-left align-middle transition-all transform bg-slate-900 border border-slate-800 shadow-2xl rounded-t-3xl sm:rounded-3xl max-h-[92vh] sm:max-h-[90vh] flex flex-col">
+      <div class="relative inline-block w-full max-w-3xl my-0 sm:my-8 overflow-hidden text-left align-middle transition-all transform bg-[#121215] border border-white/[0.1] shadow-2xl rounded-t-3xl sm:rounded-3xl max-h-[92vh] sm:max-h-[90vh] flex flex-col">
         <!-- Modal Header -->
-        <div class="p-4 sm:p-6 lg:p-8 border-b border-slate-800 shrink-0">
+        <div class="p-4 sm:p-6 lg:p-8 border-b border-white/[0.08] shrink-0">
           <div class="flex items-start justify-between gap-4">
             <div class="flex items-center gap-3">
-              <div id="modal-company-avatar" class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-slate-950 font-black text-xl shrink-0">
-                🏢
+              <div id="modal-company-avatar" class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-zinc-950 font-black text-xl shrink-0 font-mono">
+                CO
               </div>
               <div>
                 <h3 id="modal-title" class="text-xl sm:text-2xl font-extrabold text-white"></h3>
                 <p id="modal-company" class="text-sm font-semibold text-emerald-400 mt-0.5"></p>
               </div>
             </div>
-            <button id="modal-close-btn" class="p-2 text-slate-400 hover:text-white bg-slate-800 rounded-xl">
+            <button id="modal-close-btn" class="p-2 text-zinc-400 hover:text-white bg-zinc-800 rounded-xl transition cursor-pointer">
               ✕
             </button>
           </div>
 
           <!-- Badges Strip -->
-          <div class="flex flex-wrap items-center gap-2 mt-4 text-xs">
-            <span id="modal-scope-badge" class="px-2.5 py-1 rounded-lg font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"></span>
+          <div class="flex flex-wrap items-center gap-2 mt-4 text-xs font-mono">
+            <span id="modal-scope-badge" class="px-2.5 py-1 rounded-lg font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"></span>
             <span id="modal-salary-badge" class="hidden px-2.5 py-1 rounded-lg font-bold bg-amber-500/10 text-amber-300 border border-amber-500/20"></span>
-            <span id="modal-location-badge" class="px-2.5 py-1 rounded-lg font-medium bg-slate-800 text-slate-300"></span>
-            <span id="modal-date-badge" class="hidden px-2.5 py-1 rounded-lg font-medium bg-slate-800 text-emerald-400 border border-emerald-500/20"></span>
-            <span id="modal-source-badge" class="px-2.5 py-1 rounded-lg font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20"></span>
+            <span id="modal-location-badge" class="px-2.5 py-1 rounded-lg font-medium bg-[#09090b] text-zinc-300 border border-white/[0.08]"></span>
+            <span id="modal-date-badge" class="hidden px-2.5 py-1 rounded-lg font-medium bg-[#09090b] text-emerald-400 border border-emerald-500/20"></span>
+            <span id="modal-source-badge" class="px-2.5 py-1 rounded-lg font-medium bg-[#09090b] text-zinc-400 border border-white/[0.08]"></span>
           </div>
         </div>
 
         <!-- Modal Body Content -->
-        <div id="modal-body" class="p-4 sm:p-6 lg:p-8 text-xs sm:text-sm text-slate-300 leading-relaxed overflow-y-auto space-y-4 flex-grow">
+        <div id="modal-body" class="p-4 sm:p-6 lg:p-8 text-xs sm:text-sm text-zinc-300 leading-relaxed overflow-y-auto space-y-4 flex-grow">
           <!-- Populated dynamically -->
         </div>
 
         <!-- High-Converting Candidate Monetization / ATS Resume Matcher Card -->
-        <div id="modal-resume-affiliate-card" class="mx-4 sm:mx-6 lg:mx-8 mb-4 p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 via-slate-900 to-emerald-500/10 border border-amber-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-lg shrink-0">
+        <div id="modal-resume-affiliate-card" class="mx-4 sm:mx-6 lg:mx-8 mb-4 p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 via-[#121215] to-emerald-500/10 border border-amber-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-lg shrink-0">
           <div class="space-y-1">
             <div class="flex items-center gap-2">
-              <span class="px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                ⚠️ 85% ATS Rejection Rate
+              <span class="px-2 py-0.5 rounded text-[9px] font-mono font-bold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                85% ATS Rejection Rate
               </span>
               <span class="text-xs font-bold text-white">Check Resume Keyword Match</span>
             </div>
-            <p class="text-[11px] text-slate-300 leading-snug">
+            <p class="text-[11px] text-zinc-300 leading-snug">
               Employers scan your resume against this job description. Scan keywords now to pass automated ATS filters.
             </p>
           </div>
-          <a id="modal-resume-btn" href="https://resumeworded.com/" target="_blank" rel="noopener noreferrer" class="shrink-0 w-full sm:w-auto px-3.5 py-2 rounded-xl text-xs font-extrabold bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 transition flex items-center justify-center gap-1.5 shadow-md shadow-amber-500/20 cursor-pointer">
-            <span>📄 Check ATS Score</span>
+          <a id="modal-resume-btn" href="https://resumeworded.com/" target="_blank" rel="noopener noreferrer" class="shrink-0 w-full sm:w-auto px-3.5 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-zinc-950 transition flex items-center justify-center gap-1.5 shadow-md shadow-amber-500/20 cursor-pointer">
+            <span>Scan Resume Score</span>
             <span>➔</span>
           </a>
         </div>
 
         <!-- Modal Footer with Direct Apply Link & Tracking -->
-        <div class="p-3 sm:p-6 bg-slate-950 border-t border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 shrink-0">
+        <div class="p-3 sm:p-6 bg-[#09090b] border-t border-white/[0.08] flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 shrink-0">
           <div class="flex items-center gap-2">
-            <button id="modal-save-btn" class="px-4 py-2.5 text-xs font-bold text-slate-300 hover:text-white bg-slate-900 border border-slate-800 rounded-xl transition cursor-pointer">
-              ⭐ Save Job
+            <button id="modal-save-btn" class="px-4 py-2.5 text-xs font-semibold text-zinc-300 hover:text-white bg-[#121215] border border-white/[0.08] hover:border-zinc-700 rounded-xl transition cursor-pointer flex items-center gap-1.5">
+              <span>Save Job</span>
             </button>
-            <button id="modal-apply-track-btn" class="px-4 py-2.5 text-xs font-bold text-slate-300 hover:text-white bg-slate-900 border border-slate-800 rounded-xl transition cursor-pointer">
-              ✅ Mark Applied
+            <button id="modal-apply-track-btn" class="px-4 py-2.5 text-xs font-semibold text-zinc-300 hover:text-white bg-[#121215] border border-white/[0.08] hover:border-zinc-700 rounded-xl transition cursor-pointer flex items-center gap-1.5">
+              <span>Mark Applied</span>
             </button>
           </div>
-          <a id="modal-apply-btn" href="#" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-5 sm:px-6 py-2.5 text-xs sm:text-sm font-extrabold text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 rounded-xl shadow-lg shadow-emerald-500/20 transition flex items-center justify-center gap-1.5 cursor-pointer">
-            <span>Apply on Official Site</span>
+          <a id="modal-apply-btn" href="#" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-5 sm:px-6 py-2.5 text-xs sm:text-sm font-extrabold text-zinc-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 rounded-xl shadow-lg shadow-emerald-500/20 transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <span>Apply on Official ATS</span>
             <span>↗</span>
           </a>
         </div>
@@ -739,21 +766,21 @@
   <!-- Candidate Job Alerts & Newsletter Modal -->
   <div id="alerts-modal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="alerts-modal-title" role="dialog" aria-modal="true">
     <div class="flex items-center justify-center min-h-screen p-3 sm:p-4 text-center">
-      <div id="alerts-modal-backdrop" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md transition-opacity"></div>
+      <div id="alerts-modal-backdrop" class="fixed inset-0 bg-[#09090b]/80 backdrop-blur-md transition-opacity"></div>
 
-      <div class="relative inline-block w-full max-w-lg my-6 overflow-hidden text-left align-middle transition-all transform bg-slate-900 border-2 border-emerald-500/40 shadow-2xl rounded-3xl p-5 sm:p-7 z-10">
+      <div class="relative inline-block w-full max-w-lg my-6 overflow-hidden text-left align-middle transition-all transform bg-[#121215] border border-white/[0.1] shadow-2xl rounded-3xl p-5 sm:p-7 z-10">
         <!-- Header -->
-        <div class="flex items-start justify-between gap-4 border-b border-slate-800 pb-4">
+        <div class="flex items-start justify-between gap-4 border-b border-white/[0.08] pb-4">
           <div class="flex items-center gap-3">
-            <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-slate-950 text-xl font-black shrink-0">
-              📬
+            <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-zinc-950 text-xl font-black shrink-0">
+              <svg class="w-5 h-5 text-zinc-950" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
             </div>
             <div>
               <h3 id="alerts-modal-title" class="text-lg sm:text-xl font-extrabold text-white">Curated Remote Job Alerts</h3>
-              <p class="text-xs text-slate-400 mt-0.5">Direct ATS openings delivered straight to your email</p>
+              <p class="text-xs text-zinc-400 mt-0.5">Direct ATS openings delivered straight to your email</p>
             </div>
           </div>
-          <button id="alerts-modal-close-btn" type="button" class="p-2 text-slate-400 hover:text-white bg-slate-800/80 rounded-xl transition cursor-pointer">
+          <button id="alerts-modal-close-btn" type="button" class="p-2 text-zinc-400 hover:text-white bg-zinc-800 rounded-xl transition cursor-pointer">
             ✕
           </button>
         </div>
@@ -761,93 +788,93 @@
         <!-- Plan Selection Tabs (3-Tier Model: Free, 1-Month VIP, 3-Month Sprint Pass) -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 my-4">
           <!-- Tier 1: Free Weekly Digest -->
-          <label id="plan-free-card" class="alert-plan-card relative p-3 rounded-2xl border-2 border-slate-800 bg-slate-950/60 hover:border-slate-700 cursor-pointer transition flex flex-col justify-between">
+          <label id="plan-free-card" class="alert-plan-card relative p-3 rounded-2xl border border-white/[0.08] bg-[#09090b] hover:border-zinc-700 cursor-pointer transition flex flex-col justify-between">
             <input type="radio" name="alert-plan" value="free" class="sr-only">
             <div>
               <div class="flex items-center justify-between gap-1">
                 <span class="text-xs font-bold text-white">Free Digest</span>
-                <span class="text-[9px] font-black uppercase px-1.5 py-0.2 rounded bg-slate-800 text-emerald-400">FREE</span>
+                <span class="text-[9px] font-mono font-bold uppercase px-1.5 py-0.2 rounded bg-zinc-800 text-emerald-400">FREE</span>
               </div>
-              <div class="text-[11px] text-slate-400 mt-1 leading-snug">Top 20 curated remote jobs sent every Monday morning.</div>
+              <div class="text-[11px] text-zinc-400 mt-1 leading-snug">Top 20 curated remote jobs sent every Monday morning.</div>
             </div>
-            <div class="text-[11px] font-bold text-emerald-400 mt-2">$0 / forever</div>
+            <div class="text-[11px] font-mono font-bold text-emerald-400 mt-2">$0 / forever</div>
           </label>
 
           <!-- Tier 2: 1-Month VIP Alerts -->
-          <label id="plan-vip1mo-card" class="alert-plan-card relative p-3 rounded-2xl border-2 border-slate-800 bg-slate-950/60 hover:border-slate-700 cursor-pointer transition flex flex-col justify-between">
+          <label id="plan-vip1mo-card" class="alert-plan-card relative p-3 rounded-2xl border border-white/[0.08] bg-[#09090b] hover:border-zinc-700 cursor-pointer transition flex flex-col justify-between">
             <input type="radio" name="alert-plan" value="vip1mo" class="sr-only">
             <div>
               <div class="flex items-center justify-between gap-1">
                 <span class="text-xs font-bold text-white">1-Month VIP</span>
-                <span class="text-[9px] font-black uppercase px-1.5 py-0.2 rounded bg-sky-500/20 text-sky-300">INSTANT</span>
+                <span class="text-[9px] font-mono font-bold uppercase px-1.5 py-0.2 rounded bg-sky-500/20 text-sky-300">INSTANT</span>
               </div>
-              <div class="text-[11px] text-slate-400 mt-1 leading-snug">Instant alerts as soon as direct-ATS jobs are posted.</div>
+              <div class="text-[11px] text-zinc-400 mt-1 leading-snug">Instant alerts as soon as direct-ATS jobs are posted.</div>
             </div>
-            <div class="text-[11px] font-bold text-sky-300 mt-2">$5 / month</div>
+            <div class="text-[11px] font-mono font-bold text-sky-300 mt-2">$5 / month</div>
           </label>
 
           <!-- Tier 3: 3-Month Sprint Pass (Hero / Best Value) -->
           <label id="plan-vip3mo-card" class="alert-plan-card active relative p-3 rounded-2xl border-2 border-amber-500 bg-amber-500/10 cursor-pointer transition flex flex-col justify-between shadow-lg shadow-amber-500/10">
-            <div class="absolute -top-2.5 right-2 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 shadow-sm">
-              ⭐ SAVE 33%
+            <div class="absolute -top-2.5 right-2 px-2 py-0.5 rounded-full text-[9px] font-mono font-black uppercase tracking-wider bg-gradient-to-r from-amber-400 to-amber-500 text-zinc-950 shadow-sm">
+              SAVE 33%
             </div>
             <input type="radio" name="alert-plan" value="vip3mo" checked class="sr-only">
             <div>
               <div class="flex items-center justify-between gap-1">
                 <span class="text-xs font-extrabold text-white flex items-center gap-1">⚡ 3-Mo Pass</span>
-                <span class="text-[9px] font-black uppercase px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300">SPRINT</span>
+                <span class="text-[9px] font-mono font-bold uppercase px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300">SPRINT</span>
               </div>
-              <div class="text-[11px] text-slate-300 mt-1 leading-snug">90 days of instant alerts covering the entire job search cycle.</div>
+              <div class="text-[11px] text-zinc-300 mt-1 leading-snug">90 days of instant alerts covering the entire job search cycle.</div>
             </div>
-            <div class="text-[11px] font-extrabold text-amber-300 mt-2">$10 <span class="text-[10px] text-slate-400 font-normal line-through">$15</span> <span class="text-[10px] text-emerald-400 font-semibold">(~$3.33/mo)</span></div>
+            <div class="text-[11px] font-mono font-extrabold text-amber-300 mt-2">$10 <span class="text-[10px] text-zinc-500 font-normal line-through">$15</span> <span class="text-[10px] text-emerald-400 font-semibold">(~$3.33/mo)</span></div>
           </label>
         </div>
 
         <!-- Form Fields -->
         <form id="alerts-form" class="space-y-3" onsubmit="event.preventDefault();">
           <div>
-            <label for="alerts-email" class="block text-xs font-bold text-slate-300 mb-1">Your Email Address <span class="text-rose-400">*</span></label>
-            <input type="email" id="alerts-email" required placeholder="you@example.com" class="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 rounded-xl px-3 py-2 text-xs sm:text-sm text-white placeholder-slate-500 outline-none font-medium">
+            <label for="alerts-email" class="block text-xs font-mono font-medium text-zinc-300 mb-1">Email Address <span class="text-rose-400">*</span></label>
+            <input type="email" id="alerts-email" required placeholder="you@example.com" class="w-full bg-[#09090b] border border-white/[0.08] focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 rounded-xl px-3 py-2 text-xs sm:text-sm text-white placeholder-zinc-500 outline-none font-medium">
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             <div>
-              <label for="alerts-role" class="block text-xs font-bold text-slate-300 mb-1">Target Profession / Role</label>
-              <select id="alerts-role" class="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500 rounded-xl px-2.5 py-2 text-xs text-slate-200 outline-none cursor-pointer">
-                <option value="all">🌐 All Professions</option>
-                <option value="engineer" selected>💻 Software Engineering</option>
-                <option value="qa">🧪 QA & SDET</option>
-                <option value="devops">☁️ DevOps & Cloud</option>
-                <option value="ai">🤖 AI & Machine Learning</option>
-                <option value="data">📊 Data & Analytics</option>
-                <option value="product">🚀 Product Management</option>
-                <option value="design">🎨 UI/UX & Design</option>
-                <option value="sales">📈 Sales & Account Execs</option>
-                <option value="marketing">📢 Marketing & Growth</option>
+              <label for="alerts-role" class="block text-xs font-mono font-medium text-zinc-300 mb-1">Target Profession</label>
+              <select id="alerts-role" class="w-full bg-[#09090b] border border-white/[0.08] focus:border-emerald-500 rounded-xl px-2.5 py-2 text-xs text-zinc-200 outline-none cursor-pointer">
+                <option value="all">All Professions</option>
+                <option value="engineer" selected>Software Engineering</option>
+                <option value="qa">QA & SDET</option>
+                <option value="devops">DevOps & Cloud</option>
+                <option value="ai">AI & Machine Learning</option>
+                <option value="data">Data & Analytics</option>
+                <option value="product">Product Management</option>
+                <option value="design">UI/UX & Design</option>
+                <option value="sales">Sales & Account Execs</option>
+                <option value="marketing">Marketing & Growth</option>
               </select>
             </div>
             <div>
-              <label for="alerts-scope" class="block text-xs font-bold text-slate-300 mb-1">Location Scope</label>
-              <select id="alerts-scope" class="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500 rounded-xl px-2.5 py-2 text-xs text-slate-200 outline-none cursor-pointer">
-                <option value="worldwide" selected>🌐 Worldwide (Anywhere)</option>
-                <option value="americas">🇺🇸 Americas / US Remote</option>
-                <option value="europe">🇪🇺 Europe / EMEA Remote</option>
-                <option value="apac">🌏 APAC Remote</option>
-                <option value="all">🌍 All Locations</option>
+              <label for="alerts-scope" class="block text-xs font-mono font-medium text-zinc-300 mb-1">Location Scope</label>
+              <select id="alerts-scope" class="w-full bg-[#09090b] border border-white/[0.08] focus:border-emerald-500 rounded-xl px-2.5 py-2 text-xs text-zinc-200 outline-none cursor-pointer">
+                <option value="worldwide" selected>Worldwide (Anywhere)</option>
+                <option value="americas">Americas / US Remote</option>
+                <option value="europe">Europe / EMEA Remote</option>
+                <option value="apac">APAC Remote</option>
+                <option value="all">All Locations</option>
               </select>
             </div>
           </div>
 
           <div>
-            <label for="alerts-keywords" class="block text-xs font-bold text-slate-300 mb-1">Keywords <span class="text-slate-500 font-normal">(optional, e.g. React, Python, Senior)</span></label>
-            <input type="text" id="alerts-keywords" placeholder="e.g. React, Python, QA Automation, Go" class="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 outline-none">
+            <label for="alerts-keywords" class="block text-xs font-mono font-medium text-zinc-300 mb-1">Keywords <span class="text-zinc-500 font-normal">(optional, e.g. React, Python)</span></label>
+            <input type="text" id="alerts-keywords" placeholder="e.g. React, Python, QA Automation, Go" class="w-full bg-[#09090b] border border-white/[0.08] focus:border-emerald-500 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 outline-none">
           </div>
 
           <div class="pt-2">
-            <button type="submit" id="alerts-submit-btn" class="w-full py-3 px-4 rounded-xl font-extrabold text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 transition shadow-lg shadow-emerald-500/20 cursor-pointer">
+            <button type="submit" id="alerts-submit-btn" class="w-full py-3 px-4 rounded-xl font-extrabold text-xs sm:text-sm text-zinc-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 transition shadow-lg shadow-emerald-500/20 cursor-pointer">
               <span>Subscribe to Free Weekly Digest</span>
             </button>
-            <p class="text-[11px] text-slate-500 text-center mt-2">Zero spam. One-click unsubscribe anytime in every email.</p>
+            <p class="text-[11px] text-zinc-500 text-center mt-2">Zero spam. One-click unsubscribe anytime in every email.</p>
           </div>
         </form>
 
@@ -857,10 +884,10 @@
             🎉
           </div>
           <h4 class="text-base font-bold text-white" id="alerts-success-title">You're Subscribed!</h4>
-          <p class="text-xs text-slate-400 max-w-sm mx-auto leading-relaxed" id="alerts-success-desc">
+          <p class="text-xs text-zinc-400 max-w-sm mx-auto leading-relaxed" id="alerts-success-desc">
             Your preferences have been saved. We will deliver verified direct-ATS openings straight to your inbox.
           </p>
-          <button type="button" id="alerts-success-close-btn" class="px-5 py-2 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-white rounded-xl transition cursor-pointer">
+          <button type="button" id="alerts-success-close-btn" class="px-5 py-2 text-xs font-bold bg-zinc-800 hover:bg-zinc-700 text-white rounded-xl transition cursor-pointer">
             Back to Job Board
           </button>
         </div>
@@ -872,49 +899,57 @@
   <!-- Recruiter Post a Job Modal ($49) -->
   <div id="post-job-modal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="post-job-modal-title" role="dialog" aria-modal="true">
     <div class="flex items-center justify-center min-h-screen p-3 sm:p-4 text-center">
-      <div id="post-job-modal-backdrop" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md transition-opacity"></div>
+      <div id="post-job-modal-backdrop" class="fixed inset-0 bg-black/85 backdrop-blur-md transition-opacity"></div>
 
-      <div class="relative inline-block w-full max-w-2xl my-6 overflow-hidden text-left align-middle transition-all transform bg-slate-900 border-2 border-teal-500/40 shadow-2xl rounded-3xl p-5 sm:p-8 z-10 max-h-[92vh] overflow-y-auto">
+      <div class="relative inline-block w-full max-w-2xl my-6 overflow-hidden text-left align-middle transition-all transform bg-[#121215] border border-white/[0.1] shadow-2xl rounded-2xl p-5 sm:p-7 z-10 max-h-[92vh] overflow-y-auto">
         <!-- Header -->
-        <div class="flex items-start justify-between gap-4 border-b border-slate-800 pb-4">
+        <div class="flex items-start justify-between gap-4 border-b border-white/[0.08] pb-4">
           <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-teal-400 to-cyan-400 flex items-center justify-center text-slate-950 text-2xl font-black shrink-0">
-              💼
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7h-4V4c0-.6-.4-1-1-1h-6c-.6 0-1 .4-1 1v3H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zM10 5h4v2h-4V5zm10 15H4V9h16v11z"/></svg>
             </div>
             <div>
               <div class="flex items-center gap-2">
-                <h3 id="post-job-modal-title" class="text-lg sm:text-xl font-extrabold text-white">Post a Featured Remote Job</h3>
-                <span class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase bg-amber-500/20 text-amber-300 border border-amber-500/30">$49 / 30 Days</span>
+                <h3 id="post-job-modal-title" class="text-base sm:text-lg font-bold text-white tracking-tight">Post a Featured Remote Job</h3>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-semibold">$49 / 30 Days</span>
               </div>
-              <p class="text-xs text-slate-400 mt-0.5">Reach 14,000+ candidates • Direct applicant referrals to your official ATS</p>
+              <p class="text-xs text-zinc-400 mt-0.5">Direct candidate referrals to your official career portal • Reach 14,000+ engineers</p>
             </div>
           </div>
-          <button id="post-job-modal-close-btn" type="button" class="p-2 text-slate-400 hover:text-white bg-slate-800/80 rounded-xl transition cursor-pointer">
-            ✕
+          <button id="post-job-modal-close-btn" type="button" class="p-1.5 text-zinc-400 hover:text-white hover:bg-white/[0.06] rounded-lg transition cursor-pointer">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
           </button>
         </div>
 
         <!-- Featured Benefits Grid -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 my-4">
-          <div class="p-2.5 rounded-xl bg-slate-950/70 border border-slate-800 text-center">
-            <div class="text-base">📌</div>
-            <div class="text-[11px] font-bold text-white mt-1">Pinned to Top</div>
-            <div class="text-[10px] text-slate-400">30-day top visibility</div>
+          <div class="p-2.5 rounded-xl bg-[#18181d] border border-white/[0.06] text-center">
+            <div class="w-6 h-6 mx-auto text-emerald-400 flex items-center justify-center">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v20m9-9l-9-9-9 9"/></svg>
+            </div>
+            <div class="text-[11px] font-semibold text-white mt-1">Pinned to Top</div>
+            <div class="text-[10px] text-zinc-400 font-mono">30-day top slot</div>
           </div>
-          <div class="p-2.5 rounded-xl bg-slate-950/70 border border-slate-800 text-center">
-            <div class="text-base">⭐</div>
-            <div class="text-[11px] font-bold text-amber-300 mt-1">Featured Glow</div>
-            <div class="text-[10px] text-slate-400">High-contrast badge</div>
+          <div class="p-2.5 rounded-xl bg-[#18181d] border border-white/[0.06] text-center">
+            <div class="w-6 h-6 mx-auto text-emerald-400 flex items-center justify-center">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <div class="text-[11px] font-semibold text-white mt-1">Featured Glow</div>
+            <div class="text-[10px] text-zinc-400 font-mono">High-contrast tag</div>
           </div>
-          <div class="p-2.5 rounded-xl bg-slate-950/70 border border-slate-800 text-center">
-            <div class="text-base">✈️</div>
-            <div class="text-[11px] font-bold text-sky-400 mt-1">Telegram Blast</div>
-            <div class="text-[10px] text-slate-400">Sent to alert channel</div>
+          <div class="p-2.5 rounded-xl bg-[#18181d] border border-white/[0.06] text-center">
+            <div class="w-6 h-6 mx-auto text-emerald-400 flex items-center justify-center">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            </div>
+            <div class="text-[11px] font-semibold text-white mt-1">Telegram Blast</div>
+            <div class="text-[10px] text-zinc-400 font-mono">Instant channel post</div>
           </div>
-          <div class="p-2.5 rounded-xl bg-slate-950/70 border border-slate-800 text-center">
-            <div class="text-base">⚡</div>
-            <div class="text-[11px] font-bold text-emerald-400 mt-1">Direct ATS</div>
-            <div class="text-[10px] text-slate-400">100% direct apply links</div>
+          <div class="p-2.5 rounded-xl bg-[#18181d] border border-white/[0.06] text-center">
+            <div class="w-6 h-6 mx-auto text-emerald-400 flex items-center justify-center">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            </div>
+            <div class="text-[11px] font-semibold text-white mt-1">Direct ATS</div>
+            <div class="text-[10px] text-zinc-400 font-mono">100% verified links</div>
           </div>
         </div>
 
@@ -922,92 +957,92 @@
         <form id="post-job-form" class="space-y-3.5" onsubmit="event.preventDefault();">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label for="post-job-role-title" class="block text-xs font-bold text-slate-300 mb-1">Job Title <span class="text-rose-400">*</span></label>
-              <input type="text" id="post-job-role-title" required placeholder="e.g. Senior Full Stack Engineer" class="w-full bg-slate-950 border border-slate-800 focus:border-teal-400 rounded-xl px-3 py-2 text-xs sm:text-sm text-white placeholder-slate-500 outline-none">
+              <label for="post-job-role-title" class="block text-xs font-medium text-zinc-300 mb-1">Job Title <span class="text-rose-400">*</span></label>
+              <input type="text" id="post-job-role-title" required placeholder="e.g. Senior Full Stack Engineer" class="w-full bg-[#18181d] border border-white/[0.08] focus:border-emerald-500/50 rounded-xl px-3 py-2 text-xs sm:text-sm text-white placeholder-zinc-500 outline-none transition">
             </div>
             <div>
-              <label for="post-job-company" class="block text-xs font-bold text-slate-300 mb-1">Company Name <span class="text-rose-400">*</span></label>
-              <input type="text" id="post-job-company" required placeholder="e.g. Acme Technologies" class="w-full bg-slate-950 border border-slate-800 focus:border-teal-400 rounded-xl px-3 py-2 text-xs sm:text-sm text-white placeholder-slate-500 outline-none">
+              <label for="post-job-company" class="block text-xs font-medium text-zinc-300 mb-1">Company Name <span class="text-rose-400">*</span></label>
+              <input type="text" id="post-job-company" required placeholder="e.g. Acme Technologies" class="w-full bg-[#18181d] border border-white/[0.08] focus:border-emerald-500/50 rounded-xl px-3 py-2 text-xs sm:text-sm text-white placeholder-zinc-500 outline-none transition">
             </div>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
-              <label for="post-job-domain" class="block text-xs font-bold text-slate-300 mb-1">Domain</label>
-              <select id="post-job-domain" class="w-full bg-slate-950 border border-slate-800 focus:border-teal-400 rounded-xl px-2.5 py-2 text-xs text-slate-200 outline-none">
-                <option value="engineer" selected>💻 Engineering</option>
-                <option value="qa">🧪 QA & Testing</option>
-                <option value="devops">☁️ DevOps & Cloud</option>
-                <option value="ai">🤖 AI & ML</option>
-                <option value="data">📊 Data</option>
-                <option value="product">🚀 Product</option>
-                <option value="design">🎨 Design</option>
-                <option value="sales">📈 Sales</option>
-                <option value="marketing">📢 Marketing</option>
-                <option value="other">💼 Other</option>
+              <label for="post-job-domain" class="block text-xs font-medium text-zinc-300 mb-1">Domain</label>
+              <select id="post-job-domain" class="w-full bg-[#18181d] border border-white/[0.08] focus:border-emerald-500/50 rounded-xl px-2.5 py-2 text-xs text-zinc-200 outline-none transition">
+                <option value="engineer" selected>Engineering</option>
+                <option value="qa">QA & Testing</option>
+                <option value="devops">DevOps & Cloud</option>
+                <option value="ai">AI & ML</option>
+                <option value="data">Data</option>
+                <option value="product">Product</option>
+                <option value="design">Design</option>
+                <option value="sales">Sales</option>
+                <option value="marketing">Marketing</option>
+                <option value="other">Other</option>
               </select>
             </div>
             <div>
-              <label for="post-job-scope" class="block text-xs font-bold text-slate-300 mb-1">Remote Scope</label>
-              <select id="post-job-scope" class="w-full bg-slate-950 border border-slate-800 focus:border-teal-400 rounded-xl px-2.5 py-2 text-xs text-slate-200 outline-none">
-                <option value="Worldwide" selected>🌐 Worldwide</option>
-                <option value="Americas / US">🇺🇸 Americas / US</option>
-                <option value="Europe / EMEA">🇪🇺 Europe / EMEA</option>
-                <option value="APAC">🌏 APAC</option>
+              <label for="post-job-scope" class="block text-xs font-medium text-zinc-300 mb-1">Remote Scope</label>
+              <select id="post-job-scope" class="w-full bg-[#18181d] border border-white/[0.08] focus:border-emerald-500/50 rounded-xl px-2.5 py-2 text-xs text-zinc-200 outline-none transition">
+                <option value="Worldwide" selected>Worldwide</option>
+                <option value="Americas / US">Americas / US</option>
+                <option value="Europe / EMEA">Europe / EMEA</option>
+                <option value="APAC">APAC</option>
               </select>
             </div>
             <div>
-              <label for="post-job-salary" class="block text-xs font-bold text-slate-300 mb-1">Salary Range</label>
-              <input type="text" id="post-job-salary" placeholder="e.g. $120k - $150k USD" class="w-full bg-slate-950 border border-slate-800 focus:border-teal-400 rounded-xl px-3 py-2 text-xs sm:text-sm text-white placeholder-slate-500 outline-none">
+              <label for="post-job-salary" class="block text-xs font-medium text-zinc-300 mb-1">Salary Range</label>
+              <input type="text" id="post-job-salary" placeholder="e.g. $120k - $150k USD" class="w-full bg-[#18181d] border border-white/[0.08] focus:border-emerald-500/50 rounded-xl px-3 py-2 text-xs sm:text-sm text-white placeholder-zinc-500 outline-none transition font-mono">
             </div>
           </div>
 
           <div>
-            <label for="post-job-apply-url" class="block text-xs font-bold text-slate-300 mb-1">Official Application URL (ATS) <span class="text-rose-400">*</span></label>
-            <input type="url" id="post-job-apply-url" required placeholder="https://boards.greenhouse.io/... or https://jobs.lever.co/..." class="w-full bg-slate-950 border border-slate-800 focus:border-teal-400 rounded-xl px-3 py-2 text-xs sm:text-sm text-white placeholder-slate-500 outline-none">
+            <label for="post-job-apply-url" class="block text-xs font-medium text-zinc-300 mb-1">Official Application URL (ATS) <span class="text-rose-400">*</span></label>
+            <input type="url" id="post-job-apply-url" required placeholder="https://boards.greenhouse.io/... or https://jobs.lever.co/..." class="w-full bg-[#18181d] border border-white/[0.08] focus:border-emerald-500/50 rounded-xl px-3 py-2 text-xs sm:text-sm text-white placeholder-zinc-500 outline-none transition font-mono text-[11px]">
           </div>
 
           <div>
-            <label for="post-job-email" class="block text-xs font-bold text-slate-300 mb-1">Recruiter / Billing Email <span class="text-rose-400">*</span></label>
-            <input type="email" id="post-job-email" required placeholder="recruiter@company.com" class="w-full bg-slate-950 border border-slate-800 focus:border-teal-400 rounded-xl px-3 py-2 text-xs sm:text-sm text-white placeholder-slate-500 outline-none">
+            <label for="post-job-email" class="block text-xs font-medium text-zinc-300 mb-1">Recruiter / Billing Email <span class="text-rose-400">*</span></label>
+            <input type="email" id="post-job-email" required placeholder="recruiter@company.com" class="w-full bg-[#18181d] border border-white/[0.08] focus:border-emerald-500/50 rounded-xl px-3 py-2 text-xs sm:text-sm text-white placeholder-zinc-500 outline-none transition">
           </div>
 
           <div>
-            <label for="post-job-description" class="block text-xs font-bold text-slate-300 mb-1">Short Job Summary</label>
-            <textarea id="post-job-description" rows="3" placeholder="Brief overview of the role, key responsibilities, and qualifications..." class="w-full bg-slate-950 border border-slate-800 focus:border-teal-400 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 outline-none resize-none"></textarea>
+            <label for="post-job-description" class="block text-xs font-medium text-zinc-300 mb-1">Short Job Summary</label>
+            <textarea id="post-job-description" rows="3" placeholder="Brief overview of the role, key responsibilities, and qualifications..." class="w-full bg-[#18181d] border border-white/[0.08] focus:border-emerald-500/50 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 outline-none resize-none transition"></textarea>
           </div>
 
           <!-- Checkout Summary -->
-          <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between">
+          <div class="p-3 bg-[#18181d] border border-white/[0.08] rounded-xl flex items-center justify-between">
             <div>
-              <div class="text-xs font-bold text-white">30-Day Featured Top Placement</div>
-              <div class="text-[11px] text-slate-400">Includes top pin + Telegram & email broadcast</div>
+              <div class="text-xs font-semibold text-white">30-Day Featured Top Placement</div>
+              <div class="text-[11px] text-zinc-400">Includes top pin + Telegram & email broadcast</div>
             </div>
             <div class="text-right">
-              <span class="text-lg font-black text-emerald-400">$49</span>
-              <span class="text-[10px] text-slate-500"> one-time</span>
+              <span class="text-lg font-bold font-mono text-emerald-400">$49</span>
+              <span class="text-[10px] text-zinc-500 font-mono"> one-time</span>
             </div>
           </div>
 
           <div class="pt-2">
-            <button type="submit" id="post-job-submit-btn" class="w-full py-3.5 px-4 rounded-xl font-black text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-300 hover:from-emerald-300 hover:to-teal-200 transition shadow-xl shadow-teal-500/20 cursor-pointer flex items-center justify-center gap-2">
+            <button type="submit" id="post-job-submit-btn" class="w-full py-3 px-4 rounded-xl font-semibold text-xs sm:text-sm text-black bg-emerald-400 hover:bg-emerald-300 transition cursor-pointer flex items-center justify-center gap-2">
               <span>Publish & Feature Job ($49)</span>
-              <span>➔</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
             </button>
-            <p class="text-[11px] text-slate-500 text-center mt-2">Instant publication on RemoteJobsHub • Guaranteed 30-day top pinned visibility.</p>
+            <p class="text-[11px] text-zinc-500 text-center mt-2 font-mono">Instant publication on RemoteJobsHub • Guaranteed 30-day top pinned visibility.</p>
           </div>
         </form>
 
         <!-- Post Job Success Screen -->
         <div id="post-job-success" class="hidden text-center py-6 space-y-3">
-          <div class="w-14 h-14 bg-teal-500/20 text-teal-300 border border-teal-500/30 rounded-2xl mx-auto flex items-center justify-center text-3xl">
-            🚀
+          <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-2xl mx-auto flex items-center justify-center">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
           </div>
           <h4 class="text-base font-bold text-white">Job Published & Featured!</h4>
-          <p class="text-xs text-slate-400 max-w-sm mx-auto leading-relaxed">
+          <p class="text-xs text-zinc-400 max-w-sm mx-auto leading-relaxed">
             Your listing has been pinned to the top of RemoteJobsHub and will be delivered to our alert subscribers.
           </p>
-          <button type="button" id="post-job-success-close-btn" class="px-5 py-2 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-white rounded-xl transition cursor-pointer">
+          <button type="button" id="post-job-success-close-btn" class="px-5 py-2 text-xs font-semibold bg-zinc-800 hover:bg-zinc-700 text-white rounded-xl transition cursor-pointer">
             View Live Listing
           </button>
         </div>
@@ -1017,52 +1052,55 @@
   </div>
 
   <!-- Footer -->
-  <footer class="bg-slate-950 border-t border-slate-800/80 mt-16 py-12">
+  <footer class="bg-[#09090b] border-t border-white/[0.08] mt-20 py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
       <div class="flex flex-col md:flex-row items-center justify-between gap-6">
         <div class="flex items-center space-x-3">
-          <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center text-slate-950 font-bold text-lg">
-            🌐
+          <div class="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
           </div>
-          <span class="text-lg font-bold text-white">Remote<span class="text-emerald-400">JobsHub</span></span>
+          <span class="text-sm font-semibold tracking-tight text-white">Remote<span class="text-emerald-400">JobsHub</span></span>
         </div>
-        <p class="text-xs text-slate-400 text-center md:text-left max-w-xl">
-          Verified global remote tech job aggregator indexing direct company career portals (Greenhouse, Lever, Ashby, Workday). Zero recruiter consultancies.
+        <p class="text-xs text-zinc-400 text-center md:text-left max-w-xl leading-relaxed">
+          Verified global remote tech job indexer connecting engineers to direct company career portals (Greenhouse, Lever, Ashby, Workday). Zero recruiter middlemen.
         </p>
-        <div class="flex items-center space-x-4 text-xs font-semibold text-slate-400 shrink-0">
+        <div class="flex items-center space-x-4 text-xs font-mono text-zinc-400 shrink-0">
           <a href="privacy.html" class="hover:text-emerald-400 transition">Privacy</a>
           <a href="terms.html" class="hover:text-emerald-400 transition">Terms</a>
           <a href="https://github.com/ajaypau123/RemoteJobsHub" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-400 transition">GitHub</a>
           <a href="https://t.me/RemoteJobsHub" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-400 transition">Telegram</a>
-          <a href="#main-content" class="hover:text-emerald-400 transition">Back to Top ↑</a>
+          <a href="#main-content" class="hover:text-emerald-400 transition">Top ↑</a>
         </div>
       </div>
 
       <!-- Legal & DMCA Transparency Clause -->
-      <div class="pt-6 border-t border-slate-900 text-[11px] text-slate-500 leading-relaxed text-center sm:text-left flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div class="pt-6 border-t border-white/[0.06] text-[11px] text-zinc-500 leading-relaxed text-center sm:text-left flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono">
         <p>
-          <strong>Legal Disclaimer:</strong> RemoteJobsHub is an independent search directory and indexer. All trademarks, brand names, job requisitions, and company logos belong to their respective owners. RemoteJobsHub is not affiliated with these employers and never charges candidates for job applications.
+          <strong class="text-zinc-400">Legal Disclaimer:</strong> RemoteJobsHub is an independent indexer. All trademarks, company names, and requisitions belong to their respective owners. Zero fees to candidates.
         </p>
-        <div class="shrink-0 text-slate-400 text-xs flex items-center gap-2">
+        <div class="shrink-0 text-zinc-400 text-xs flex items-center gap-2">
           <span>Takedown / Removal:</span>
-          <a href="mailto:support@remotejobshub.com?subject=Job%20Removal%20Request" class="text-emerald-400 hover:underline font-semibold">support@remotejobshub.com</a>
+          <a href="mailto:support@remotejobshub.com?subject=Job%20Removal%20Request" class="text-emerald-400 hover:underline">support@remotejobshub.com</a>
         </div>
       </div>
     </div>
   </footer>
 
   <!-- Application Tracker Floating Toast -->
-  <div id="applied-toast" class="fixed bottom-6 right-6 z-50 hidden max-w-sm bg-slate-900/95 border-2 border-emerald-500/50 p-4 rounded-2xl shadow-2xl backdrop-blur-xl transition-all">
+  <div id="applied-toast" class="fixed bottom-6 right-6 z-50 hidden max-w-sm bg-[#121215]/95 border border-emerald-500/40 p-4 rounded-2xl shadow-2xl backdrop-blur-xl transition-all">
     <div class="flex items-start gap-3">
-      <div class="text-2xl shrink-0">🎯</div>
+      <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center shrink-0">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+      </div>
       <div class="flex-grow min-w-0">
-        <div class="text-xs font-bold text-white" id="toast-title">Applying to role?</div>
-        <div class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Keep your search organized by tracking this in your Applied Dashboard.</div>
+        <div class="text-xs font-semibold text-white" id="toast-title">Applying to role?</div>
+        <div class="text-[11px] text-zinc-400 mt-0.5 leading-relaxed">Keep your search organized by tracking this in your Applied Dashboard.</div>
         <div class="flex items-center gap-2 mt-3">
-          <button id="toast-confirm-btn" type="button" class="px-3 py-1.5 text-xs font-bold bg-emerald-500 text-slate-950 rounded-lg hover:bg-emerald-400 transition cursor-pointer shadow-sm">
-            ✅ Mark as Applied
+          <button id="toast-confirm-btn" type="button" class="px-3 py-1.5 text-xs font-semibold bg-emerald-400 text-black rounded-lg hover:bg-emerald-300 transition cursor-pointer shadow-sm flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            <span>Mark as Applied</span>
           </button>
-          <button id="toast-dismiss-btn" type="button" class="px-2.5 py-1.5 text-xs font-medium text-slate-400 hover:text-white transition cursor-pointer">
+          <button id="toast-dismiss-btn" type="button" class="px-2.5 py-1.5 text-xs font-medium text-zinc-400 hover:text-white transition cursor-pointer">
             Dismiss
           </button>
         </div>
@@ -1071,8 +1109,8 @@
   </div>
 
   <!-- App Script Dependencies -->
-  <script src="affiliates-config.js?v=20261109_prod"></script>
-  <script src="jobs_latest.js?v=20261109_prod"></script>
-  <script src="app.js?v=20261109_prod"></script>
+  <script src="affiliates-config.js?v=20261110_modern_linear_ui"></script>
+  <script src="jobs_latest.js?v=20261110_modern_linear_ui"></script>
+  <script src="app.js?v=20261110_modern_linear_ui"></script>
 </body>
 </html>

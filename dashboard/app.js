@@ -387,22 +387,23 @@ function renderTopCompanyChips() {
 
   const isAll = state.company === 'all';
   container.innerHTML =
-    '<span class="text-[11px] font-bold text-slate-400 shrink-0 mr-1 flex items-center gap-1">' +
-    '<span>🏢 Top Employers:</span>' +
+    '<span class="text-[11px] font-medium text-zinc-400 shrink-0 mr-1 flex items-center gap-1.5 font-mono">' +
+    '<svg class="w-3.5 h-3.5 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>' +
+    '<span>Top Employers:</span>' +
     '</span>' +
-    '<button type="button" onclick="selectCompany(\'all\')" class="company-chip px-2.5 py-1 rounded-lg text-xs font-bold ' +
-    (isAll ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20' : 'bg-slate-950 text-slate-300 hover:text-white border border-slate-800') +
-    ' transition shrink-0 cursor-pointer">All Employers</button>';
+    '<button type="button" onclick="selectCompany(\'all\')" class="company-chip px-2.5 py-1 rounded-lg text-xs font-medium font-mono ' +
+    (isAll ? 'bg-emerald-400 text-black font-semibold' : 'bg-[#121215] text-zinc-300 hover:text-white border border-white/[0.08] hover:border-white/[0.15]') +
+    ' transition shrink-0 cursor-pointer">All</button>';
 
   topCompanies.forEach(([comp, count]) => {
     const isSelected = state.company.toLowerCase() === comp.toLowerCase();
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = 'company-chip px-2.5 py-1 rounded-lg text-xs font-semibold ' +
-      (isSelected ? 'bg-emerald-500 text-slate-950 font-bold shadow-md shadow-emerald-500/20' : 'bg-slate-950 text-slate-300 hover:text-emerald-400 border border-slate-800') +
-      ' transition shrink-0 cursor-pointer flex items-center gap-1';
+    btn.className = 'company-chip px-2.5 py-1 rounded-lg text-xs font-mono ' +
+      (isSelected ? 'bg-emerald-400 text-black font-semibold' : 'bg-[#121215] text-zinc-300 hover:text-emerald-400 border border-white/[0.08] hover:border-white/[0.15]') +
+      ' transition shrink-0 cursor-pointer flex items-center gap-1.5';
     btn.innerHTML = '<span>' + escapeHtml(comp) + '</span><span class="' +
-      (isSelected ? 'text-slate-950 font-black' : 'text-emerald-400 font-bold') + '">(' + count + ')</span>';
+      (isSelected ? 'text-black/80 font-bold' : 'text-emerald-400 font-medium') + '">(' + count + ')</span>';
     btn.onclick = () => selectCompany(comp);
     container.appendChild(btn);
   });
@@ -625,11 +626,11 @@ function syncViewModeUI() {
 
   if (cardBtn && listBtn) {
     if (state.viewMode === 'card') {
-      cardBtn.className = 'view-mode-btn active px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition flex items-center gap-1.5 cursor-pointer shadow-sm';
-      listBtn.className = 'view-mode-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5 cursor-pointer';
+      cardBtn.className = 'view-mode-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-400 text-black transition flex items-center gap-1.5 cursor-pointer shadow-sm';
+      listBtn.className = 'view-mode-btn px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-400 hover:text-white transition flex items-center gap-1.5 cursor-pointer';
     } else {
-      listBtn.className = 'view-mode-btn active px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition flex items-center gap-1.5 cursor-pointer shadow-sm';
-      cardBtn.className = 'view-mode-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5 cursor-pointer';
+      listBtn.className = 'view-mode-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-400 text-black transition flex items-center gap-1.5 cursor-pointer shadow-sm';
+      cardBtn.className = 'view-mode-btn px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-400 hover:text-white transition flex items-center gap-1.5 cursor-pointer';
     }
   }
 }
@@ -655,16 +656,16 @@ function setTrackerTab(tab) {
     const el = document.getElementById(t.id);
     if (!el) return;
     if (t.tab === tab) {
-      el.className = 'tracker-nav-tab active px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 transition cursor-pointer flex items-center gap-2 whitespace-nowrap shadow-md shadow-emerald-500/20';
+      el.className = 'tracker-nav-tab active px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-400 text-black transition cursor-pointer flex items-center gap-2 whitespace-nowrap shadow-sm';
       const badge = el.querySelector('span:last-child');
-      if (badge) badge.className = 'px-1.5 py-0.2 rounded-full text-[10px] bg-slate-950/20 text-slate-950 font-black';
+      if (badge) badge.className = 'px-1.5 py-0.2 rounded text-[10px] font-mono bg-black/20 text-black font-bold';
     } else {
-      el.className = 'tracker-nav-tab px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white bg-slate-950 border border-slate-800 transition cursor-pointer flex items-center gap-2 whitespace-nowrap';
+      el.className = 'tracker-nav-tab px-3.5 py-1.5 rounded-lg text-xs font-medium text-zinc-400 hover:text-white bg-[#121215] border border-white/[0.08] hover:border-white/[0.15] transition cursor-pointer flex items-center gap-2 whitespace-nowrap';
       const badge = el.querySelector('span:last-child');
       if (badge) {
-        if (t.tab === 'saved') badge.className = 'px-1.5 py-0.2 rounded-full text-[10px] bg-amber-500/20 text-amber-300 font-bold';
-        else if (t.tab === 'applied') badge.className = 'px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-500/20 text-emerald-300 font-bold';
-        else badge.className = 'px-1.5 py-0.2 rounded-full text-[10px] bg-slate-800 text-slate-400 font-bold';
+        if (t.tab === 'saved') badge.className = 'px-1.5 py-0.2 rounded text-[10px] font-mono bg-amber-500/15 text-amber-300 font-medium border border-amber-500/20';
+        else if (t.tab === 'applied') badge.className = 'px-1.5 py-0.2 rounded text-[10px] font-mono bg-emerald-500/15 text-emerald-300 font-medium border border-emerald-500/20';
+        else badge.className = 'px-1.5 py-0.2 rounded text-[10px] font-mono bg-white/[0.04] text-zinc-400 font-medium';
       }
     }
   });
@@ -892,22 +893,25 @@ function renderJobCards() {
 
     if (state.trackerTab === 'applied') {
       emptyTitle = 'No applied jobs recorded yet';
-      emptyMsg = 'Click "✅ Mark as Applied" on any job card when you submit your application to track your status here!';
+      emptyMsg = 'Click "Mark as Applied" on any job card when you submit your application to track your status here!';
     } else if (state.trackerTab === 'saved') {
       emptyTitle = 'No saved jobs in your list';
-      emptyMsg = 'Bookmark interesting remote jobs by clicking the ⭐ icon on any card.';
+      emptyMsg = 'Bookmark interesting remote jobs by clicking the bookmark icon on any card.';
     }
 
     container.className = 'min-h-[300px] flex items-center justify-center';
     container.innerHTML = `
-      <div class="p-10 sm:p-14 text-center bg-slate-900 border border-slate-800 rounded-3xl max-w-lg mx-auto shadow-2xl">
-        <div class="text-5xl mb-4">🔍</div>
-        <h3 class="text-lg font-bold text-white mb-2">${emptyTitle}</h3>
-        <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
+      <div class="p-10 sm:p-14 text-center bg-[#121215] border border-white/[0.08] rounded-2xl max-w-lg mx-auto shadow-2xl">
+        <div class="w-12 h-12 rounded-xl bg-white/[0.04] border border-white/[0.08] text-zinc-400 mx-auto flex items-center justify-center mb-4">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35"/></svg>
+        </div>
+        <h3 class="text-base sm:text-lg font-bold text-white mb-2 tracking-tight">${emptyTitle}</h3>
+        <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed mb-6 font-normal">
           ${emptyMsg}
         </p>
-        <button onclick="resetAllFilters()" class="px-5 py-2.5 text-xs font-bold bg-emerald-500 text-slate-950 rounded-xl hover:bg-emerald-400 transition cursor-pointer shadow-lg shadow-emerald-500/20 active:scale-95">
-          Show All Remote Openings ➔
+        <button onclick="resetAllFilters()" class="px-4 py-2.5 text-xs font-semibold bg-emerald-400 hover:bg-emerald-300 text-black rounded-xl transition cursor-pointer active:scale-95 flex items-center gap-2 mx-auto">
+          <span>Show All Remote Openings</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
         </button>
       </div>
     `;
@@ -951,83 +955,84 @@ function renderJobCards() {
     const isDirectAts = !!job.direct_apply_url || job.source === 'CompanyATS';
     const relDate = formatRelativeDate(job.posted_date || job.collected_date);
 
-    // Format Scope Badge
+    // Format Scope Badge (JetBrains Mono)
     let scopeBadge = '';
     const scope = (job.remote_scope || '').toLowerCase();
     if (scope === 'worldwide') {
-      scopeBadge = '<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">🌐 Worldwide</span>';
+      scopeBadge = '<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Worldwide</span>';
     } else if (scope.includes('americas')) {
-      scopeBadge = '<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20">🇺🇸 Americas / US</span>';
+      scopeBadge = '<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-500/10 text-blue-400 border border-blue-500/20">Americas / US</span>';
     } else if (scope.includes('europe') || scope.includes('emea')) {
-      scopeBadge = '<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-purple-500/10 text-purple-400 border border-purple-500/20">🇪🇺 Europe / EMEA</span>';
+      scopeBadge = '<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-purple-500/10 text-purple-400 border border-purple-500/20">Europe / EMEA</span>';
     } else if (scope.includes('apac')) {
-      scopeBadge = '<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">🌏 APAC</span>';
+      scopeBadge = '<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-amber-500/10 text-amber-400 border border-amber-500/20">APAC</span>';
     } else {
-      scopeBadge = '<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-slate-800 text-slate-300">📍 ' + escapeHtml(job.location || 'Remote') + '</span>';
+      scopeBadge = '<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-white/[0.04] border border-white/[0.06] text-zinc-300">' + escapeHtml(job.location || 'Remote') + '</span>';
     }
 
     if (state.viewMode === 'list') {
       // ── COMPACT LIST ROW ──
       const row = document.createElement('div');
       row.className = job.is_featured
-        ? 'job-card-hover bg-slate-900 border-2 border-amber-500/60 hover:border-amber-400 p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition cursor-pointer shadow-lg shadow-amber-500/10'
-        : 'job-card-hover bg-slate-900/90 border border-slate-800/90 hover:border-emerald-500/50 p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition cursor-pointer';
+        ? 'job-card-hover bg-[#141419] border border-amber-500/40 hover:border-amber-400/60 p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition cursor-pointer shadow-lg shadow-amber-500/5'
+        : 'job-card-hover bg-[#121215] border border-white/[0.08] hover:border-emerald-500/40 hover:bg-[#16161b] p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition cursor-pointer';
       row.onclick = () => openJobModal(job);
 
       row.innerHTML = `
         <div class="flex items-center gap-3 min-w-0 flex-grow">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr ${gradient} flex items-center justify-center text-white font-black text-sm shrink-0">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr ${gradient} flex items-center justify-center text-white font-bold text-sm shrink-0">
             ${initials}
           </div>
           <div class="min-w-0 flex-grow">
             <div class="flex items-center gap-2 flex-wrap mb-0.5">
-              ${job.is_featured ? '<span class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40">⭐ Featured</span>' : ''}
-              <span class="text-xs font-bold text-slate-300 truncate max-w-[170px]">${escapeHtml(job.company || 'Company')}</span>
-              ${isDirectAts ? '<span class="px-1.5 py-0.2 rounded text-[10px] font-black uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">⚡ Direct ATS</span>' : ''}
-              ${isApplied ? '<span class="px-1.5 py-0.2 rounded text-[10px] font-black uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">✅ Applied</span>' : ''}
-              ${relDate ? `<span class="text-[11px] text-slate-500">•</span><span class="text-[11px] font-semibold text-emerald-400/90">${relDate}</span>` : ''}
+              ${job.is_featured ? '<span class="px-2 py-0.5 rounded text-[10px] font-mono uppercase tracking-wider bg-amber-500/15 text-amber-300 border border-amber-500/30">Featured</span>' : ''}
+              <span class="text-xs font-semibold text-zinc-300 truncate max-w-[170px]">${escapeHtml(job.company || 'Company')}</span>
+              ${isDirectAts ? '<span class="px-1.5 py-0.2 rounded text-[10px] font-mono uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Direct ATS</span>' : ''}
+              ${isApplied ? '<span class="px-1.5 py-0.2 rounded text-[10px] font-mono uppercase bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">Applied</span>' : ''}
+              ${relDate ? `<span class="text-[11px] font-mono text-zinc-500">•</span><span class="text-[11px] font-mono text-emerald-400/90">${relDate}</span>` : ''}
             </div>
-            <h3 class="text-sm sm:text-base font-bold text-white hover:text-emerald-400 transition truncate">
+            <h3 class="text-sm sm:text-base font-semibold text-white hover:text-emerald-400 transition truncate tracking-tight">
               ${escapeHtml(job.title)}
             </h3>
           </div>
         </div>
 
         <div class="flex items-center gap-1.5 flex-wrap shrink-0">
-          ${job.experience_required ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">🎯 ${escapeHtml(job.experience_required)}</span>` : ''}
+          ${job.experience_required ? `<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">${escapeHtml(job.experience_required)}</span>` : ''}
           ${scopeBadge}
-          ${job.salary ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-500/10 text-amber-300 border border-amber-500/20">💰 ${escapeHtml(job.salary)}</span>` : ''}
+          ${job.salary ? `<span class="px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-amber-500/10 text-amber-300 border border-amber-500/20">${escapeHtml(job.salary)}</span>` : ''}
         </div>
 
-        <div class="flex items-center gap-1.5 shrink-0 justify-end pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-800">
+        <div class="flex items-center gap-1.5 shrink-0 justify-end pt-2 sm:pt-0 border-t sm:border-t-0 border-white/[0.06]">
           <!-- Bookmark -->
           <button 
             type="button" 
             onclick="toggleSaveJob('${job.job_id}', event)" 
-            class="p-2 rounded-xl text-xs font-bold ${isSaved ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white border border-slate-700'} transition cursor-pointer"
+            class="p-2 rounded-lg text-xs transition cursor-pointer ${isSaved ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30' : 'bg-white/[0.04] hover:bg-white/[0.08] text-zinc-400 hover:text-white border border-white/[0.06]'}"
             title="${isSaved ? 'Saved' : 'Save'}"
           >
-            ${isSaved ? '⭐' : '☆'}
+            <svg class="w-3.5 h-3.5" fill="${isSaved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
           </button>
 
           <!-- Apply Tracker -->
           <button 
             type="button" 
             onclick="toggleApplyJob('${job.job_id}', event)" 
-            class="px-2.5 py-2 rounded-xl text-xs font-bold ${isApplied ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white border border-slate-700'} transition cursor-pointer"
+            class="px-2.5 py-1.5 rounded-lg text-xs font-mono font-medium transition cursor-pointer flex items-center gap-1 ${isApplied ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30' : 'bg-white/[0.04] hover:bg-white/[0.08] text-zinc-400 hover:text-white border border-white/[0.06]'}"
             title="${isApplied ? 'Marked as Applied' : 'Track Application'}"
           >
-            ${isApplied ? '✅ Applied' : '○ Apply'}
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            <span>${isApplied ? 'Applied' : 'Track'}</span>
           </button>
 
           <!-- Details -->
           <button 
             type="button" 
             onclick="openJobModalById('${job.job_id}', event)" 
-            class="p-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 transition cursor-pointer"
+            class="p-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] transition cursor-pointer"
             title="View Details"
           >
-            👁️
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
           </button>
 
           <!-- Direct Apply CTA -->
@@ -1036,10 +1041,10 @@ function renderJobCards() {
             target="_blank" 
             rel="noopener noreferrer" 
             onclick="handleExternalApply('${job.job_id}', event)"
-            class="px-3.5 py-2 text-xs font-bold text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 rounded-xl shadow-md shadow-emerald-500/10 active:scale-95 transition flex items-center gap-1 cursor-pointer whitespace-nowrap"
+            class="px-3 py-1.5 text-xs font-semibold text-black bg-emerald-400 hover:bg-emerald-300 rounded-lg shadow-sm active:scale-95 transition flex items-center gap-1 cursor-pointer whitespace-nowrap"
           >
             <span>Apply</span>
-            <span>↗</span>
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
           </a>
         </div>
       `;
@@ -1049,27 +1054,27 @@ function renderJobCards() {
       // ── RICH CARD VIEW ──
       const card = document.createElement('div');
       card.className = job.is_featured
-        ? 'job-card-hover bg-slate-900 border-2 border-amber-500/60 hover:border-amber-400 p-4 sm:p-5 rounded-2xl flex flex-col justify-between gap-4 transition cursor-pointer shadow-xl shadow-amber-500/10'
-        : 'job-card-hover bg-slate-900/90 border border-slate-800/90 hover:border-emerald-500/50 p-4 sm:p-5 rounded-2xl flex flex-col justify-between gap-4 transition cursor-pointer';
+        ? 'job-card-hover bg-[#141419] border border-amber-500/40 hover:border-amber-400/60 p-4 sm:p-5 rounded-2xl flex flex-col justify-between gap-4 transition cursor-pointer shadow-lg shadow-amber-500/5'
+        : 'job-card-hover bg-[#121215] border border-white/[0.08] hover:border-emerald-500/40 hover:bg-[#16161b] p-4 sm:p-5 rounded-2xl flex flex-col justify-between gap-4 transition cursor-pointer';
       card.onclick = () => openJobModal(job);
 
       card.innerHTML = `
         <div>
           <div class="flex items-start justify-between gap-3 mb-2">
             <div class="flex items-center gap-3 min-w-0">
-              <div class="w-12 h-12 rounded-xl bg-gradient-to-tr ${gradient} flex items-center justify-center text-white font-black text-base shadow-sm shrink-0">
+              <div class="w-11 h-11 rounded-xl bg-gradient-to-tr ${gradient} flex items-center justify-center text-white font-bold text-sm shadow-sm shrink-0">
                 ${initials}
               </div>
               <div class="min-w-0">
                 <div class="flex items-center gap-2 flex-wrap">
-                  ${job.is_featured ? '<span class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40">⭐ Featured</span>' : ''}
-                  <span class="text-xs font-bold text-slate-300 truncate max-w-[160px]">${escapeHtml(job.company || 'Hiring Company')}</span>
-                  ${isDirectAts ? '<span class="px-1.5 py-0.2 rounded text-[10px] font-black uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">⚡ Direct ATS</span>' : ''}
-                  ${isApplied ? '<span class="px-1.5 py-0.2 rounded text-[10px] font-black uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">✅ Applied</span>' : ''}
+                  ${job.is_featured ? '<span class="px-2 py-0.5 rounded text-[10px] font-mono uppercase tracking-wider bg-amber-500/15 text-amber-300 border border-amber-500/30">Featured</span>' : ''}
+                  <span class="text-xs font-semibold text-zinc-300 truncate max-w-[160px]">${escapeHtml(job.company || 'Hiring Company')}</span>
+                  ${isDirectAts ? '<span class="px-1.5 py-0.2 rounded text-[10px] font-mono uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Direct ATS</span>' : ''}
+                  ${isApplied ? '<span class="px-1.5 py-0.2 rounded text-[10px] font-mono uppercase bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">Applied</span>' : ''}
                 </div>
-                <div class="flex items-center gap-1.5 text-[11px] text-slate-500 mt-0.5">
+                <div class="flex items-center gap-1.5 text-[11px] font-mono text-zinc-500 mt-0.5">
                   <span>${escapeHtml(job.source || 'RemoteFeed')}</span>
-                  ${relDate ? `<span>•</span><span class="font-semibold text-emerald-400/90">${relDate}</span>` : ''}
+                  ${relDate ? `<span>•</span><span class="text-emerald-400/90 font-medium">${relDate}</span>` : ''}
                 </div>
               </div>
             </div>
@@ -1077,38 +1082,39 @@ function renderJobCards() {
             <button 
               type="button" 
               onclick="toggleSaveJob('${job.job_id}', event)" 
-              class="p-2 rounded-xl text-xs font-bold ${isSaved ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white border border-slate-700'} transition cursor-pointer shrink-0"
+              class="p-2 rounded-lg text-xs transition cursor-pointer shrink-0 ${isSaved ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30' : 'bg-white/[0.04] hover:bg-white/[0.08] text-zinc-400 hover:text-white border border-white/[0.06]'}"
               title="${isSaved ? 'Remove Bookmark' : 'Save Job'}"
             >
-              ${isSaved ? '⭐' : '☆'}
+              <svg class="w-4 h-4" fill="${isSaved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
             </button>
           </div>
 
           <!-- Job Title -->
-          <h3 class="text-base sm:text-lg font-bold text-white hover:text-emerald-400 transition line-clamp-2 leading-snug my-2">
+          <h3 class="text-base font-semibold text-white hover:text-emerald-400 transition line-clamp-2 leading-snug my-2 tracking-tight">
             ${escapeHtml(job.title)}
           </h3>
 
           <!-- Scope & Tech Stack Tags -->
           <div class="flex items-center gap-1.5 flex-wrap mt-3">
             ${scopeBadge}
-            ${job.experience_required ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">🎯 ${escapeHtml(job.experience_required)}</span>` : ''}
-            ${job.seniority_level ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-800 text-slate-300">⚡ ${escapeHtml(job.seniority_level)}</span>` : ''}
-            ${job.salary ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-500/10 text-amber-300 border border-amber-500/20">💰 ${escapeHtml(job.salary)}</span>` : ''}
-            ${job.employment_type ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-800 text-slate-300">${escapeHtml(job.employment_type)}</span>` : ''}
-            ${tags.map(t => `<span class="px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-800 text-slate-300">${t}</span>`).join('')}
+            ${job.experience_required ? `<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">${escapeHtml(job.experience_required)}</span>` : ''}
+            ${job.seniority_level ? `<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-white/[0.04] border border-white/[0.06] text-zinc-300">${escapeHtml(job.seniority_level)}</span>` : ''}
+            ${job.salary ? `<span class="px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-amber-500/10 text-amber-300 border border-amber-500/20">${escapeHtml(job.salary)}</span>` : ''}
+            ${job.employment_type ? `<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-white/[0.04] border border-white/[0.06] text-zinc-300">${escapeHtml(job.employment_type)}</span>` : ''}
+            ${tags.map(t => `<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-white/[0.04] border border-white/[0.06] text-zinc-400">${t}</span>`).join('')}
           </div>
         </div>
 
         <!-- Card Footer Action Buttons -->
-        <div class="flex items-center justify-between gap-2 pt-3 border-t border-slate-800/80">
+        <div class="flex items-center justify-between gap-2 pt-3 border-t border-white/[0.06]">
           <button 
             type="button" 
             onclick="toggleApplyJob('${job.job_id}', event)" 
-            class="px-3 py-2 text-xs font-bold rounded-xl ${isApplied ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700'} transition cursor-pointer flex items-center gap-1.5"
+            class="px-3 py-1.5 text-xs font-mono font-medium rounded-lg transition cursor-pointer flex items-center gap-1.5 ${isApplied ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30' : 'bg-white/[0.04] hover:bg-white/[0.08] text-zinc-400 hover:text-white border border-white/[0.06]'}"
             title="${isApplied ? 'Application tracked' : 'Track this application'}"
           >
-            <span>${isApplied ? '✅ Applied' : '○ Mark Applied'}</span>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            <span>${isApplied ? 'Applied' : 'Track'}</span>
           </button>
 
           <div class="flex items-center gap-2">
@@ -1116,11 +1122,11 @@ function renderJobCards() {
             <button 
               type="button" 
               onclick="openJobModalById('${job.job_id}', event)" 
-              class="px-3.5 py-2 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-slate-600 rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
+              class="px-3 py-1.5 text-xs font-medium text-zinc-300 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] rounded-lg transition flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
               title="View full job details"
             >
               <span>Details</span>
-              <span>👁️</span>
+              <svg class="w-3 h-3 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
             </button>
 
             <!-- Direct Apply CTA -->
@@ -1129,10 +1135,10 @@ function renderJobCards() {
               target="_blank" 
               rel="noopener noreferrer" 
               onclick="handleExternalApply('${job.job_id}', event)"
-              class="px-4 py-2 text-xs font-bold text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 rounded-xl shadow-md shadow-emerald-500/10 active:scale-95 transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+              class="px-3.5 py-1.5 text-xs font-semibold text-black bg-emerald-400 hover:bg-emerald-300 rounded-lg shadow-sm active:scale-95 transition flex items-center gap-1 cursor-pointer whitespace-nowrap"
             >
               <span>Apply</span>
-              <span>↗</span>
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
             </a>
           </div>
         </div>
@@ -1159,10 +1165,10 @@ function renderPaginationControls(totalPages) {
   const prevBtn = document.createElement('button');
   prevBtn.type = 'button';
   prevBtn.disabled = current === 1;
-  prevBtn.className = `px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 ${
+  prevBtn.className = `px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition flex items-center gap-1 ${
     current === 1 
-      ? 'bg-slate-900 text-slate-600 border border-slate-800 cursor-not-allowed' 
-      : 'bg-slate-800 text-slate-200 hover:text-white hover:bg-slate-700 border border-slate-700 cursor-pointer shadow-sm active:scale-95'
+      ? 'bg-[#121215] text-zinc-600 border border-white/[0.04] cursor-not-allowed' 
+      : 'bg-[#121215] text-zinc-300 hover:text-white hover:bg-white/[0.06] border border-white/[0.08] cursor-pointer shadow-sm active:scale-95'
   }`;
   prevBtn.innerHTML = '‹ Prev';
   prevBtn.onclick = () => goToPage(current - 1);
@@ -1192,17 +1198,17 @@ function renderPaginationControls(totalPages) {
   pages.forEach(p => {
     if (p === '...') {
       const dots = document.createElement('span');
-      dots.className = 'px-1.5 py-1 text-slate-600 text-xs font-bold';
+      dots.className = 'px-1.5 py-1 text-zinc-600 text-xs font-mono';
       dots.textContent = '...';
       container.appendChild(dots);
     } else {
       const pageBtn = document.createElement('button');
       pageBtn.type = 'button';
       const isActive = p === current;
-      pageBtn.className = `min-w-[34px] px-2.5 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+      pageBtn.className = `min-w-[34px] px-2.5 py-1.5 rounded-lg text-xs font-mono font-medium transition cursor-pointer ${
         isActive 
-          ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20' 
-          : 'bg-slate-950 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800'
+          ? 'bg-emerald-400 text-black font-semibold shadow-sm' 
+          : 'bg-[#121215] text-zinc-400 hover:text-white hover:bg-white/[0.06] border border-white/[0.08]'
       }`;
       pageBtn.textContent = p;
       pageBtn.onclick = () => goToPage(p);
@@ -1214,10 +1220,10 @@ function renderPaginationControls(totalPages) {
   const nextBtn = document.createElement('button');
   nextBtn.type = 'button';
   nextBtn.disabled = current === totalPages;
-  nextBtn.className = `px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 ${
+  nextBtn.className = `px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition flex items-center gap-1 ${
     current === totalPages 
-      ? 'bg-slate-900 text-slate-600 border border-slate-800 cursor-not-allowed' 
-      : 'bg-slate-800 text-slate-200 hover:text-white hover:bg-slate-700 border border-slate-700 cursor-pointer shadow-sm active:scale-95'
+      ? 'bg-[#121215] text-zinc-600 border border-white/[0.04] cursor-not-allowed' 
+      : 'bg-[#121215] text-zinc-300 hover:text-white hover:bg-white/[0.06] border border-white/[0.08] cursor-pointer shadow-sm active:scale-95'
   }`;
   nextBtn.innerHTML = 'Next ›';
   nextBtn.onclick = () => goToPage(current + 1);
@@ -1247,29 +1253,38 @@ function openJobModal(job) {
 
   // Bookmark Button in Modal
   const isSaved = state.savedJobIds.has(job.job_id);
-  saveBtn.textContent = isSaved ? '⭐ Saved' : '☆ Save Job';
+  saveBtn.innerHTML = isSaved 
+    ? '<span class="text-amber-300 flex items-center gap-1.5"><svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>Saved</span>'
+    : '<span class="flex items-center gap-1.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>Save Job</span>';
   saveBtn.onclick = () => {
     toggleSaveJob(job.job_id);
-    saveBtn.textContent = state.savedJobIds.has(job.job_id) ? '⭐ Saved' : '☆ Save Job';
+    const nowSaved = state.savedJobIds.has(job.job_id);
+    saveBtn.innerHTML = nowSaved 
+      ? '<span class="text-amber-300 flex items-center gap-1.5"><svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>Saved</span>'
+      : '<span class="flex items-center gap-1.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>Save Job</span>';
   };
 
   // Applied Tracker Button in Modal
   if (trackBtn) {
     const isApplied = isJobApplied(job.job_id);
-    trackBtn.textContent = isApplied ? '✅ Marked Applied' : '○ Mark as Applied';
-    trackBtn.className = `px-4 py-2.5 text-xs font-bold rounded-xl transition cursor-pointer ${
+    trackBtn.innerHTML = isApplied 
+      ? '<span class="flex items-center gap-1.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Marked Applied</span>'
+      : '<span class="flex items-center gap-1.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>Mark as Applied</span>';
+    trackBtn.className = `px-3.5 py-2 text-xs font-mono font-medium rounded-xl transition cursor-pointer ${
       isApplied 
-        ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' 
-        : 'bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800'
+        ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30' 
+        : 'bg-[#18181d] hover:bg-white/[0.06] text-zinc-300 hover:text-white border border-white/[0.08]'
     }`;
     trackBtn.onclick = () => {
       toggleApplyJob(job.job_id);
       const appliedNow = isJobApplied(job.job_id);
-      trackBtn.textContent = appliedNow ? '✅ Marked Applied' : '○ Mark as Applied';
-      trackBtn.className = `px-4 py-2.5 text-xs font-bold rounded-xl transition cursor-pointer ${
+      trackBtn.innerHTML = appliedNow 
+        ? '<span class="flex items-center gap-1.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Marked Applied</span>'
+        : '<span class="flex items-center gap-1.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>Mark as Applied</span>';
+      trackBtn.className = `px-3.5 py-2 text-xs font-mono font-medium rounded-xl transition cursor-pointer ${
         appliedNow 
-          ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' 
-          : 'bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800'
+          ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30' 
+          : 'bg-[#18181d] hover:bg-white/[0.06] text-zinc-300 hover:text-white border border-white/[0.08]'
       }`;
     };
   }
@@ -1278,14 +1293,14 @@ function openJobModal(job) {
   applyBtn.href = link;
   applyBtn.onclick = (e) => handleExternalApply(job.job_id, job.company, e);
 
-  scopeBadge.textContent = job.remote_scope ? `🌐 ${job.remote_scope}` : '🌐 100% Remote';
-  locBadge.textContent = `📍 ${job.location || 'Anywhere'}`;
-  srcBadge.textContent = `🎯 ${job.source || 'Company ATS'}`;
+  scopeBadge.textContent = job.remote_scope ? job.remote_scope : 'Worldwide';
+  locBadge.textContent = job.location || 'Anywhere';
+  srcBadge.textContent = job.source || 'Company ATS';
 
   const salaryBadge = document.getElementById('modal-salary-badge');
   if (salaryBadge) {
     if (job.salary) {
-      salaryBadge.textContent = `💰 ${job.salary}`;
+      salaryBadge.textContent = job.salary;
       salaryBadge.classList.remove('hidden');
     } else {
       salaryBadge.classList.add('hidden');
@@ -1330,8 +1345,7 @@ function openJobModal(job) {
     : 'Not explicitly specified by employer';
   const expSub = job.experience_required
     ? 'Verified requirement from posting'
-    : 'No strict year cutoff specified by employer';
-  const expIcon = job.experience_required ? '🎯' : '📋';
+    : 'No strict year cutoff specified';
 
   const seniorityText = job.seniority_level || 'Mid-Level';
   const seniorityRationale = job.seniority_rationale || 'Deliver core features autonomously, collaborate across disciplines, and uphold clean code principles.';
@@ -1340,8 +1354,8 @@ function openJobModal(job) {
   const salaryText = job.salary ? escapeHtml(job.salary) : 'Competitive / Unstated';
 
   const techChipsHtml = techList.length > 0
-    ? techList.map(t => `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-semibold bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 hover:border-emerald-500/40 hover:bg-emerald-500/20 transition cursor-default shadow-xs"><span>⚡</span>${escapeHtml(t)}</span>`).join(' ')
-    : '<span class="text-xs text-slate-400 italic">General engineering & cross-functional skills. See description below for complete context.</span>';
+    ? techList.map(t => `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-mono bg-white/[0.04] text-zinc-300 border border-white/[0.08]">${escapeHtml(t)}</span>`).join(' ')
+    : '<span class="text-xs text-zinc-400 italic">General engineering & cross-functional skills. See description below for complete context.</span>';
 
   // Description format
   const cleanDesc = (job.description || 'No description provided. Please click Apply to view complete job details on the hiring company website.')
@@ -1350,79 +1364,79 @@ function openJobModal(job) {
 
   body.innerHTML = `
     <!-- Candidate Fast Decision Grid (Experience, Seniority, Scope, Salary) -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 font-mono">
       
       <!-- Experience Required -->
-      <div class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 flex items-start gap-3.5 shadow-sm">
-        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg shrink-0">
-          ${expIcon}
+      <div class="p-3.5 rounded-xl bg-[#18181d] border border-white/[0.08] flex items-start gap-3">
+        <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         </div>
         <div class="min-w-0">
-          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Experience Required</div>
-          <div class="text-base font-extrabold text-white mt-0.5 truncate">${expText}</div>
-          <div class="text-[11px] text-slate-400 mt-0.5">${expSub}</div>
+          <div class="text-[10px] uppercase tracking-wider text-zinc-500">Experience</div>
+          <div class="text-sm font-semibold text-white mt-0.5 truncate">${expText}</div>
+          <div class="text-[10px] text-zinc-400 mt-0.5 font-sans">${expSub}</div>
         </div>
       </div>
 
       <!-- Seniority Tier -->
-      <div class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 flex items-start gap-3.5 shadow-sm">
-        <div class="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 text-teal-400 flex items-center justify-center text-lg shrink-0">
-          ⚡
+      <div class="p-3.5 rounded-xl bg-[#18181d] border border-white/[0.08] flex items-start gap-3">
+        <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
         </div>
         <div class="min-w-0">
-          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Seniority Level</div>
-          <div class="text-base font-extrabold text-white mt-0.5 truncate">${escapeHtml(seniorityText)}</div>
-          <div class="text-[11px] text-slate-400 mt-0.5">Autonomy & ownership expectations</div>
+          <div class="text-[10px] uppercase tracking-wider text-zinc-500">Seniority</div>
+          <div class="text-sm font-semibold text-white mt-0.5 truncate">${escapeHtml(seniorityText)}</div>
+          <div class="text-[10px] text-zinc-400 mt-0.5 font-sans">Ownership expectations</div>
         </div>
       </div>
 
       <!-- Remote Work Scope -->
-      <div class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 flex items-start gap-3.5 shadow-sm">
-        <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center text-lg shrink-0">
-          🌐
+      <div class="p-3.5 rounded-xl bg-[#18181d] border border-white/[0.08] flex items-start gap-3">
+        <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
         </div>
         <div class="min-w-0">
-          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Geographic Scope</div>
-          <div class="text-base font-extrabold text-white mt-0.5 truncate">${scopeText}</div>
-          <div class="text-[11px] text-slate-400 mt-0.5">${escapeHtml(job.location || 'Anywhere / Worldwide')}</div>
+          <div class="text-[10px] uppercase tracking-wider text-zinc-500">Scope</div>
+          <div class="text-sm font-semibold text-white mt-0.5 truncate">${scopeText}</div>
+          <div class="text-[10px] text-zinc-400 mt-0.5 font-sans truncate">${escapeHtml(job.location || 'Anywhere')}</div>
         </div>
       </div>
 
       <!-- Compensation -->
-      <div class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 flex items-start gap-3.5 shadow-sm">
-        <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center text-lg shrink-0">
-          💰
+      <div class="p-3.5 rounded-xl bg-[#18181d] border border-white/[0.08] flex items-start gap-3">
+        <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         </div>
         <div class="min-w-0">
-          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Compensation</div>
-          <div class="text-base font-extrabold text-white mt-0.5 truncate">${salaryText}</div>
-          <div class="text-[11px] text-slate-400 mt-0.5">${job.employment_type || 'Full-time / Permanent'}</div>
+          <div class="text-[10px] uppercase tracking-wider text-zinc-500">Compensation</div>
+          <div class="text-sm font-semibold text-emerald-400 mt-0.5 truncate">${salaryText}</div>
+          <div class="text-[10px] text-zinc-400 mt-0.5 font-sans truncate">${job.employment_type || 'Full-time'}</div>
         </div>
       </div>
 
     </div>
 
     <!-- Why This Level & Role Expectations Callout Banner -->
-    <div class="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-emerald-950/30 via-slate-950/70 to-teal-950/20 border border-emerald-500/20 mb-4 shadow-sm">
-      <div class="flex items-center gap-2 mb-1.5 text-xs font-bold text-emerald-400 uppercase tracking-wider">
-        <span>💡</span>
-        <span>Why This Level & Role Expectations</span>
+    <div class="p-4 rounded-xl bg-white/[0.02] border border-white/[0.08] mb-4">
+      <div class="flex items-center gap-2 mb-1.5 text-xs font-mono uppercase tracking-wider text-emerald-400 font-medium">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Role Expectations & Ownership</span>
       </div>
-      <p class="text-xs sm:text-sm text-slate-200 leading-relaxed font-normal">
+      <p class="text-xs sm:text-sm text-zinc-300 leading-relaxed font-normal">
         ${escapeHtml(seniorityRationale)}
       </p>
     </div>
 
     <!-- Verified Tech Stack & Skills -->
-    <div class="p-4 sm:p-5 rounded-2xl bg-slate-950/80 border border-slate-800 mb-4 shadow-sm">
+    <div class="p-4 rounded-xl bg-[#18181d] border border-white/[0.08] mb-4">
       <div class="flex items-center justify-between mb-3">
-        <div class="flex items-center gap-2 text-xs font-bold text-slate-300 uppercase tracking-wider">
-          <span>🛠️</span>
-          <span>Verified Tech Stack & Key Skills</span>
+        <div class="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-zinc-400 font-medium">
+          <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+          <span>Verified Tech Stack</span>
         </div>
-        <span class="text-[11px] text-slate-500 font-semibold">${techList.length} skills identified</span>
+        <span class="text-[11px] font-mono text-zinc-500">${techList.length} skills</span>
       </div>
-      <div class="flex flex-wrap gap-2">
+      <div class="flex flex-wrap gap-1.5">
         ${techChipsHtml}
       </div>
     </div>
@@ -1430,13 +1444,13 @@ function openJobModal(job) {
     <!-- Role Overview & Full Description -->
     <div class="pt-2">
       <div class="flex items-center justify-between mb-2.5">
-        <div class="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
-          <span>📄</span>
+        <div class="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-zinc-400 font-medium">
+          <svg class="w-3.5 h-3.5 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
           <span>Job Description & Requirements</span>
         </div>
-        <span class="text-[11px] text-slate-500">Official ATS Posting</span>
+        <span class="text-[11px] font-mono text-zinc-500">Official Posting</span>
       </div>
-      <div class="text-sm text-slate-300 leading-relaxed font-normal bg-slate-950/60 p-4 sm:p-5 rounded-2xl border border-slate-800/80 max-h-[320px] overflow-y-auto space-y-3">
+      <div class="text-sm text-zinc-300 leading-relaxed font-normal bg-[#18181d] p-4 sm:p-5 rounded-xl border border-white/[0.08] max-h-[320px] overflow-y-auto space-y-3">
         ${cleanDesc}
       </div>
     </div>
@@ -1503,31 +1517,31 @@ function setAlertPlan(plan) {
   const submitBtn = document.getElementById('alerts-submit-btn');
 
   // Reset all cards to default inactive styling
-  const inactiveClass = 'alert-plan-card relative p-3 rounded-2xl border-2 border-slate-800 bg-slate-950/60 hover:border-slate-700 cursor-pointer transition flex flex-col justify-between';
+  const inactiveClass = 'alert-plan-card relative p-3 rounded-xl border border-white/[0.08] bg-[#18181d] hover:border-white/[0.15] cursor-pointer transition flex flex-col justify-between';
   if (freeCard) freeCard.className = inactiveClass;
   if (vip1moCard) vip1moCard.className = inactiveClass;
   if (vip3moCard) vip3moCard.className = inactiveClass;
 
   if (plan === 'vip3mo') {
     if (vip3moRadio) vip3moRadio.checked = true;
-    if (vip3moCard) vip3moCard.className = 'alert-plan-card active relative p-3 rounded-2xl border-2 border-amber-500 bg-amber-500/10 cursor-pointer transition flex flex-col justify-between shadow-lg shadow-amber-500/10';
+    if (vip3moCard) vip3moCard.className = 'alert-plan-card active relative p-3 rounded-xl border border-amber-500/50 bg-amber-500/10 cursor-pointer transition flex flex-col justify-between shadow-sm';
     if (submitBtn) {
-      submitBtn.innerHTML = '<span>Get 3-Month Sprint Pass ($10) • Save 33%</span> <span>⚡</span>';
-      submitBtn.className = 'w-full py-3 px-4 rounded-xl font-extrabold text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 hover:from-amber-300 hover:to-yellow-300 transition shadow-lg shadow-amber-500/20 cursor-pointer flex items-center justify-center gap-1.5';
+      submitBtn.innerHTML = '<span>Get 3-Month Sprint Pass ($10) • Save 33%</span>';
+      submitBtn.className = 'w-full py-2.5 px-4 rounded-xl font-bold font-mono text-xs sm:text-sm text-black bg-amber-400 hover:bg-amber-300 transition cursor-pointer flex items-center justify-center gap-1.5';
     }
   } else if (plan === 'vip1mo') {
     if (vip1moRadio) vip1moRadio.checked = true;
-    if (vip1moCard) vip1moCard.className = 'alert-plan-card active relative p-3 rounded-2xl border-2 border-sky-500 bg-sky-500/10 cursor-pointer transition flex flex-col justify-between shadow-lg shadow-sky-500/10';
+    if (vip1moCard) vip1moCard.className = 'alert-plan-card active relative p-3 rounded-xl border border-sky-500/50 bg-sky-500/10 cursor-pointer transition flex flex-col justify-between shadow-sm';
     if (submitBtn) {
-      submitBtn.innerHTML = '<span>Proceed to 1-Month VIP Alerts ($5/mo)</span> <span>⚡</span>';
-      submitBtn.className = 'w-full py-3 px-4 rounded-xl font-extrabold text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-sky-400 to-teal-300 hover:from-sky-300 hover:to-teal-200 transition shadow-lg shadow-sky-500/20 cursor-pointer flex items-center justify-center gap-1.5';
+      submitBtn.innerHTML = '<span>Proceed to 1-Month VIP Alerts ($5/mo)</span>';
+      submitBtn.className = 'w-full py-2.5 px-4 rounded-xl font-bold font-mono text-xs sm:text-sm text-black bg-sky-400 hover:bg-sky-300 transition cursor-pointer flex items-center justify-center gap-1.5';
     }
   } else {
     if (freeRadio) freeRadio.checked = true;
-    if (freeCard) freeCard.className = 'alert-plan-card active relative p-3 rounded-2xl border-2 border-emerald-500 bg-emerald-500/10 cursor-pointer transition flex flex-col justify-between shadow-lg shadow-emerald-500/10';
+    if (freeCard) freeCard.className = 'alert-plan-card active relative p-3 rounded-xl border border-emerald-500/50 bg-emerald-500/10 cursor-pointer transition flex flex-col justify-between shadow-sm';
     if (submitBtn) {
       submitBtn.innerHTML = '<span>Subscribe to Free Weekly Digest</span>';
-      submitBtn.className = 'w-full py-3 px-4 rounded-xl font-extrabold text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 transition shadow-lg shadow-emerald-500/20 cursor-pointer';
+      submitBtn.className = 'w-full py-2.5 px-4 rounded-xl font-bold font-mono text-xs sm:text-sm text-black bg-emerald-400 hover:bg-emerald-300 transition cursor-pointer flex items-center justify-center';
     }
   }
 }
@@ -1631,11 +1645,11 @@ function bindEventHandlers() {
         const isMatch = (p.dataset.category || 'all') === state.category;
         const b = p.querySelector('.role-count-badge');
         if (isMatch) {
-          p.className = 'role-pill active shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20 cursor-pointer flex items-center gap-2';
-          if (b) b.className = 'role-count-badge px-1.5 py-0.5 rounded-full text-[10px] font-black bg-slate-950/20 text-slate-950';
+          p.className = 'role-pill active shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-emerald-400 text-black shadow-sm cursor-pointer flex items-center gap-2';
+          if (b) b.className = 'role-count-badge px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-black/20 text-black';
         } else {
-          p.className = 'role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer flex items-center gap-2';
-          if (b) b.className = 'role-count-badge px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400';
+          p.className = 'role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium transition bg-[#121215] text-zinc-400 hover:text-zinc-200 hover:bg-[#18181d] border border-white/[0.08] cursor-pointer flex items-center gap-2';
+          if (b) b.className = 'role-count-badge px-1.5 py-0.5 rounded text-[10px] font-mono bg-white/[0.04] text-zinc-500';
         }
       });
       state.currentPage = 1;
@@ -1646,13 +1660,13 @@ function bindEventHandlers() {
   rolePills.forEach(pill => {
     pill.addEventListener('click', () => {
       rolePills.forEach(p => {
-        p.className = 'role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer flex items-center gap-2';
+        p.className = 'role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium transition bg-[#121215] text-zinc-400 hover:text-zinc-200 hover:bg-[#18181d] border border-white/[0.08] cursor-pointer flex items-center gap-2';
         const b = p.querySelector('.role-count-badge');
-        if (b) b.className = 'role-count-badge px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400';
+        if (b) b.className = 'role-count-badge px-1.5 py-0.5 rounded text-[10px] font-mono bg-white/[0.04] text-zinc-500';
       });
-      pill.className = 'role-pill active shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20 cursor-pointer flex items-center gap-2';
+      pill.className = 'role-pill active shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-emerald-400 text-black shadow-sm cursor-pointer flex items-center gap-2';
       const activeBadge = pill.querySelector('.role-count-badge');
-      if (activeBadge) activeBadge.className = 'role-count-badge px-1.5 py-0.5 rounded-full text-[10px] font-black bg-slate-950/20 text-slate-950';
+      if (activeBadge) activeBadge.className = 'role-count-badge px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-black/20 text-black';
 
       state.category = pill.dataset.category || 'all';
       if (roleSelect) roleSelect.value = state.category;
@@ -1677,10 +1691,10 @@ function bindEventHandlers() {
       scopeTabs.forEach(t => {
         const other = document.getElementById(t.id);
         if (other) {
-          other.className = 'scope-tab px-3 py-1 rounded-xl text-xs font-semibold text-slate-300 hover:text-white bg-slate-950 border border-slate-800 transition cursor-pointer';
+          other.className = 'scope-tab px-3 py-1 rounded-lg text-xs font-mono text-zinc-400 hover:text-white bg-[#121215] border border-white/[0.08] hover:border-white/[0.15] transition cursor-pointer';
         }
       });
-      el.className = 'scope-tab active px-3 py-1 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 transition cursor-pointer';
+      el.className = 'scope-tab active px-3 py-1 rounded-lg text-xs font-mono font-semibold bg-emerald-400 text-black transition cursor-pointer';
       state.scope = tab.scope;
       state.currentPage = 1;
       applyFilters();
@@ -1878,26 +1892,42 @@ function bindEventHandlers() {
         advRow.classList.remove('hidden');
         if (toggleText) toggleText.textContent = 'Fewer Filters';
         if (toggleIcon) toggleIcon.textContent = '▲';
-        toggleAdvBtn.classList.add('bg-slate-800', 'text-emerald-400');
+        toggleAdvBtn.classList.add('bg-white/[0.08]', 'text-emerald-400');
       } else {
         advRow.classList.add('hidden');
         if (toggleText) toggleText.textContent = 'More Filters';
-        if (toggleIcon) toggleIcon.textContent = '⚙️';
-        toggleAdvBtn.classList.remove('bg-slate-800', 'text-emerald-400');
+        if (toggleIcon) toggleIcon.textContent = '⚙';
+        toggleAdvBtn.classList.remove('bg-white/[0.08]', 'text-emerald-400');
       }
     });
   }
 
-  // 16. Modal Closing
+  // 16. Modal Closing & Global Keyboard Shortcuts (Cmd+K / Ctrl+K and Escape)
   const closeBtn = document.getElementById('modal-close-btn');
   const backdrop = document.getElementById('modal-backdrop');
   if (closeBtn) closeBtn.addEventListener('click', closeJobModal);
   if (backdrop) backdrop.addEventListener('click', closeJobModal);
   window.addEventListener('keydown', e => {
+    // Cmd+K / Ctrl+K global search focus
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      const sInput = document.getElementById('search-input');
+      if (sInput) {
+        sInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => sInput.focus(), 150);
+      }
+      return;
+    }
+
+    // Escape closes modals or blurs search
     if (e.key === 'Escape') {
       closeJobModal();
       closeAlertsModal();
       closePostJobModal();
+      const sInput = document.getElementById('search-input');
+      if (sInput && document.activeElement === sInput) {
+        sInput.blur();
+      }
     }
   });
 
@@ -2184,10 +2214,13 @@ function resetAllFilters() {
   // Reset Role Pills
   const rolePills = document.querySelectorAll('.role-pill');
   rolePills.forEach((p, idx) => {
+    const b = p.querySelector('.role-count-badge');
     if (idx === 0) {
-      p.className = 'role-pill active shrink-0 whitespace-nowrap px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20 cursor-pointer';
+      p.className = 'role-pill active shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-emerald-400 text-black shadow-sm cursor-pointer flex items-center gap-2';
+      if (b) b.className = 'role-count-badge px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-black/20 text-black';
     } else {
-      p.className = 'role-pill shrink-0 whitespace-nowrap px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-slate-400 hover:text-emerald-400 hover:bg-slate-850 border border-slate-800 cursor-pointer';
+      p.className = 'role-pill shrink-0 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium transition bg-[#121215] text-zinc-400 hover:text-zinc-200 hover:bg-[#18181d] border border-white/[0.08] cursor-pointer flex items-center gap-2';
+      if (b) b.className = 'role-count-badge px-1.5 py-0.5 rounded text-[10px] font-mono bg-white/[0.04] text-zinc-500';
     }
   });
 
@@ -2197,9 +2230,9 @@ function resetAllFilters() {
     const el = document.getElementById(id);
     if (!el) return;
     if (idx === 0) {
-      el.className = 'scope-tab active px-3 py-1 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 transition cursor-pointer';
+      el.className = 'scope-tab active px-3 py-1 rounded-lg text-xs font-mono font-semibold bg-emerald-400 text-black transition cursor-pointer';
     } else {
-      el.className = 'scope-tab px-3 py-1 rounded-xl text-xs font-semibold text-slate-300 hover:text-white bg-slate-950 border border-slate-800 transition cursor-pointer';
+      el.className = 'scope-tab px-3 py-1 rounded-lg text-xs font-mono text-zinc-400 hover:text-white bg-[#121215] border border-white/[0.08] hover:border-white/[0.15] transition cursor-pointer';
     }
   });
 
@@ -2211,9 +2244,11 @@ function showEmptyState(msg) {
   const container = document.getElementById('job-grid');
   if (container) {
     container.innerHTML = `
-      <div class="p-12 text-center bg-slate-900 border border-slate-800 rounded-2xl">
-        <div class="text-4xl mb-3">📡</div>
-        <h3 class="text-lg font-bold text-white mb-1">${escapeHtml(msg)}</h3>
+      <div class="p-12 text-center bg-[#121215] border border-white/[0.08] rounded-2xl max-w-lg mx-auto shadow-2xl">
+        <div class="w-12 h-12 rounded-xl bg-white/[0.04] border border-white/[0.08] text-zinc-400 mx-auto flex items-center justify-center mb-3">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35"/></svg>
+        </div>
+        <h3 class="text-base sm:text-lg font-bold text-white mb-1 tracking-tight">${escapeHtml(msg)}</h3>
       </div>
     `;
   }

@@ -9,7 +9,7 @@ This document tracks all **UI, API, backend, and monetization changes** implemen
 - **Live Application URL:** [https://ajaypau123.github.io/RemoteJobsHub/](https://ajaypau123.github.io/RemoteJobsHub/)
 - **Repository Branch:** `main` (clean, fully synced)
 - **Deployment Mode:** Automated GitHub Pages via GitHub Actions ($0/month serverless)
-- **Overall Completion:** **92% Code Complete** (only 3 external user credentials pending)
+- **Overall Completion:** **95% Code Complete** (only 3 external user credentials pending)
 
 ---
 
@@ -17,13 +17,17 @@ This document tracks all **UI, API, backend, and monetization changes** implemen
 
 | Feature / Module | Category | Status | Details / Location |
 | :--- | :--- | :--- | :--- |
+| **Linear / Vercel Modern Dark UI** | UI Aesthetic | ✅ **DONE** | Obsidian Charcoal (`#09090b`/`#121215`), 1px micro-borders, Electric Emerald accents |
+| **Monochrome Vector SVG Icons** | UI / Icons | ✅ **DONE** | Replaced all OS emojis with sharp 16-20px Lucide-style inline SVGs across all cards & modals |
+| **JetBrains Mono Metadata Tags** | Typography | ✅ **DONE** | Monospace typography for salaries, scopes, dates, ATS provider, and skill pills |
+| **Global `Cmd+K` / `Ctrl+K` Palette** | UX / Shortcut | ✅ **DONE** | Keyboard-first search jump and smooth focus navigation with `Escape` modal dismissal |
 | **Unified Filter Toolbar Search** | UI | ✅ **DONE** | Single prominent search bar with Scope pills inside filter toolbar |
 | **Hero Promo Showcase Card** | UI / Monetization | ✅ **DONE** | Converts visitors to VIP Alerts ($5-$10) & Post a Job ($49) |
-| **15 Tech Role Category Pills** | UI / Filtering | ✅ **DONE** | Eng, AI, DevOps, QA, Product, Data, Design, etc. with counts |
-| **3-Tier Job Alert Modal** | UI / Monetization | ✅ **DONE** | Free ($0), 1-Mo VIP ($5), 3-Mo Sprint Pass ($10 • 33% OFF) |
-| **Recruiter Post a Job Modal** | UI / Monetization | ✅ **DONE** | $49 for 30-day pin with golden badge & instant preview |
+| **15 Tech Role Category Pills** | UI / Filtering | ✅ **DONE** | Sharp vector line icons for Eng, AI, DevOps, QA, Product, Data, Design, etc. with counts |
+| **3-Tier Job Alert Modal** | UI / Monetization | ✅ **DONE** | Free ($0), 1-Mo VIP ($5), 3-Mo Sprint Pass ($10 • 33% OFF) in Obsidian glassmorphism |
+| **Recruiter Post a Job Modal** | UI / Monetization | ✅ **DONE** | $49 for 30-day pin with modern form inputs, preview, and instant checkout hook |
 | **ATS Resume Checker Card** | UI / Referral | ✅ **DONE** | High-converting pre-apply card in Job Detail modal ($15-$35/sale) |
-| **Personal Job Tracker** | UI / LocalStorage | ✅ **DONE** | ⭐ Saved Jobs & ✅ Applied Tracker with floating confirmation toast |
+| **Personal Job Tracker** | UI / LocalStorage | ✅ **DONE** | Saved Jobs & Applied Tracker with floating confirmation toast |
 | **Privacy Policy Page** | Legal / Compliance | ✅ **DONE** | [`dashboard/privacy.html`](dashboard/privacy.html) (GDPR & CCPA compliant) |
 | **Terms of Service Page** | Legal / Compliance | ✅ **DONE** | [`dashboard/terms.html`](dashboard/terms.html) (Fair use, takedown procedure) |
 | **SEO: robots.txt & sitemap.xml**| SEO | ✅ **DONE** | [`dashboard/robots.txt`](dashboard/robots.txt), [`sitemap.xml`](dashboard/sitemap.xml) |
@@ -38,6 +42,24 @@ This document tracks all **UI, API, backend, and monetization changes** implemen
 ---
 
 ## 📅 Detailed Chronological Release History
+
+### [v2.3.0] — November 10, 2026: Modern Linear & Vercel Developer UI Makeover
+- **Elite Dark Mode Obsidian Palette:**
+  - Transitioned the entire dashboard canvas from generic slate (`#020617`/`#0f172a`) to obsidian charcoal (`#09090b` for background, `#121215` for cards/surfaces, and `#18181d` for inputs/modals).
+  - Implemented 1px micro-borders (`border-white/[0.08]`) with subtle `hover:border-emerald-500/40` transitions.
+  - Retained a single high-contrast accent: Electric Emerald (`#10b981` / `#34d399`).
+- **Monochrome Vector SVG Icons (Lucide Style):**
+  - Replaced colored OS emojis across the entire UI with crisp inline SVG vector icons:
+    - Navigation: Geometric globe logo, Star/Bookmark, Applied check, Bell, Plus, Search command pill.
+    - 15 Role Domains: Clean line icons for Engineering (Code), AI/ML (Spark), DevOps (Cloud), QA (Sliders), Data (Bar chart), Product (Rocket), Design (Palette), Mobile (Smartphone), Security (Shield), Marketing (Megaphone), Support (Headphones), etc.
+    - Job Cards & Modals: Sleek SVGs for experience, seniority ownership, geographic scope, compensation, direct ATS verification, and bookmarking.
+- **Developer Monospace Typography (JetBrains Mono):**
+  - Formatted technical metadata (salaries, remote geographic scopes, relative posted dates, ATS source tags, company applicant counters) with `font-mono text-[11px]` for a precision developer feel.
+- **Global `Cmd+K` / `Ctrl+K` Command Palette Navigation:**
+  - Added native keyboard listener: pressing `Cmd+K` (macOS) or `Ctrl+K` (Windows/Linux) smoothly scrolls and focuses the search bar from anywhere on the page.
+  - Added `Escape` handler to close active modals or blur the search input.
+- **Cache Invalidation:**
+  - Bumped dashboard script tags to `?v=20261110_modern_linear_ui`.
 
 ### [v2.2.0] — November 9, 2026: Production Release Pack & Monetization Engine
 - **Legal Compliance:**
