@@ -353,6 +353,27 @@ function formatRelativeDate(dateStr) {
   }
 }
 
+function isEarlyApplicantWindow(dateStr) {
+  if (!dateStr) return false;
+  try {
+    const parts = dateStr.split('-');
+    let posted;
+    if (parts.length === 3 && parts[0].length === 4) {
+      posted = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+    } else {
+      posted = new Date(dateStr);
+    }
+    if (isNaN(posted.getTime())) return false;
+    const now = new Date();
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const startOfPosted = new Date(posted.getFullYear(), posted.getMonth(), posted.getDate());
+    const diffDays = Math.round((startOfToday - startOfPosted) / (1000 * 60 * 60 * 24));
+    return diffDays <= 2; // Fresh posting: today, yesterday, or within 48h
+  } catch (e) {
+    return false;
+  }
+}
+
 // ── Company Dropdown & Direct ATS Panel ────────────────────────────────────────
 function updateDirectAtsPanelVisibility() {
   const isDirectAts = state.directAtsOnly || state.source === 'CompanyATS';
@@ -1036,6 +1057,10 @@ function renderJobCards() {
     const isDirectAts = !!job.direct_apply_url || job.source === 'CompanyATS';
     const relDate = formatRelativeDate(job.posted_date || job.collected_date);
     const logoUrl = getCompanyLogoUrl(job.company, applyLink);
+    const isEarly = isEarlyApplicantWindow(job.posted_date || job.collected_date);
+    const earlyBadge = isEarly
+      ? '<span class="px-1.5 py-0.2 rounded text-[10px] font-mono font-semibold uppercase bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 inline-flex items-center gap-1" title="Freshly indexed from ATS: Early applicant advantage"><span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>Early Window (&lt;25)</span>'
+      : '';
 
     // Format Scope Badge (JetBrains Mono)
     let scopeBadge = '';
@@ -1079,6 +1104,7 @@ function renderJobCards() {
               ${job.is_featured ? '<span class="px-2 py-0.5 rounded text-[10px] font-mono uppercase tracking-wider bg-amber-500/15 text-amber-300 border border-amber-500/30">Featured</span>' : ''}
               <span class="text-xs font-semibold text-slate-300 truncate max-w-[170px]">${escapeHtml(job.company || 'Company')}</span>
               ${isDirectAts ? '<span class="px-1.5 py-0.2 rounded text-[10px] font-mono uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Direct ATS</span>' : ''}
+              ${earlyBadge}
               ${isApplied ? '<span class="px-1.5 py-0.2 rounded text-[10px] font-mono uppercase bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">Applied</span>' : ''}
               ${relDate ? `<span class="text-[11px] font-mono text-slate-500">•</span><span class="text-[11px] font-mono text-cyan-400/90">${relDate}</span>` : ''}
             </div>
@@ -1170,6 +1196,7 @@ function renderJobCards() {
                   ${job.is_featured ? '<span class="px-2 py-0.5 rounded text-[10px] font-mono uppercase tracking-wider bg-amber-500/15 text-amber-300 border border-amber-500/30">Featured</span>' : ''}
                   <span class="text-xs font-semibold text-slate-300 truncate max-w-[160px]">${escapeHtml(job.company || 'Hiring Company')}</span>
                   ${isDirectAts ? '<span class="px-1.5 py-0.2 rounded text-[10px] font-mono uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Direct ATS</span>' : ''}
+                  ${earlyBadge}
                   ${isApplied ? '<span class="px-1.5 py-0.2 rounded text-[10px] font-mono uppercase bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">Applied</span>' : ''}
                 </div>
                 <div class="flex items-center gap-1.5 text-[11px] font-mono text-slate-500 mt-0.5">
@@ -1466,6 +1493,19 @@ function openJobModal(job) {
     }
   }
 
+  // 1-Click Find Hiring Manager on LinkedIn
+  const linkedinBtn = document.getElementById('modal-linkedin-btn');
+  if (linkedinBtn) {
+    const companyClean = (job.company || '').trim();
+    if (companyClean) {
+      const q = encodeURIComponent(`recruiter OR "talent acquisition" OR "engineering manager" "${companyClean}"`);
+      linkedinBtn.href = `https://www.linkedin.com/search/results/people/?keywords=${q}`;
+      linkedinBtn.classList.remove('hidden');
+    } else {
+      linkedinBtn.classList.add('hidden');
+    }
+  }
+
   const dateBadge = document.getElementById('modal-date-badge');
   if (dateBadge) {
     const rel = formatRelativeDate(job.posted_date || job.collected_date);
@@ -1641,9 +1681,9 @@ const GOOGLE_SHEET_WEBHOOK_URL = window.REMOTE_JOBS_HUB_WEBHOOK_URL || '';
 
 // Optional Stripe Checkout Links (Create in dashboard.stripe.com/payment-links)
 const STRIPE_CHECKOUT_LINKS = window.STRIPE_CHECKOUT_LINKS || {
-  vip1mo: '',
-  vip3mo: '',
-  postJob: ''
+  vip1mo: window.MONETIZATION_CONFIG?.jobAlerts?.paymentUrl1Mo || '',
+  vip3mo: window.MONETIZATION_CONFIG?.jobAlerts?.paymentUrl3Mo || '',
+  postJob: window.MONETIZATION_CONFIG?.employerPayment?.paymentUrl || ''
 };
 
 function openAlertsModal(defaultPlan = 'vip3mo') {
@@ -1688,32 +1728,32 @@ function setAlertPlan(plan) {
   const vip3moCard = document.getElementById('plan-vip3mo-card');
   const submitBtn = document.getElementById('alerts-submit-btn');
 
-  // Reset all cards to default inactive styling
-  const inactiveClass = 'alert-plan-card relative p-3 rounded-xl border border-white/[0.08] bg-[#18181d] hover:border-white/[0.15] cursor-pointer transition flex flex-col justify-between';
+  // Reset all cards to default inactive styling in Midnight Slate Navy
+  const inactiveClass = 'alert-plan-card relative p-3 rounded-2xl border border-white/[0.08] bg-[#090e1c] hover:border-cyan-500/40 cursor-pointer transition flex flex-col justify-between';
   if (freeCard) freeCard.className = inactiveClass;
   if (vip1moCard) vip1moCard.className = inactiveClass;
   if (vip3moCard) vip3moCard.className = inactiveClass;
 
   if (plan === 'vip3mo') {
     if (vip3moRadio) vip3moRadio.checked = true;
-    if (vip3moCard) vip3moCard.className = 'alert-plan-card active relative p-3 rounded-xl border border-amber-500/50 bg-amber-500/10 cursor-pointer transition flex flex-col justify-between shadow-sm';
+    if (vip3moCard) vip3moCard.className = 'alert-plan-card active relative p-3 rounded-2xl border-2 border-amber-500 bg-amber-500/10 cursor-pointer transition flex flex-col justify-between shadow-lg shadow-amber-500/10';
     if (submitBtn) {
-      submitBtn.innerHTML = '<span>Get 3-Month Sprint Pass ($10) • Save 33%</span>';
-      submitBtn.className = 'w-full py-2.5 px-4 rounded-xl font-bold font-mono text-xs sm:text-sm text-black bg-amber-400 hover:bg-amber-300 transition cursor-pointer flex items-center justify-center gap-1.5';
+      submitBtn.innerHTML = '<span>⚡ Activate 3-Month Sprint Pass ($10) • Save 33%</span>';
+      submitBtn.className = 'w-full py-3 px-4 rounded-xl font-bold font-mono text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-amber-400 to-amber-300 hover:from-amber-300 hover:to-amber-200 transition cursor-pointer flex items-center justify-center gap-1.5 shadow-lg shadow-amber-500/20';
     }
   } else if (plan === 'vip1mo') {
     if (vip1moRadio) vip1moRadio.checked = true;
-    if (vip1moCard) vip1moCard.className = 'alert-plan-card active relative p-3 rounded-xl border border-sky-500/50 bg-sky-500/10 cursor-pointer transition flex flex-col justify-between shadow-sm';
+    if (vip1moCard) vip1moCard.className = 'alert-plan-card active relative p-3 rounded-2xl border-2 border-sky-500 bg-sky-500/10 cursor-pointer transition flex flex-col justify-between shadow-lg shadow-sky-500/10';
     if (submitBtn) {
-      submitBtn.innerHTML = '<span>Proceed to 1-Month VIP Alerts ($5/mo)</span>';
-      submitBtn.className = 'w-full py-2.5 px-4 rounded-xl font-bold font-mono text-xs sm:text-sm text-black bg-sky-400 hover:bg-sky-300 transition cursor-pointer flex items-center justify-center gap-1.5';
+      submitBtn.innerHTML = '<span>⚡ Activate 1-Month VIP Drops ($5/mo)</span>';
+      submitBtn.className = 'w-full py-3 px-4 rounded-xl font-bold font-mono text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-300 hover:to-blue-400 transition cursor-pointer flex items-center justify-center gap-1.5 shadow-lg shadow-sky-500/20';
     }
   } else {
     if (freeRadio) freeRadio.checked = true;
-    if (freeCard) freeCard.className = 'alert-plan-card active relative p-3 rounded-xl border border-cyan-500/50 bg-cyan-500/10 cursor-pointer transition flex flex-col justify-between shadow-sm';
+    if (freeCard) freeCard.className = 'alert-plan-card active relative p-3 rounded-2xl border-2 border-cyan-500 bg-cyan-500/10 cursor-pointer transition flex flex-col justify-between shadow-lg shadow-cyan-500/10';
     if (submitBtn) {
       submitBtn.innerHTML = '<span>Subscribe to Free Weekly Digest</span>';
-      submitBtn.className = 'w-full py-2.5 px-4 rounded-xl font-bold font-mono text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 transition cursor-pointer flex items-center justify-center';
+      submitBtn.className = 'w-full py-3 px-4 rounded-xl font-extrabold text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 transition shadow-lg shadow-cyan-500/20 cursor-pointer flex items-center justify-center';
     }
   }
 }

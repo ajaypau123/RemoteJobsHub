@@ -17,6 +17,10 @@ This document tracks all **UI, API, backend, and monetization changes** implemen
 
 | Feature / Module | Category | Status | Details / Location |
 | :--- | :--- | :--- | :--- |
+| **1-Click LinkedIn Recruiter Finder**| UI / Value-Add | ✅ **DONE** | 1-Click dynamic LinkedIn People Search for hiring managers in Job Detail drawer |
+| **Early Applicant Momentum Badges** | UI / Urgency | ✅ **DONE** | `⚡ Early Window (<25 applicants)` badge on listings posted within 48 hours |
+| **VIP Telegram Alerts Integration** | Community / Alerts| ✅ **DONE** | Navbar button and modal join flow for instant phone alerts (`t.me/RemoteJobsHub`) |
+| **B2B Recruiter Outbound Engine** | Sales / Automation| ✅ **DONE** | [`aggregator/outbound/generate_recruiter_leads.py`](aggregator/outbound/generate_recruiter_leads.py) ($49 cold pitch) |
 | **Midnight Navy & Cyan Palette** | UI Aesthetic | ✅ **DONE** | Deep Midnight `#070b14`, Slate Navy `#0d1527` cards, `#111c34` hovers, Electric Cyan accents, Amber salaries/CTA |
 | **Monochrome Vector SVG Icons** | UI / Icons | ✅ **DONE** | Replaced all OS emojis with sharp 16-20px Lucide-style inline SVGs across all cards & modals |
 | **JetBrains Mono Metadata Tags** | Typography | ✅ **DONE** | Monospace typography for salaries, scopes, dates, ATS provider, and skill pills |
@@ -42,6 +46,24 @@ This document tracks all **UI, API, backend, and monetization changes** implemen
 ---
 
 ## 📅 Detailed Chronological Release History
+
+### [v2.7.0] — November 12, 2026: Monetization Speed Engine, Recruiter Outbound & LinkedIn Finder
+- **Candidate Speed & Urgency Reframing**:
+  - Reframed `#alerts-modal` copy around the **"First 25 Applicants"** competitive advantage (*"Be in the first 25 applicants before postings saturate with 400+ resumes on LinkedIn"*).
+  - Restyled alert plan tier cards in cohesive Midnight Slate Navy with high-converting CTA gradients (`⚡ Activate 3-Month Sprint Pass ($10) • Save 33%`).
+  - Added VIP Telegram alerts integration (`https://t.me/RemoteJobsHub`) to top navigation and modal success state.
+- **1-Click "Find Hiring Manager on LinkedIn" Helper**:
+  - Injected an interactive `Find Recruiter` button inside the Job Detail Drawer (`#job-modal`).
+  - Dynamically builds pre-filtered LinkedIn People Search queries targeting tech recruiters and engineering managers for that specific employer.
+- **Early Applicant Momentum Badges**:
+  - Added `isEarlyApplicantWindow` helper in `dashboard/app.js`.
+  - Fresh listings posted within 48 hours render a glowing `⚡ Early Window (<25)` badge across list rows and rich cards.
+- **Automated B2B Recruiter Outbound Engine**:
+  - Built `aggregator/outbound/generate_recruiter_leads.py` CLI to extract distinct companies hiring remotely from the latest feed.
+  - Automatically generates pre-formatted LinkedIn Recruiter search queries and personalized 3-sentence cold pitch emails to sell **$49 Featured Pins**.
+  - Added full test suite in `tests/test_outbound.py` (5 unit tests, 100% passing).
+- **Cache Invalidation**:
+  - Bumped dashboard script tags to `?v=20261112_monetization_speed_v2`.
 
 ### [v2.6.1] — November 10, 2026: Fix Job Card Feed Rendering (logoUrl Scoping & TDZ Hoisting)
 - **Resolved Fatal Render Loop Abort**:
